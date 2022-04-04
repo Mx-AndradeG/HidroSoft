@@ -21,12 +21,18 @@ __webpack_require__.r(__webpack_exports__);
       email: '',
       password: ''
     });
-    var alvRoute = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('login');
+    var alvRoute = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(route('login'));
     var alvMethod = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('POST');
+
+    var afterDone = function afterDone(response) {
+      console.log(response);
+    };
+
     var __returned__ = {
       item: item,
       alvRoute: alvRoute,
       alvMethod: alvMethod,
+      afterDone: afterDone,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
@@ -110,6 +116,7 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "text-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "submit",
+  form: "alv",
   "class": "btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0"
 }, "Iniciar sesion")], -1
 /* HOISTED */
@@ -132,10 +139,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_alv_form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("alv-form");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("body", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("main", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_alv_form, {
-    role: "form",
-    action: $setup.alvRoute,
+    id: "alv",
+    action: _ctx.route('login'),
     method: $setup.alvMethod,
-    "data-object": $setup.item
+    "data-object": $setup.item,
+    onAfterDone: $setup.afterDone
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
