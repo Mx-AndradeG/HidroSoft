@@ -69,16 +69,14 @@ _inertiajs_progress__WEBPACK_IMPORTED_MODULE_3__.InertiaProgress.init();
         return (0,vue__WEBPACK_IMPORTED_MODULE_1__.h)(App, props);
       }
     });
+    inertiaApp.use(plugin);
     inertiaApp.use(_myshell_alvue__WEBPACK_IMPORTED_MODULE_6__["default"]);
-    (0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
-      render: function render() {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_1__.h)(App, props);
-      }
-    }).use(plugin).use(ziggy__WEBPACK_IMPORTED_MODULE_4__.ZiggyVue, _ziggy__WEBPACK_IMPORTED_MODULE_5__.Ziggy).component("Link", _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Link).component("Head", _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Head).mixin({
+    inertiaApp.mixin({
       methods: {
         route: route
       }
-    }).mount(el);
+    });
+    return inertiaApp.mount(el);
   }
 });
 
@@ -989,6 +987,14 @@ var map = {
 	"./Home.vue": [
 		"./resources/js/Pages/Home.vue",
 		"resources_js_Pages_Home_vue"
+	],
+	"./Layouts/AdminLayout": [
+		"./resources/js/Pages/Layouts/AdminLayout.vue",
+		"resources_js_Pages_Layouts_AdminLayout_vue"
+	],
+	"./Layouts/AdminLayout.vue": [
+		"./resources/js/Pages/Layouts/AdminLayout.vue",
+		"resources_js_Pages_Layouts_AdminLayout_vue"
 	]
 };
 function webpackAsyncContext(req) {

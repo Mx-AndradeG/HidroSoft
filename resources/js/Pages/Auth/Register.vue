@@ -20,7 +20,7 @@
               <h5>Registrate</h5>
             </div>
             <div class="card-body">
-              <alv-form role="form" :action="alvRoute" :method="alvMethod" :data-object="item">
+              <alv-form id="alv" :action="route('register')" :method="alvMethod" :data-object="item">
                 <div class="mb-3">
                   <input type="text" class="form-control" placeholder="Nombre" v-model="item.name" aria-label="Nombre">
                 </div>
@@ -37,7 +37,7 @@
                   </label>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" :disabled="!terms" >Sign up</button>
+                  <button form="alv" type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" :disabled="!terms" >Sign up</button>
                 </div>
                 <p class="text-sm mt-3 mb-0">Already have an account? <a :href="route('login')" class="text-dark font-weight-bolder">Sign in</a></p>
               </alv-form>
@@ -59,7 +59,6 @@ const item = ref({
     password:''
 });
 const terms = ref(false);
-const alvRoute = ref('register');
 const alvMethod = ref('POST');
 
 </script>

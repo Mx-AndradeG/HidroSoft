@@ -12,7 +12,7 @@
                   <p class="mb-0">Ingresa tu email y contraseña para iniciar sesion</p>
                 </div>
                 <div class="card-body">
-                  <alv-form role="form" :action="alvRoute" :method="alvMethod" :data-object="item">
+                  <alv-form id="alv" :action="route('login')" :method="alvMethod" :data-object="item"  @after-done="afterDone">
                     <div class="mb-3">
                       <input  type="email" name="email" v-model="item.email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
                     </div>
@@ -24,7 +24,7 @@
                       <label class="form-check-label" for="rememberMe">Remember me</label>
                     </div>
                     <div class="text-center">
-                      <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Iniciar sesion</button>
+                      <button type="submit" form="alv" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Iniciar sesion</button>
                     </div>
                   </alv-form>
                 </div>
@@ -60,7 +60,10 @@ const item = ref({
     password:''
 });
 
-const alvRoute = ref('login');
+const alvRoute = ref(route('login'));
 const alvMethod = ref('POST');
 
+const afterDone = (response) => {
+  console.log(response)
+}
 </script>

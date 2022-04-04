@@ -16,13 +16,9 @@ createInertiaApp({
     },
     setup({ el, App, props, plugin }) {
         const inertiaApp = createApp({render: () => h(App, props)});
+        inertiaApp.use(plugin);
         inertiaApp.use(alvue);
-        createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .use(ZiggyVue, Ziggy)
-            .component("Link", Link)
-            .component("Head", Head)
-            .mixin({ methods: { route } })
-            .mount(el);
+        inertiaApp.mixin({ methods: { route } });
+        return inertiaApp.mount(el);
     },
 });

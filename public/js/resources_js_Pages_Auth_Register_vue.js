@@ -23,12 +23,10 @@ __webpack_require__.r(__webpack_exports__);
       password: ''
     });
     var terms = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
-    var alvRoute = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('register');
     var alvMethod = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('POST');
     var __returned__ = {
       item: item,
       terms: terms,
-      alvRoute: alvRoute,
       alvMethod: alvMethod,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref
     };
@@ -123,8 +121,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_alv_form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("alv-form");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("body", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("main", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_alv_form, {
-    role: "form",
-    action: $setup.alvRoute,
+    id: "alv",
+    action: _ctx.route('register'),
     method: $setup.alvMethod,
     "data-object": $setup.item
   }, {
@@ -170,6 +168,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 512
       /* NEED_PATCH */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $setup.terms]]), _hoisted_14]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        form: "alv",
         type: "submit",
         "class": "btn bg-gradient-dark w-100 my-4 mb-2",
         disabled: !$setup.terms
