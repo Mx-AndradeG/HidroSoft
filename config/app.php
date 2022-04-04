@@ -177,6 +177,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //auth servide provider fortify
+        App\Providers\FortifyServiceProvider::class
+
+
     ],
 
     /*
