@@ -13,4 +13,26 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+# Style and theme
+public/fonts/
+public/mix-manifest.json
+public/css/
+public/js/
+package-lock.json
 composer.lock
+public/assets/
+public/images
+resources/js/routes.js
+'resources/js/routes.js'
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
