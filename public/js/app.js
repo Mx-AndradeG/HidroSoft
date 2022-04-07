@@ -989,6 +989,14 @@ var map = {
 		"./resources/js/Pages/Auth/Register.vue",
 		"resources_js_Pages_Auth_Register_vue"
 	],
+	"./Dashboard/DashboardIndex": [
+		"./resources/js/Pages/Dashboard/DashboardIndex.vue",
+		"resources_js_Pages_Dashboard_DashboardIndex_vue"
+	],
+	"./Dashboard/DashboardIndex.vue": [
+		"./resources/js/Pages/Dashboard/DashboardIndex.vue",
+		"resources_js_Pages_Dashboard_DashboardIndex_vue"
+	],
 	"./Home": [
 		"./resources/js/Pages/Home.vue",
 		"resources_js_Pages_Home_vue"
@@ -997,13 +1005,21 @@ var map = {
 		"./resources/js/Pages/Home.vue",
 		"resources_js_Pages_Home_vue"
 	],
-	"./Layouts/AdminLayout": [
-		"./resources/js/Pages/Layouts/AdminLayout.vue",
-		"resources_js_Pages_Layouts_AdminLayout_vue"
+	"./Template/Header": [
+		"./resources/js/Pages/Template/Header.vue",
+		"resources_js_Pages_Template_Header_vue"
 	],
-	"./Layouts/AdminLayout.vue": [
-		"./resources/js/Pages/Layouts/AdminLayout.vue",
-		"resources_js_Pages_Layouts_AdminLayout_vue"
+	"./Template/Header.vue": [
+		"./resources/js/Pages/Template/Header.vue",
+		"resources_js_Pages_Template_Header_vue"
+	],
+	"./Template/SlideBar": [
+		"./resources/js/Pages/Template/SlideBar.vue",
+		"resources_js_Pages_Template_SlideBar_vue"
+	],
+	"./Template/SlideBar.vue": [
+		"./resources/js/Pages/Template/SlideBar.vue",
+		"resources_js_Pages_Template_SlideBar_vue"
 	]
 };
 function webpackAsyncContext(req) {

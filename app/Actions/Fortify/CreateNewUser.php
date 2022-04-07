@@ -29,7 +29,7 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
-            'password' =>['required', 'string'],
+            'password' => ['required', 'string'],
         ])->validate();
 
         return User::create([
@@ -37,6 +37,5 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
-
     }
 }
