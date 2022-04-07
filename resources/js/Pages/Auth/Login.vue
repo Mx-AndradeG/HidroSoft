@@ -12,7 +12,7 @@
                   <p class="mb-0">Ingresa tu email y contraseña para iniciar sesion</p>
                 </div>
                 <div class="card-body">
-                  <alv-form id="alv" :action="route('login')" :method="alvMethod" :data-object="item"  @after-done="afterDone">
+                  <form @submit.prevent="submit">
                     <div class="mb-3">
                       <input  type="email" name="email" v-model="item.email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
                     </div>
@@ -24,9 +24,9 @@
                       <label class="form-check-label" for="rememberMe">Remember me</label>
                     </div>
                     <div class="text-center">
-                      <button type="submit" form="alv" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Iniciar sesion</button>
+                      <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Iniciar sesion</button>
                     </div>
-                  </alv-form>
+                  </form>
                 </div>
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-4 text-sm mx-auto">
@@ -52,18 +52,43 @@
 </body>
 </template>
 
-<script setup>
-import {ref} from "vue";
+<script>
 
-const item = ref({  
-    email:'',
-    password:''
-});
+export default {
+    components: {
+    },
 
-const alvRoute = ref(route('login'));
-const alvMethod = ref('POST');
+    data() {
+        return {
+            item: this.$inertia.form({
+                email: '',
+                password: '',
+                remember: false
+            })
+        }
+    },
 
-const afterDone = (response) => {
-  console.log(response)
+    methods: {
+        submit() {
+            this.item
+                .transform(data => ({
+                    ...data,
+                    remember: this.item.remember ? 'on' : ''
+                }))
+                .post(this.route('login'), {
+                    onError: (errors) => {
+                        if (Object.values(errors)[0])
+                            this.$toast.open({duration: 2000, message: Object.values(errors)[0], type: "error"});
+                        else
+                            this.$toast.open({
+                                duration: 2000,
+                                message: "Estas credenciales no coinciden con nuestros registros.",
+                                type: "error"
+                            });
+                        this.item.reset('password');
+                    },
+                })
+        }
+    }
 }
 </script>

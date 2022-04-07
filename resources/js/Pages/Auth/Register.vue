@@ -20,7 +20,7 @@
               <h5>Registrate</h5>
             </div>
             <div class="card-body">
-              <alv-form id="alv" :action="route('register')" :method="alvMethod" :data-object="item">
+             <form @submit.prevent="submit">
                 <div class="mb-3">
                   <input type="text" class="form-control" placeholder="Nombre" v-model="item.name" aria-label="Nombre">
                 </div>
@@ -37,10 +37,10 @@
                   </label>
                 </div>
                 <div class="text-center">
-                  <button form="alv" type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" :disabled="!terms" >Sign up</button>
+                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2"  >Sign up</button>
                 </div>
                 <p class="text-sm mt-3 mb-0">Already have an account? <a :href="route('login')" class="text-dark font-weight-bolder">Sign in</a></p>
-              </alv-form>
+              </form>
             </div>
           </div>
         </div>
@@ -50,15 +50,42 @@
 </body>
 </template>
 
-<script setup>
-import {ref} from "vue";
+<script>
+    export default {
+        components: {
+        },
 
-const item = ref({  
-    name: '',
-    email:'',
-    password:''
-});
-const terms = ref(false);
-const alvMethod = ref('POST');
+        data() {
+            return {
+                item: this.$inertia.form({
+                    name: '',
+                    email: '',
+                    password: '',
+                })
+            }
+        },
 
+        methods: {
+          submit() {
+            this.item
+                .transform(data => ({
+                    ...data,
+                    remember: this.item.remember ? 'on' : ''
+                }))
+                .post(this.route('register'), {
+                    onError: (errors) => {
+                        if (Object.values(errors)[0])
+                            this.$toast.open({duration: 2000, message: Object.values(errors)[0], type: "error"});
+                        else
+                            this.$toast.open({
+                                duration: 2000,
+                                message: "Estas credenciales no coinciden con nuestros registros.",
+                                type: "error"
+                            });
+                        this.item.reset('password');
+                    },
+                })
+        }
+        }
+    }
 </script>
