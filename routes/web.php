@@ -13,16 +13,9 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+require __DIR__ . '/web/without_auth/auth.php';
 
-Route::get('/', function () {
-    return Inertia::render('Home', [ 'title' => 'Homepage',]);
-})->name('homepage');
-Route::get('/login', function () {
-    return Inertia::render('Auth/Login', [ 'title' => 'Login',]);
-})->name('login');
-Route::get('/register', function () {
-    return Inertia::render('Auth/Register', [ 'title' => 'Register',]);
-})->name('register');
-Route::inertia('/dashboard', 'Dashboard/DashboardIndex')->name('Dashboard');
 
-Route::redirect('/', '/login')->name('website.index');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    require __DIR__ . '/web/dashboard/dashboard.php';
+});
