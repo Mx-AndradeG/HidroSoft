@@ -14,12 +14,15 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () { return Inertia::render('Home', [ 'title' => 'Homepage',]);})->name( 'homepage' );
-Route::get('/login', function () { return Inertia::render('Auth/Login', [ 'title' => 'Login',]);})->name( 'login' );
-Route::get('/register', function () { return Inertia::render('Auth/Register', [ 'title' => 'Register',]);})->name( 'register' );
-Route::inertia('/dashboard', 'Layouts/AdminLayout')->name('AdminLayout');
+Route::get('/', function () {
+    return Inertia::render('Home', [ 'title' => 'Homepage',]);
+})->name('homepage');
+Route::get('/login', function () {
+    return Inertia::render('Auth/Login', [ 'title' => 'Login',]);
+})->name('login');
+Route::get('/register', function () {
+    return Inertia::render('Auth/Register', [ 'title' => 'Register',]);
+})->name('register');
+Route::inertia('/dashboard', 'Dashboard/DashboardIndex')->name('Dashboard');
 
 Route::redirect('/', '/login')->name('website.index');
-
-
-
