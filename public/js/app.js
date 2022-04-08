@@ -989,6 +989,46 @@ var map = {
 		"./resources/js/Pages/Auth/Register.vue",
 		"resources_js_Pages_Auth_Register_vue"
 	],
+	"./Branch/BranchIndex": [
+		"./resources/js/Pages/Branch/BranchIndex.vue",
+		"resources_js_Pages_Branch_BranchIndex_vue"
+	],
+	"./Branch/BranchIndex.vue": [
+		"./resources/js/Pages/Branch/BranchIndex.vue",
+		"resources_js_Pages_Branch_BranchIndex_vue"
+	],
+	"./CashMovements/CashIndex": [
+		"./resources/js/Pages/CashMovements/CashIndex.vue",
+		"resources_js_Pages_CashMovements_CashIndex_vue"
+	],
+	"./CashMovements/CashIndex.vue": [
+		"./resources/js/Pages/CashMovements/CashIndex.vue",
+		"resources_js_Pages_CashMovements_CashIndex_vue"
+	],
+	"./Category/CategoryIndex": [
+		"./resources/js/Pages/Category/CategoryIndex.vue",
+		"resources_js_Pages_Category_CategoryIndex_vue"
+	],
+	"./Category/CategoryIndex.vue": [
+		"./resources/js/Pages/Category/CategoryIndex.vue",
+		"resources_js_Pages_Category_CategoryIndex_vue"
+	],
+	"./Client/ClientIndex": [
+		"./resources/js/Pages/Client/ClientIndex.vue",
+		"resources_js_Pages_Client_ClientIndex_vue"
+	],
+	"./Client/ClientIndex.vue": [
+		"./resources/js/Pages/Client/ClientIndex.vue",
+		"resources_js_Pages_Client_ClientIndex_vue"
+	],
+	"./Company/CompanyIndex": [
+		"./resources/js/Pages/Company/CompanyIndex.vue",
+		"resources_js_Pages_Company_CompanyIndex_vue"
+	],
+	"./Company/CompanyIndex.vue": [
+		"./resources/js/Pages/Company/CompanyIndex.vue",
+		"resources_js_Pages_Company_CompanyIndex_vue"
+	],
 	"./Dashboard/DashboardIndex": [
 		"./resources/js/Pages/Dashboard/DashboardIndex.vue",
 		"resources_js_Pages_Dashboard_DashboardIndex_vue"
@@ -1005,6 +1045,54 @@ var map = {
 		"./resources/js/Pages/Home.vue",
 		"resources_js_Pages_Home_vue"
 	],
+	"./PaymentMethods/PaymentMethodsIndex": [
+		"./resources/js/Pages/PaymentMethods/PaymentMethodsIndex.vue",
+		"resources_js_Pages_PaymentMethods_PaymentMethodsIndex_vue"
+	],
+	"./PaymentMethods/PaymentMethodsIndex.vue": [
+		"./resources/js/Pages/PaymentMethods/PaymentMethodsIndex.vue",
+		"resources_js_Pages_PaymentMethods_PaymentMethodsIndex_vue"
+	],
+	"./PointOfSale/PointOfSaleIndex": [
+		"./resources/js/Pages/PointOfSale/PointOfSaleIndex.vue",
+		"resources_js_Pages_PointOfSale_PointOfSaleIndex_vue"
+	],
+	"./PointOfSale/PointOfSaleIndex.vue": [
+		"./resources/js/Pages/PointOfSale/PointOfSaleIndex.vue",
+		"resources_js_Pages_PointOfSale_PointOfSaleIndex_vue"
+	],
+	"./Product/ProductIndex": [
+		"./resources/js/Pages/Product/ProductIndex.vue",
+		"resources_js_Pages_Product_ProductIndex_vue"
+	],
+	"./Product/ProductIndex.vue": [
+		"./resources/js/Pages/Product/ProductIndex.vue",
+		"resources_js_Pages_Product_ProductIndex_vue"
+	],
+	"./Purchase/PurchaseIndex": [
+		"./resources/js/Pages/Purchase/PurchaseIndex.vue",
+		"resources_js_Pages_Purchase_PurchaseIndex_vue"
+	],
+	"./Purchase/PurchaseIndex.vue": [
+		"./resources/js/Pages/Purchase/PurchaseIndex.vue",
+		"resources_js_Pages_Purchase_PurchaseIndex_vue"
+	],
+	"./Storage/StorageIndex": [
+		"./resources/js/Pages/Storage/StorageIndex.vue",
+		"resources_js_Pages_Storage_StorageIndex_vue"
+	],
+	"./Storage/StorageIndex.vue": [
+		"./resources/js/Pages/Storage/StorageIndex.vue",
+		"resources_js_Pages_Storage_StorageIndex_vue"
+	],
+	"./Supplier/SupplierIndex": [
+		"./resources/js/Pages/Supplier/SupplierIndex.vue",
+		"resources_js_Pages_Supplier_SupplierIndex_vue"
+	],
+	"./Supplier/SupplierIndex.vue": [
+		"./resources/js/Pages/Supplier/SupplierIndex.vue",
+		"resources_js_Pages_Supplier_SupplierIndex_vue"
+	],
 	"./Template/Header": [
 		"./resources/js/Pages/Template/Header.vue",
 		"resources_js_Pages_Template_Header_vue"
@@ -1020,6 +1108,14 @@ var map = {
 	"./Template/SlideBar.vue": [
 		"./resources/js/Pages/Template/SlideBar.vue",
 		"resources_js_Pages_Template_SlideBar_vue"
+	],
+	"./User/UserIndex": [
+		"./resources/js/Pages/User/UserIndex.vue",
+		"resources_js_Pages_User_UserIndex_vue"
+	],
+	"./User/UserIndex.vue": [
+		"./resources/js/Pages/User/UserIndex.vue",
+		"resources_js_Pages_User_UserIndex_vue"
 	]
 };
 function webpackAsyncContext(req) {
