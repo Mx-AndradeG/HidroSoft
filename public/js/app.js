@@ -989,6 +989,14 @@ var map = {
 		"./resources/js/Pages/Auth/Register.vue",
 		"resources_js_Pages_Auth_Register_vue"
 	],
+	"./Categories/CategoriesIndex": [
+		"./resources/js/Pages/Categories/CategoriesIndex.vue",
+		"resources_js_Pages_Categories_CategoriesIndex_vue"
+	],
+	"./Categories/CategoriesIndex.vue": [
+		"./resources/js/Pages/Categories/CategoriesIndex.vue",
+		"resources_js_Pages_Categories_CategoriesIndex_vue"
+	],
 	"./Dashboard/DashboardIndex": [
 		"./resources/js/Pages/Dashboard/DashboardIndex.vue",
 		"resources_js_Pages_Dashboard_DashboardIndex_vue"
