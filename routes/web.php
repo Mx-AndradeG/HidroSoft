@@ -13,8 +13,11 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 require __DIR__ . '/web/without_auth/auth.php';
 
+Route::redirect('/', '/login')->name('website.index');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     require __DIR__ . '/web/dashboard/dashboard.php';
