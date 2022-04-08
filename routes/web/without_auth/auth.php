@@ -15,7 +15,6 @@ use Inertia\Inertia;
 */
 
 
-Route::redirect('/', '/login')->name('website.index');
 Route::get('/', function () {
     return Inertia::render('Home', [ 'title' => 'Homepage',]);
 })->name('homepage');
