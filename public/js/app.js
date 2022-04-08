@@ -989,45 +989,13 @@ var map = {
 		"./resources/js/Pages/Auth/Register.vue",
 		"resources_js_Pages_Auth_Register_vue"
 	],
-	"./Branch/BranchIndex": [
-		"./resources/js/Pages/Branch/BranchIndex.vue",
-		"resources_js_Pages_Branch_BranchIndex_vue"
+	"./Categories/CategoriesIndex": [
+		"./resources/js/Pages/Categories/CategoriesIndex.vue",
+		"resources_js_Pages_Categories_CategoriesIndex_vue"
 	],
-	"./Branch/BranchIndex.vue": [
-		"./resources/js/Pages/Branch/BranchIndex.vue",
-		"resources_js_Pages_Branch_BranchIndex_vue"
-	],
-	"./CashMovements/CashIndex": [
-		"./resources/js/Pages/CashMovements/CashIndex.vue",
-		"resources_js_Pages_CashMovements_CashIndex_vue"
-	],
-	"./CashMovements/CashIndex.vue": [
-		"./resources/js/Pages/CashMovements/CashIndex.vue",
-		"resources_js_Pages_CashMovements_CashIndex_vue"
-	],
-	"./Category/CategoryIndex": [
-		"./resources/js/Pages/Category/CategoryIndex.vue",
-		"resources_js_Pages_Category_CategoryIndex_vue"
-	],
-	"./Category/CategoryIndex.vue": [
-		"./resources/js/Pages/Category/CategoryIndex.vue",
-		"resources_js_Pages_Category_CategoryIndex_vue"
-	],
-	"./Client/ClientIndex": [
-		"./resources/js/Pages/Client/ClientIndex.vue",
-		"resources_js_Pages_Client_ClientIndex_vue"
-	],
-	"./Client/ClientIndex.vue": [
-		"./resources/js/Pages/Client/ClientIndex.vue",
-		"resources_js_Pages_Client_ClientIndex_vue"
-	],
-	"./Company/CompanyIndex": [
-		"./resources/js/Pages/Company/CompanyIndex.vue",
-		"resources_js_Pages_Company_CompanyIndex_vue"
-	],
-	"./Company/CompanyIndex.vue": [
-		"./resources/js/Pages/Company/CompanyIndex.vue",
-		"resources_js_Pages_Company_CompanyIndex_vue"
+	"./Categories/CategoriesIndex.vue": [
+		"./resources/js/Pages/Categories/CategoriesIndex.vue",
+		"resources_js_Pages_Categories_CategoriesIndex_vue"
 	],
 	"./Dashboard/DashboardIndex": [
 		"./resources/js/Pages/Dashboard/DashboardIndex.vue",
