@@ -1013,6 +1013,54 @@ var map = {
 		"./resources/js/Pages/Home.vue",
 		"resources_js_Pages_Home_vue"
 	],
+	"./PaymentMethods/PaymentMethodsIndex": [
+		"./resources/js/Pages/PaymentMethods/PaymentMethodsIndex.vue",
+		"resources_js_Pages_PaymentMethods_PaymentMethodsIndex_vue"
+	],
+	"./PaymentMethods/PaymentMethodsIndex.vue": [
+		"./resources/js/Pages/PaymentMethods/PaymentMethodsIndex.vue",
+		"resources_js_Pages_PaymentMethods_PaymentMethodsIndex_vue"
+	],
+	"./PointOfSale/PointOfSaleIndex": [
+		"./resources/js/Pages/PointOfSale/PointOfSaleIndex.vue",
+		"resources_js_Pages_PointOfSale_PointOfSaleIndex_vue"
+	],
+	"./PointOfSale/PointOfSaleIndex.vue": [
+		"./resources/js/Pages/PointOfSale/PointOfSaleIndex.vue",
+		"resources_js_Pages_PointOfSale_PointOfSaleIndex_vue"
+	],
+	"./Product/ProductIndex": [
+		"./resources/js/Pages/Product/ProductIndex.vue",
+		"resources_js_Pages_Product_ProductIndex_vue"
+	],
+	"./Product/ProductIndex.vue": [
+		"./resources/js/Pages/Product/ProductIndex.vue",
+		"resources_js_Pages_Product_ProductIndex_vue"
+	],
+	"./Purchase/PurchaseIndex": [
+		"./resources/js/Pages/Purchase/PurchaseIndex.vue",
+		"resources_js_Pages_Purchase_PurchaseIndex_vue"
+	],
+	"./Purchase/PurchaseIndex.vue": [
+		"./resources/js/Pages/Purchase/PurchaseIndex.vue",
+		"resources_js_Pages_Purchase_PurchaseIndex_vue"
+	],
+	"./Storage/StorageIndex": [
+		"./resources/js/Pages/Storage/StorageIndex.vue",
+		"resources_js_Pages_Storage_StorageIndex_vue"
+	],
+	"./Storage/StorageIndex.vue": [
+		"./resources/js/Pages/Storage/StorageIndex.vue",
+		"resources_js_Pages_Storage_StorageIndex_vue"
+	],
+	"./Supplier/SupplierIndex": [
+		"./resources/js/Pages/Supplier/SupplierIndex.vue",
+		"resources_js_Pages_Supplier_SupplierIndex_vue"
+	],
+	"./Supplier/SupplierIndex.vue": [
+		"./resources/js/Pages/Supplier/SupplierIndex.vue",
+		"resources_js_Pages_Supplier_SupplierIndex_vue"
+	],
 	"./Template/Header": [
 		"./resources/js/Pages/Template/Header.vue",
 		"resources_js_Pages_Template_Header_vue"
@@ -1028,6 +1076,14 @@ var map = {
 	"./Template/SlideBar.vue": [
 		"./resources/js/Pages/Template/SlideBar.vue",
 		"resources_js_Pages_Template_SlideBar_vue"
+	],
+	"./User/UserIndex": [
+		"./resources/js/Pages/User/UserIndex.vue",
+		"resources_js_Pages_User_UserIndex_vue"
+	],
+	"./User/UserIndex.vue": [
+		"./resources/js/Pages/User/UserIndex.vue",
+		"resources_js_Pages_User_UserIndex_vue"
 	]
 };
 function webpackAsyncContext(req) {

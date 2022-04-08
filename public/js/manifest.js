@@ -107,7 +107,7 @@
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_Pages_Auth_Login_vue":1,"resources_js_Pages_Auth_Register_vue":1,"resources_js_Pages_Categories_CategoriesIndex_vue":1,"resources_js_Pages_Dashboard_DashboardIndex_vue":1,"resources_js_Pages_Home_vue":1,"resources_js_Pages_Template_Header_vue":1,"resources_js_Pages_Template_SlideBar_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_Pages_Auth_Login_vue":1,"resources_js_Pages_Auth_Register_vue":1,"resources_js_Pages_Branch_BranchIndex_vue":1,"resources_js_Pages_CashMovements_CashIndex_vue":1,"resources_js_Pages_Category_CategoryIndex_vue":1,"resources_js_Pages_Client_ClientIndex_vue":1,"resources_js_Pages_Company_CompanyIndex_vue":1,"resources_js_Pages_Dashboard_DashboardIndex_vue":1,"resources_js_Pages_Home_vue":1,"resources_js_Pages_PaymentMethods_PaymentMethodsIndex_vue":1,"resources_js_Pages_PointOfSale_PointOfSaleIndex_vue":1,"resources_js_Pages_Product_ProductIndex_vue":1,"resources_js_Pages_Purchase_PurchaseIndex_vue":1,"resources_js_Pages_Storage_StorageIndex_vue":1,"resources_js_Pages_Supplier_SupplierIndex_vue":1,"resources_js_Pages_Template_Header_vue":1,"resources_js_Pages_Template_SlideBar_vue":1,"resources_js_Pages_User_UserIndex_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
