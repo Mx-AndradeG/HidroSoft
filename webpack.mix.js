@@ -13,6 +13,7 @@ const path = require("path");
  */
 
  mix.js("resources/js/app.js", "public/js")
+ .js("resources/js/main.js", "public/js")
  .vue({ version: 3 })
  .webpackConfig({
      resolve: {
