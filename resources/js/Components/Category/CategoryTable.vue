@@ -16,16 +16,16 @@
                     :sortable="tableOptions.sortable"
                     :total="tableOptions.total"
                     :messages="tableOptions.messages"
-                    :is-slot-mode="true"> 
+                    :is-slot-mode="true"
+                    @do-search="getData"> 
 
-        <template v-slot:actions>
-            <div class="row">
-                <div class="col-4"><a><i class="ri-eye-fill fs-3"  style="color: forestgreen;"></i></a></div>
-                <div class="col-4"><a> <i class="ri-edit-box-fill fs-3" style="color: #0748db;"></i> </a></div>
-                <div class="col-4"><a> <i class="ri-chat-delete-fill fs-3" style="color: crimson;"></i></a></div>
-            </div>
-
-        </template>
+                    <template v-slot:actions>
+                        <div class="row">
+                            <div class="col-4"><a><i class="ri-eye-fill fs-3"  style="color: forestgreen;"></i></a></div>
+                            <div class="col-4"><a> <i class="ri-edit-box-fill fs-3" style="color: #0748db;"></i> </a></div>
+                            <div class="col-4"><a> <i class="ri-chat-delete-fill fs-3" style="color: crimson;"></i></a></div>
+                        </div>
+                    </template>
         </TableLite>
     </div>
 </template>
@@ -45,10 +45,9 @@ const tableOptions = reactive({
         total: 0
 });
 
-const valueFilter = reactive('');
-
-const getData = () => {
- axios.get(route("categories.index", {columns: JSON.stringify(['id','name','description','Formatted_created_at'])})).then((response) => {
+const getData = (_offset, _limit, _orderBy, _ascending) => {
+_ascending = _ascending === "desc" ? '1' : '2';
+axios.get(route("categories.index", {columns: JSON.stringify(['id','name','description','Formatted_created_at']), limit:_limit, page:_offset+1, orderBy:_orderBy, ascending:_ascending})).then((response) => {
             tableOptions.rows = response.data.data;
             tableOptions.total = response.data.count;
             tableOptions.isLoading = false;
@@ -56,7 +55,7 @@ const getData = () => {
 }
 
 onMounted(() => {
-   getData();
+   getData(0, 10, 'id', 'desc');
 });
 
 </script>
