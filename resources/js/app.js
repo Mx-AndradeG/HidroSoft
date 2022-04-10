@@ -6,11 +6,13 @@ import { InertiaProgress } from "@inertiajs/progress";
 import { ZiggyVue } from "ziggy";
 import { Ziggy } from "./ziggy";
 import alvue from '@myshell/alvue';
+import VueFinalModal from 'vue-final-modal'
 import TableLite from 'vue3-table-lite';
 import Toast from "vue-toastification";
 
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+
 
 InertiaProgress.init();
 
@@ -27,6 +29,7 @@ createInertiaApp({
             maxToasts: 20,
             newestOnTop: true
           });
+        inertiaApp.use(VueFinalModal());
         inertiaApp.component('TableLite', TableLite);
         inertiaApp.mixin({ methods: { route } });
         return inertiaApp.mount(el);
