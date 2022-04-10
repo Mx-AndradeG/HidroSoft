@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-6 d-flex justify-content-end">
                      <button type="button" class="btn btn-outline-primary" style="margin-right: 1rem;">Exportar</button>
-                     <button type="button" class="btn btn-primary">Agregar</button>
+                     <button  @click="$vfm.show('category_modal')" type="button" class="btn btn-primary">Agregar</button>
                 </div>
             </div>
         </div>
@@ -19,14 +19,21 @@
                     :is-slot-mode="true"
                     @do-search="getData"> 
 
-                    <template v-slot:actions>
+                    <template v-slot:actions="data">
                         <div class="row">
-                            <div class="col-4"><a><i class="ri-eye-fill fs-3"  style="color: forestgreen;"></i></a></div>
-                            <div class="col-4"><a> <i class="ri-edit-box-fill fs-3" style="color: #0748db;"></i> </a></div>
-                            <div class="col-4"><a> <i class="ri-chat-delete-fill fs-3" style="color: crimson;"></i></a></div>
+                            <div class="col-4"><a type="click" @click="$vfm.show('category_modal', {id:data.value.id, show:true})">
+                                <i data-toggle="tooltip" data-placement="bottom" title="Ver registro" class="ri-eye-fill fs-3"  style="color: forestgreen;"></i>
+                            </a></div>
+                            <div class="col-4"><a type="click" @click="$vfm.show('category_modal', {id:data.value.id})">
+                                <i data-toggle="tooltip" data-placement="bottom" title="Editar registro" class="ri-edit-box-fill fs-3" style="color: #0748db;"></i> 
+                            </a></div>
+                            <div class="col-4"><a @click="deleteItem(data.value.id)"> 
+                                <i data-toggle="tooltip" data-placement="bottom" title="Eliminar registro" class="ri-chat-delete-fill fs-3" style="color: crimson;"></i>
+                            </a></div>
                         </div>
                     </template>
         </TableLite>
+        <category-modal @done="fin"></category-modal>
     </div>
 </template>
 
@@ -34,7 +41,12 @@
 
 <script setup>
 import CategoryTableColumns  from "./CategoryTableColumns"
+import CategoryModal  from "./CategoryModal"
 import { onMounted, reactive } from "vue";
+import Swal from 'sweetalert2'
+import { useToast } from "vue-toastification";
+
+const toast = useToast()
 
 const tableOptions = reactive({
         columns: CategoryTableColumns.columns,
@@ -45,7 +57,25 @@ const tableOptions = reactive({
         total: 0
 });
 
+const fin = () =>{
+   getData(0, 10, 'id', 'desc');
+    toast.success("Accion realizada correctamente",{
+    position: "top-center",
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: true,
+    closeButton: "button",
+    icon: true,
+    rtl: false
+});
+}
+
 const getData = (_offset, _limit, _orderBy, _ascending) => {
+tableOptions.isLoading = true;
 _ascending = _ascending === "desc" ? '1' : '2';
 axios.get(route("categories.index", {columns: JSON.stringify(['id','name','description','Formatted_created_at']), limit:_limit, page:_offset+1, orderBy:_orderBy, ascending:_ascending})).then((response) => {
             tableOptions.rows = response.data.data;
@@ -54,6 +84,38 @@ axios.get(route("categories.index", {columns: JSON.stringify(['id','name','descr
     });
 }
 
+const deleteItem = (_id) =>{
+        Swal.fire({
+            title: 'Eliminar registro',
+            text: "¿Esta seguro que quiere eliminar el registro?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'No, dejalo',
+            confirmButtonText: 'Si, borralo!'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            axios.delete(route("categories.destroy",_id)).then((response) => {
+                getData(0, 10, 'id', 'desc');
+            toast.success("Elemento borrado exitosamente",{
+                position: "top-center",
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false
+            });
+            });
+        }})
+}
+
+  
 onMounted(() => {
    getData(0, 10, 'id', 'desc');
 });
