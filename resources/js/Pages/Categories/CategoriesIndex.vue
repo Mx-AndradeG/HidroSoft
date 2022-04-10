@@ -1,7 +1,7 @@
 <template>
     <div>
         <admin-layout>
-                  <div class="pagetitle">
+        <div class="pagetitle">
           <h1>Categorias</h1>
           <nav>
             <ol class="breadcrumb">

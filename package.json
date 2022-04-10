@@ -23,6 +23,8 @@
         "@inertiajs/progress": "^0.2.7",
         "@myshell/alvue": "^1.2.4",
         "vue": "^3.2.31",
+        "vue-sweetalert2": "^5.0.2",
+        "vue-toastification": "^2.0.0-rc.5",
         "vue3-table-lite": "^1.1.9"
     }
 }
