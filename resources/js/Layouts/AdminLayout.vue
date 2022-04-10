@@ -1,22 +1,47 @@
 <template>
-<body class="g-sidenav-show   bg-gray-100">
-  <div class="min-height-300 bg-primary position-absolute w-100"></div>
-  <slide-bar></slide-bar>
-  <main class="main-content position-relative border-radius-lg ">
-    <!-- Navbar -->
-   <navbar></navbar>
-    <!-- End Navbar -->
-    <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-           <slot></slot>
+<body class="">
+    <navbar></navbar>
+    <slide-bar></slide-bar>
+    <main id="main" class="main">
+        <div class="pagetitle">
+          <h1>Blank Page</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item">Pages</li>
+              <li class="breadcrumb-item active">Blank</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-6">
+
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Example Card</h5>
+                <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6">
+
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Example Card</h5>
+                <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+              </div>
+            </div>
+
           </div>
         </div>
-      </div>
-    </div>
-  </main>
-  </body>
+      </section>
+
+    </main><!-- End #main -->
+</body>
 </template>
 
 <script>

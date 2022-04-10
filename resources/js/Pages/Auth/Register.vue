@@ -1,52 +1,81 @@
 <template>
 <body class="">
-  <main class="main-content  mt-0">
-    <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg'); background-position: top;">
-      <span class="mask bg-gradient-dark opacity-6"></span>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mb-2 mt-5">Bienvenido!</h1>
-            <p class="text-lead text-white">Use these awesome forms to login or create new account in your project for free.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <main>
     <div class="container">
-      <div class="row mt-lg-n10 mt-md-n11 mt-n10 justify-content-center">
-        <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
-          <div class="card z-index-0">
-            <div class="card-header text-center pt-4">
-              <h5>Registrate</h5>
-            </div>
-            <div class="card-body">
-             <form @submit.prevent="submit">
-                <div class="mb-3">
-                  <input type="text" class="form-control" placeholder="Nombre" v-model="item.name" aria-label="Nombre">
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <img src="assets/img/logo.png" alt="">
+                  <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Crear cuenta</h5>
+                    <p class="text-center small">Porfavor ingresa los siguientes datos</p>
+                  </div>
+
+                  <form @submit.prevent="submit" class="row g-3 needs-validation" novalidate>
+                    <div class="col-12">
+                      <label for="yourName" class="form-label">Nombre</label>
+                      <input v-model="item.name" type="text" name="name" class="form-control" id="yourName" required>
+                      <div class="invalid-feedback">Porfavor ingresa tu nombre.</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourEmail" class="form-label">Correo</label>
+                      <input v-model="item.email" type="email" name="email" class="form-control" id="yourEmail" required>
+                      <div class="invalid-feedback">Porfavor ingresa tu correo!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label">Contraseña</label>
+                      <input v-model="item.password" type="password" name="password" class="form-control" id="yourPassword" required>
+                      <div class="invalid-feedback">Porfavor ingresa tu contraseña!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                        <label class="form-check-label" for="acceptTerms">Estoy de acuerdo con los <a href="#">terminos y condiciones</a></label>
+                        <div class="invalid-feedback">Debes de estar de acuerdo antes de registrarte.</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit">Crear cuenta</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">Ya tienes una cuenta  <a :href="route('login')">Log in</a></p>
+                    </div>
+                  </form>
+
                 </div>
-                <div class="mb-3">
-                  <input type="email" class="form-control" placeholder="Email" v-model="item.email" aria-label="Email">
-                </div>
-                <div class="mb-3">
-                  <input type="password" class="form-control" placeholder="Contraseña" v-model="item.password" aria-label="Contraseña">
-                </div>
-                <div class="form-check form-check-info text-start">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="terms" >
-                  <label class="form-check-label" for="flexCheckDefault">
-                    I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
-                  </label>
-                </div>
-                <div class="text-center">
-                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2"  >Sign up</button>
-                </div>
-                <p class="text-sm mt-3 mb-0">Already have an account? <a :href="route('login')" class="text-dark font-weight-bolder">Sign in</a></p>
-              </form>
+              </div>
+
+              <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+              </div>
+
             </div>
           </div>
         </div>
-      </div>
+
+      </section>
+
     </div>
-  </main>
+  </main><!-- End #main -->
 </body>
 </template>
 

@@ -1,54 +1,78 @@
 <template>
 <body class="">
-  <main class="main-content  mt-0">
-    <section>
-      <div class="page-header min-vh-100">
+  <main>
+    <div class="container">
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
-          <div class="row">
-            <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-              <div class="card card-plain">
-                <div class="card-header pb-0 text-start">
-                  <h4 class="font-weight-bolder">Iniciar Sesion</h4>
-                  <p class="mb-0">Ingresa tu email y contraseña para iniciar sesion</p>
-                </div>
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a class="logo d-flex align-items-center w-auto">
+                  <img src="assets/img/logo.png" alt="">
+                  <span class="d-none d-lg-block">HidroSoft</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
                 <div class="card-body">
-                  <form @submit.prevent="submit">
-                    <div class="mb-3">
-                      <input  type="email" name="email" v-model="item.email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Inicia sesion con tu cuenta</h5>
+                    <p class="text-center small">Ingresa tu correo & contraseña para iniciar Sesion</p>
+                  </div>
+
+                  <form  @submit.prevent="submit" class="row g-3 needs-validation" novalidate>
+
+                    <div class="col-12">
+                      <label for="email" class="form-label">Correo</label>
+                      <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input v-model="item.email" type="text" name="email" class="form-control" id="email" required>
+                        <div class="invalid-feedback">Porfavor ingresa tu correo.</div>
+                      </div>
                     </div>
-                    <div class="mb-3">
-                      <input type="password" name="password" v-model="item.password" class="form-control form-control-lg" placeholder="Contraseña" aria-label="Password">
+
+                    <div class="col-12">
+                      <label for="password" class="form-label">Contraseña</label>
+                      <input v-model="item.password" type="password" name="password" class="form-control" id="password" required>
+                      <div class="invalid-feedback">Porfavor ingresa tu contraseña!</div>
                     </div>
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="rememberMe">
-                      <label class="form-check-label" for="rememberMe">Remember me</label>
+
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Recordarme</label>
+                      </div>
                     </div>
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Iniciar sesion</button>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit">Iniciar sesion</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">Registrate aqui <a :href="route('register')">Crear una cuenta nueva.</a></p>
                     </div>
                   </form>
-                </div>
-                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                  <p class="mb-4 text-sm mx-auto">
-                    No tienes cuenta?
-                    <a :href="route('register')" class="text-primary text-gradient font-weight-bold">Registrate</a>
-                  </p>
+
                 </div>
               </div>
-            </div>
-            <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
-                background-size: cover;">
-                <span class="mask bg-gradient-primary opacity-6"></span>
-                <h4 class="mt-5 text-white font-weight-bolder position-relative">"La atención nos define"</h4>
-                <p class="text-white position-relative">En HidroSoft nos precupa ayudarte en tu camino hacia el exito.</p>
+
+              <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
               </div>
+
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
+
+      </section>
+
+    </div>
+  </main><!-- End #main -->
 </body>
 </template>
 
