@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-6 d-flex justify-content-end">
                      <button type="button" class="btn btn-outline-primary" style="margin-right: 1rem;">Exportar</button>
-                     <button type="button" class="btn btn-primary">Agregar</button>
+                     <button  @click="$vfm.show('category_modal')" type="button" class="btn btn-primary">Agregar</button>
                 </div>
             </div>
         </div>
@@ -21,10 +21,10 @@
 
                     <template v-slot:actions="data">
                         <div class="row">
-                            <div class="col-4"><a>
+                            <div class="col-4"><a type="click" @click="$vfm.show('category_modal', {id:data.value.id, show:true})">
                                 <i data-toggle="tooltip" data-placement="bottom" title="Ver registro" class="ri-eye-fill fs-3"  style="color: forestgreen;"></i>
                             </a></div>
-                            <div class="col-4"><a> 
+                            <div class="col-4"><a type="click" @click="$vfm.show('category_modal', {id:data.value.id})">
                                 <i data-toggle="tooltip" data-placement="bottom" title="Editar registro" class="ri-edit-box-fill fs-3" style="color: #0748db;"></i> 
                             </a></div>
                             <div class="col-4"><a @click="deleteItem(data.value.id)"> 
@@ -33,6 +33,7 @@
                         </div>
                     </template>
         </TableLite>
+        <category-modal @done="fin"></category-modal>
     </div>
 </template>
 
@@ -40,6 +41,7 @@
 
 <script setup>
 import CategoryTableColumns  from "./CategoryTableColumns"
+import CategoryModal  from "./CategoryModal"
 import { onMounted, reactive } from "vue";
 import Swal from 'sweetalert2'
 import { useToast } from "vue-toastification";
@@ -54,6 +56,23 @@ const tableOptions = reactive({
         rows: [],
         total: 0
 });
+
+const fin = () =>{
+   getData(0, 10, 'id', 'desc');
+    toast.success("Accion realizada correctamente",{
+    position: "top-center",
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: true,
+    closeButton: "button",
+    icon: true,
+    rtl: false
+});
+}
 
 const getData = (_offset, _limit, _orderBy, _ascending) => {
 tableOptions.isLoading = true;
