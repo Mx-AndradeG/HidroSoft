@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.25",
+        "axios": "^0.25.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
@@ -22,6 +22,7 @@
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.2.7",
         "@myshell/alvue": "^1.2.4",
-        "vue": "^3.2.31"
+        "vue": "^3.2.31",
+        "vue3-table-lite": "^1.1.9"
     }
 }

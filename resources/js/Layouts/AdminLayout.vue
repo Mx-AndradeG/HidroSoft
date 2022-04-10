@@ -42,6 +42,7 @@
                 </div>
             </div>
         </section>
+      <slot></slot>
     </main><!-- End #main -->
     <example-modal></example-modal>
     </body>

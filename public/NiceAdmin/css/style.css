@@ -1075,3 +1075,35 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 13px;
   color: #012970;
 }
+
+/*--------------------------------------------------------------
+# Tables components styles
+--------------------------------------------------------------*/
+
+.btn-primary {
+  color: #fff;
+  background-color: #012970;
+  border-color: #d6dde8;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #0e4097;
+  border-color: #657da8;
+}
+
+.btn-outline-primary {
+  color: #0e4097;
+  border-color: #657da8;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #012970;
+  border-color: #d6dde8;
+}
+
+.vtl-thead-th{
+  color: #fff !important;
+  background-color: #012970 !important;
+}
