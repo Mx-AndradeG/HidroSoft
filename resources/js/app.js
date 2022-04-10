@@ -6,7 +6,7 @@ import { InertiaProgress } from "@inertiajs/progress";
 import { ZiggyVue } from "ziggy";
 import { Ziggy } from "./ziggy";
 import alvue from '@myshell/alvue';
-
+import TableLite from 'vue3-table-lite';
 
 InertiaProgress.init();
 
@@ -18,6 +18,7 @@ createInertiaApp({
         const inertiaApp = createApp({render: () => h(App, props)});
         inertiaApp.use(plugin);
         inertiaApp.use(alvue);
+        inertiaApp.component('TableLite', TableLite);
         inertiaApp.mixin({ methods: { route } });
         return inertiaApp.mount(el);
     },

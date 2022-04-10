@@ -22,7 +22,7 @@ class CategoriesController extends Controller
         $page = request()->get("page", false);
         $limit = request()->get("limit", false);
         $orderBy = request()->get("orderBy", 'id');
-        $ascending = request()->get("ascending", 1);
+        $ascending = request()->get("ascending", "1");
         $filters = json_decode(request()->get("filters", "{}"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
 
@@ -66,7 +66,7 @@ class CategoriesController extends Controller
         $count = $data->count();
 
         if ($limit && $page) {
-            $data = $data->slice(($page - 1) * $limit)->take($limit)->values();
+            $data = $data->skip($page-1)->take($limit)->values();
         }
 
         $data = $data->map(function ($_data) use ($columns) {
