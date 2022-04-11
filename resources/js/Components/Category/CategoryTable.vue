@@ -11,24 +11,24 @@
                 </div>
             </div>
         </div>
-        <TableLite :is-loading="tableOptions.isLoading" :columns="tableOptions.columns" 
-                    :rows="tableOptions.rows" 
+        <TableLite :is-loading="tableOptions.isLoading" :columns="tableOptions.columns"
+                    :rows="tableOptions.rows"
                     :sortable="tableOptions.sortable"
                     :total="tableOptions.total"
                     :messages="tableOptions.messages"
                     :is-slot-mode="true"
-                    @do-search="getData"> 
+                    @do-search="getData">
 
                     <template v-slot:actions="data">
                         <div class="row">
                             <div class="col-4"><a type="click" @click="$vfm.show('category_modal', {id:data.value.id, show:true})">
-                                <i data-toggle="tooltip" data-placement="bottom" title="Ver registro" class="ri-eye-fill fs-3"  style="color: forestgreen;"></i>
+                                <i data-toggle="tooltip" data-placement="bottom" title="Ver registro" class="ri-eye-fill fs-3"  style="color: forestgreen; cursor:pointer;"></i>
                             </a></div>
                             <div class="col-4"><a type="click" @click="$vfm.show('category_modal', {id:data.value.id})">
-                                <i data-toggle="tooltip" data-placement="bottom" title="Editar registro" class="ri-edit-box-fill fs-3" style="color: #0748db;"></i> 
+                                <i data-toggle="tooltip" data-placement="bottom" title="Editar registro" class="ri-edit-box-fill fs-3" style="color: #0748db; cursor:pointer;"></i>
                             </a></div>
-                            <div class="col-4"><a @click="deleteItem(data.value.id)"> 
-                                <i data-toggle="tooltip" data-placement="bottom" title="Eliminar registro" class="ri-chat-delete-fill fs-3" style="color: crimson;"></i>
+                            <div class="col-4"><a @click="deleteItem(data.value.id)">
+                                <i data-toggle="tooltip" data-placement="bottom" title="Eliminar registro" class="ri-chat-delete-fill fs-3" style="color: crimson; cursor:pointer;"></i>
                             </a></div>
                         </div>
                     </template>
@@ -115,7 +115,7 @@ const deleteItem = (_id) =>{
         }})
 }
 
-  
+
 onMounted(() => {
    getData(0, 10, 'id', 'desc');
 });
