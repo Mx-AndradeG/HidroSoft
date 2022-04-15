@@ -28,7 +28,7 @@ class CustomerController extends Controller
 
         array_push($columns, 'id');
 
-        $query = Customer::query();
+        $query = Customer::query()->where('company_id', auth()->user()->company_id);
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -66,7 +66,7 @@ class CustomerController extends Controller
         $count = $data->count();
 
         if ($limit && $page) {
-            $data = $data->skip($page-1)->take($limit)->values();
+            $data = $data->skip($page - 1)->take($limit)->values();
         }
 
         $data = $data->map(function ($_data) use ($columns) {
