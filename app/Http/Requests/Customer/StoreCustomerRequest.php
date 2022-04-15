@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Customer;
 
+use App\Rules\ValidateRfcRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCustomerRequest extends FormRequest
@@ -24,12 +25,12 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'required|string|min:3|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
+            'name'          => 'required|string|min:3|max:255|regex:/(^[a-zA-ZÑñ\s]+$)/',
             'address'          => 'required|string|min:3|max:255',
-            'phone'          => 'required|regex:/^[-0-9\+]+$/',
-            'rfc'          => 'required|regex:/^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})',
+            'phone'          => 'required|regex:/(^[-0-9\+]+$)/',
+            'rfc'          => ['required', new ValidateRfcRule()],
             'email'          => 'required|email',
-            'social'          => 'required|string|min:3|max:255',
+            'social'          => 'string|min:3|max:255',
         ];
     }
 }

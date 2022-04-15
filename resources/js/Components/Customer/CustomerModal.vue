@@ -43,26 +43,80 @@
             :data-object="item"
           >
             <div class="col-md-12">
-              <label for="inputName5" class="form-label">Nombre</label>
+              <label for="inputNameC" class="form-label"
+                >Nombre del cliente</label
+              >
               <input
                 :disabled="disable"
                 v-model="item.name"
                 name="name"
                 type="text"
                 class="form-control"
-                id="name"
+                id="nameCustomer"
               />
             </div>
 
             <div class="col-md-12">
-              <label for="inputEmail5" class="form-label">Descripcion</label>
+              <label for="inputAddressC" class="form-label">Dirección</label>
               <input
                 :disabled="disable"
-                v-model="item.description"
-                name="description"
+                v-model="item.address"
+                name="address"
                 type="text"
                 class="form-control"
-                id="description"
+                id="addressCustomer"
+              />
+            </div>
+
+            <div class="col-md-12">
+              <label for="inputPhoneC" class="form-label"
+                >Número de teléfono</label
+              >
+              <input
+                :disabled="disable"
+                v-model="item.phone"
+                name="phone"
+                type="text"
+                class="form-control"
+                id="phoneCustomer"
+              />
+            </div>
+
+            <div class="col-md-12">
+              <label for="inputRFCC" class="form-label">RFC</label>
+              <input
+                :disabled="disable"
+                v-model="item.rfc"
+                name="rfc"
+                type="text"
+                class="form-control"
+                id="rfcCustomer"
+              />
+            </div>
+
+            <div class="col-md-12">
+              <label for="inputEmailC" class="form-label"
+                >Correo Electronico</label
+              >
+              <input
+                :disabled="disable"
+                v-model="item.email"
+                name="email"
+                type="text"
+                class="form-control"
+                id="emailCustomer"
+              />
+            </div>
+
+            <div class="col-md-12">
+              <label for="inputSocialC" class="form-label">Razón Social</label>
+              <input
+                :disabled="disable"
+                v-model="item.social"
+                name="social"
+                type="text"
+                class="form-control"
+                id="socialCustomer"
               />
             </div>
           </alv-form>
@@ -74,14 +128,14 @@
 
       <!-- Section Modal Footer -->
       <div class="row justify-content-end" id="modal-footer">
-        <div class="col-3" v-if="!disable">
+        <div class="col-4" v-if="!disable">
           <button
             form="alv"
             type="submit"
             class="w-100 btn btn-outline-primary d-flex justify-content-center"
           >
             <i class="ri-download-2-line"></i>
-            <span style="margin-left: 3px">Guardar</span>
+            <span style="margin-left: 3px">Guardar datos</span>
           </button>
         </div>
       </div>
@@ -98,7 +152,7 @@ export default {
       modal_button: {
         show: false,
       },
-      alvRoute: route("categories.store"),
+      alvRoute: route("customer.store"),
       alvMethod: "PUT",
       event: [],
       item: {},
@@ -112,25 +166,36 @@ export default {
       this.$emit("done");
     },
     beforeOpen(e) {
-      this.alvRoute = route("categories.store");
+      this.alvRoute = route("customer.store");
       this.alvMethod = "POST";
       this.item = {
         name: "",
-        description: "",
+        address: "",
+        phone: "",
+        rfc: "",
+        email: "",
+        social: "",
       };
       this.disable = false;
 
       if (typeof e.ref.params._rawValue.id != "undefined") {
         axios
-          .get(route("categories.show", e.ref.params._rawValue.id), {
+          .get(route("customer.show", e.ref.params._rawValue.id), {
             params: {
-              columns: JSON.stringify(["name", "description"]),
+              columns: JSON.stringify([
+                "name",
+                "address",
+                "phone",
+                "rfc",
+                "email",
+                "social",
+              ]),
             },
           })
           .then((response) => {
             this.item = response.data;
           });
-        this.alvRoute = route("categories.update", e.ref.params._rawValue.id);
+        this.alvRoute = route("customer.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";
         this.disable = false;
       }
