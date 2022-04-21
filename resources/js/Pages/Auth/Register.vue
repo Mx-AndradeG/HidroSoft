@@ -198,8 +198,7 @@
                   this.validateFields('user.first.step', this.item.user, numberTab)
                   break;
                 case 2:
-                  if(this.validateFields('user.second.step', this.item.company, numberTab))
-                    this.tab = numberTab;
+                  this.validateFields('user.second.step', this.item.company, numberTab)
                   break;
                 default:
                   this.tab = numberTab;
@@ -232,12 +231,10 @@
             });
           },
           submit() {
-            this.item
-                .transform(data => ({
+            this.item.transform(data => ({
                     ...data,
                     remember: this.item.remember ? 'on' : ''
-                }))
-                .post(this.route('register'), {
+                })).post(this.route('register'), {
                     onError: (errors) => {
                         if (Object.values(errors)[0])
                             this.$toast.open({duration: 2000, message: Object.values(errors)[0], type: "error"});
@@ -250,8 +247,8 @@
                         this.item.reset('password');
                     },
                 })
-        }
-        }
+              }
+            }
     }
 </script>
 <style scoped>
