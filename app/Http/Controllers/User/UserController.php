@@ -79,14 +79,13 @@ class UserController extends Controller
         return compact("data", "count");
     }
 
-   public function validateFirstStep(ValidateFirstStepRequest $request){
+    public function validateFirstStep(ValidateFirstStepRequest $request)
+    {
         return true;
-   }
+    }
 
-   public function validateSecondStep(ValidateSecondStepRequest $request){
+    public function validateSecondStep(ValidateSecondStepRequest $request)
+    {
         return true;
-   }
-
-
-   
+    }
 }

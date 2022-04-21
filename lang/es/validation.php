@@ -126,7 +126,7 @@ return [
     'uuid'                  => 'El campo :attribute debe ser un UUID válido.',
 
 
-    
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -164,13 +164,13 @@ return [
         'phone'             => 'teléfono',
         'user_id'           => 'usuario',
         'route_id'          => 'ruta',
-        'start_control_hour'=> 'hora de inicio',
+        'start_control_hour' => 'hora de inicio',
         'user_type_id'      => 'tipo de usuario',
         'location_id'       => 'ubicación',
         'text'              => 'descripción',
         'state_id'          => 'estado',
         'recommendation_type_id' => 'tipo de recomendación',
-        'title'             =>'título',
+        'title'             => 'título',
         'transport_company_id' => 'compañia de transporte',
         'number_plates'   => 'placas',
         'hours'          => 'horarios',

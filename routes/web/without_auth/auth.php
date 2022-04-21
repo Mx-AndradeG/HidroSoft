@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,3 +25,5 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return Inertia::render('Auth/Register', [ 'title' => 'Register',]);
 })->name('register');
+Route::post('user/first-step', [UserController::class, 'validateFirstStep'])->name('user.first.step');
+Route::post('user/second-step', [UserController::class, 'validateSecondStep'])->name('user.second.step');

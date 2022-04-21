@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Company\Company;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description', 255);
+            $table->foreignIdFor(Company::class);
             $table->softDeletes();
             $table->timestamps();
         });
