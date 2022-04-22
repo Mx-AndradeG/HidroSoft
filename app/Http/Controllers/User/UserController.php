@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\StoreCustomerRequest;
 use App\Http\Requests\User\ValidateFirstStepRequest;
 use App\Http\Requests\User\ValidateSecondStepRequest;
 use App\Models\User;

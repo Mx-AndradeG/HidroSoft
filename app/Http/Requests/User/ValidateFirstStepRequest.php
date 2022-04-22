@@ -3,8 +3,6 @@
 namespace App\Http\Requests\User;
 
 use App\Rules\ValidateNameCustomerRule;
-use App\Rules\ValidatePhoneRule;
-use App\Rules\ValidateRfcRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ValidateFirstStepRequest extends FormRequest
