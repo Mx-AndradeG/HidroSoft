@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('name',255);
+            $table->string('name', 255);
             $table->string('email')->unique();
-            $table->string('phone',255);
-            $table->string('fiscal_address',255)->nullable();
-            $table->string('RFC',255)->nullable();
+            $table->string('phone', 255);
+            $table->string('fiscal_address', 255)->nullable();
+            $table->string('RFC', 255)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

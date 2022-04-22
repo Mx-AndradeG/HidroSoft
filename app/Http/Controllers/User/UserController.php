@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Categories;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Categories\StoreCategoryRequest;
-use App\Models\Categories\Category;
+use App\Http\Requests\User\ValidateFirstStepRequest;
+use App\Http\Requests\User\ValidateSecondStepRequest;
+use App\Models\User;
 
-class CategoriesController extends Controller
+class UserController extends Controller
 {
     public function __construct()
     {
@@ -28,7 +29,7 @@ class CategoriesController extends Controller
 
         array_push($columns, 'id');
 
-        $query = Category::query()->where(auth()->user()->company_id);
+        $query = User::query();
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -38,13 +39,13 @@ class CategoriesController extends Controller
                         $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
                         $dates = explode(" a ", $value);
                         if (count($dates) > 1) {
-                            $category = $query->whereBetween($filter, [$dates[0], $dates[1]]);
+                            $customer = $query->whereBetween($filter, [$dates[0], $dates[1]]);
                         } else {
-                            $category = $query->whereDate($filter, $dates[0]);
+                            $customer = $query->whereDate($filter, $dates[0]);
                         }
                         break;
                     default:
-                        $category = $query->where($filter, 'LIKE', '%' . $value . '%');
+                        $customer = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
                 }
             }
@@ -77,57 +78,13 @@ class CategoriesController extends Controller
         return compact("data", "count");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreCategoryRequest $request
-     * @return
-     */
-    public function store(StoreCategoryRequest $request)
+    public function validateFirstStep(ValidateFirstStepRequest $request)
     {
-        $category = new Category();
-        $category->fill($request->all());
-        $category->save();
-        return $category;
+        return true;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Category $category
-     * @return array
-     */
-    public function show(Category $category)
+    public function validateSecondStep(ValidateSecondStepRequest $request)
     {
-        $appends = json_decode(request()->get("appends", "[]"), true);
-        $columns = json_decode(request()->get("columns", "[]"), true);
-        array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at');
-        array_push($appends, 'formatted_created_at', 'formatted_updated_at');
-        return $category->append($appends)->only($columns);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param StoreCategoryRequest $request
-     * @param Category $category
-     * @return Category
-     */
-    public function update(StoreCategoryRequest $request, Category $category)
-    {
-        $category->fill($request->all());
-        $category->save();
-        return $category;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return Category
-     */
-    public function destroy(Category $category)
-    {
-        $category->delete();
-        return $category;
+        return true;
     }
 }

@@ -182,7 +182,7 @@
                    company:{
                      name:'',
                      phone:'',
-                     emial:''
+                     email:''
                    }
                 }),
                 tab:1,
@@ -195,40 +195,26 @@
             if(this.tab < numberTab){
               switch(this.tab){
                 case 1:
-                  if(this.validateProfileForm()){
-                      this.tab = numberTab;
-                  }
-                break;
+                  this.validateFields('user.first.step', this.item.user, numberTab)
+                  break;
                 case 2:
-                  if(this.validateCompanyForm()){
-                    this.tab = numberTab;
-                  }
-                break;
+                  this.validateFields('user.second.step', this.item.company, numberTab)
+                  break;
                 default:
                   this.tab = numberTab;
               } 
             }else{
               this.tab = numberTab;
             }
-
-
           },
-          validateProfileForm(){
-            if(this.item.user.name != '' && this.item.user.email != '' && this.item.user.password != ''){
-                return true
-            }else{
-              this.showToast('Completa tu información personal porfavor.');
-              return false
-            }
-          },
-          validateCompanyForm(){
-            if(this.item.company.name != '' && this.item.company.email != '' && this.item.company.phone != ''){
-                return true
-            }else{
-              this.showToast("Completa la información de tu empresa.");
-              return false
-            }
-          },
+          validateFields(url, post_item, numberTab){
+            axios.post(this.route(url, post_item)).then(response => {
+                this.tab = numberTab;
+            }).catch(errors => {
+              this.showToast(errors.response.data.message)
+            })  
+          },  
+          
           showToast(message){
               toast.warning(message ,{
                 position: "top-right",
@@ -245,12 +231,10 @@
             });
           },
           submit() {
-            this.item
-                .transform(data => ({
+            this.item.transform(data => ({
                     ...data,
                     remember: this.item.remember ? 'on' : ''
-                }))
-                .post(this.route('register'), {
+                })).post(this.route('register'), {
                     onError: (errors) => {
                         if (Object.values(errors)[0])
                             this.$toast.open({duration: 2000, message: Object.values(errors)[0], type: "error"});
@@ -263,260 +247,12 @@
                         this.item.reset('password');
                     },
                 })
-        }
-        }
+              }
+            }
     }
 </script>
 <style scoped>
 body {
   font-family: 'Karla', sans-serif;
   background-color: #ffffff00; }
-
-.bd-wizard-wrapper {
-  padding-top: 10% !important;
-  width: calc(100% - 320px);
-  margin-left: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px; }
-  @media (max-width: 991px) {
-    .bd-wizard-wrapper {
-      width: calc(100% - 230px);
-      margin-left: 230px; } }
-  @media (max-width: 767px) {
-    .bd-wizard-wrapper {
-      width: 100%;
-      margin-left: 0;
-      margin-top: 70px; } }
-
-.bd-wizard-card {
-  max-width: 725px;
-  width: 100%;
-  border-radius: 10px;
-  border: 0; }
-  .bd-wizard-card .card-body {
-    padding: 75px 85px; }
-    @media (max-width: 991px) {
-      .bd-wizard-card .card-body {
-        padding-left: 26px;
-        padding-right: 26px; } }
-    @media (max-width: 767px) {
-      .bd-wizard-card .card-body {
-        padding: 24px; } }
-
-/* Wizard */
-.wizard {
-  padding: 20px; }
-  .wizard .audible {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0; }
-  .wizard .steps {
-    position: fixed;
-    width: 320px;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    overflow-y: auto;
-    background-color: #001778;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center; }
-    @media (max-width: 991px) {
-      .wizard .steps {
-        width: 230px; } }
-    @media (max-width: 767px) {
-      .wizard .steps {
-        position: absolute;
-        top: auto;
-        left: 0;
-        right: 0;
-        bottom: calc(100% + 15px);
-        width: 100%;
-        justify-content: stretch;
-        padding: 10px 0;
-        border-radius: 10px; } }
-    .wizard .steps > ul {
-      list-style: none;
-      padding-left: 0;
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 0;
-      flex-direction: column; }
-      @media (max-width: 767px) {
-        .wizard .steps > ul {
-          flex-direction: row;
-          width: 100%; } }
-      @media (max-width: 767px) {
-        .wizard .steps > ul li {
-          width: 25%; } }
-      .wizard .steps > ul li a {
-        display: block;
-        padding: 25px 0; }
-        @media (max-width: 767px) {
-          .wizard .steps > ul li a {
-            padding: 0;
-            text-align: center; } }
-        .wizard .steps > ul li a:hover {
-          text-decoration: none; }
-      .wizard .steps > ul li .bd-step-title-wrapper {
-        color: #fff; }
-      .wizard .steps > ul li .bd-wizard-step-icon {
-        font-size: 35px;
-        height: 35px;
-        width: 35px;
-        line-height: 35px;
-        margin-bottom: 13px;
-        opacity: 0.5; }
-        @media (max-width: 767px) {
-          .wizard .steps > ul li .bd-wizard-step-icon {
-            margin: 0 auto;
-            font-size: 25px; } }
-      .wizard .steps > ul li .bd-wizard-step-title {
-        font-size: 18px;
-        opacity: 0.5;
-        font-weight: bold;
-        line-height: 22px;
-        margin-bottom: 4px; }
-        @media (max-width: 767px) {
-          .wizard .steps > ul li .bd-wizard-step-title {
-            display: none; } }
-      .wizard .steps > ul li .bd-wizard-step-subtitle {
-        font-size: 15px;
-        line-height: 18px;
-        color: #1c3bbc;
-        margin-bottom: 0; }
-        @media (max-width: 767px) {
-          .wizard .steps > ul li .bd-wizard-step-subtitle {
-            display: none; } }
-      .wizard .steps > ul li.current .bd-wizard-step-icon, .wizard .steps > ul li.done .bd-wizard-step-icon {
-        opacity: 1; }
-      .wizard .steps > ul li.current .bd-wizard-step-title, .wizard .steps > ul li.done .bd-wizard-step-title {
-        opacity: 1; }
-  .wizard .content {
-    margin-bottom: 30px; }
-    .wizard .content .logo {
-      height: 21px;
-      margin-bottom: 16px; }
-    .wizard .content .title {
-      display: none; }
-    .wizard .content .section-heading {
-      font-weight: bold;
-      color: #030303;
-      margin-bottom: 15px; }
-      .wizard .content .section-heading + p {
-        margin-bottom: 52px; }
-    .wizard .content p {
-      font-size: 15px;
-      line-height: 1.6;
-      color: #000000;
-      opacity: 0.44; }
-    .wizard .content label {
-      font-size: 15px;
-      color: #919aa3;
-      font-weight: normal;
-      margin-bottom: 4px; }
-    .wizard .content .form-group {
-      margin-bottom: 30px; }
-    .wizard .content .form-control {
-      padding: 16px 29px;
-      min-height: 50px;
-      border-radius: 4px;
-      border: solid 1px #ececec; }
-      .wizard .content .form-control::-webkit-input-placeholder {
-        color: #919aa3; }
-      .wizard .content .form-control::-moz-placeholder {
-        color: #919aa3; }
-      .wizard .content .form-control:-ms-input-placeholder {
-        color: #919aa3; }
-      .wizard .content .form-control::-ms-input-placeholder {
-        color: #919aa3; }
-      .wizard .content .form-control::placeholder {
-        color: #919aa3; }
-    .wizard .content .purpose-radio {
-      position: relative;
-      display: inline-block; }
-      .wizard .content .purpose-radio .purpose-radio-input {
-        position: absolute;
-        opacity: 0; }
-        .wizard .content .purpose-radio .purpose-radio-input:checked + .purpose-radio-label {
-          border-color: #fea500; }
-          .wizard .content .purpose-radio .purpose-radio-input:checked + .purpose-radio-label .label-icon {
-            color: #fea500; }
-            .wizard .content .purpose-radio .purpose-radio-input:checked + .purpose-radio-label .label-icon .label-icon-default {
-              display: none; }
-            .wizard .content .purpose-radio .purpose-radio-input:checked + .purpose-radio-label .label-icon .label-icon-active {
-              display: inline-block; }
-          .wizard .content .purpose-radio .purpose-radio-input:checked + .purpose-radio-label .label-text {
-            color: #fea500;
-            font-weight: bold; }
-      .wizard .content .purpose-radio .purpose-radio-label {
-        display: flex;
-        width: 165px;
-        height: 150px;
-        max-width: 100%;
-        border: 2px solid #7b7f89;
-        border-radius: 4px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease-in-out;
-        cursor: pointer; }
-        @media (max-width: 575px) {
-          .wizard .content .purpose-radio .purpose-radio-label {
-            width: 100%; } }
-        .wizard .content .purpose-radio .purpose-radio-label .label-icon {
-          font-size: 21px;
-          color: #000000;
-          margin-bottom: 17px;
-          transition: all 0.2s ease-in-out; }
-          .wizard .content .purpose-radio .purpose-radio-label .label-icon .label-icon-active {
-            display: none; }
-        .wizard .content .purpose-radio .purpose-radio-label .label-text {
-          font-size: 16px;
-          color: #030303;
-          transition: all 0.2s ease-in-out; }
-    .wizard .content .purpose-radios-wrapper {
-      margin-top: 60px; }
-      .wizard .content .purpose-radios-wrapper .purpose-radio {
-        margin-right: 18px;
-        max-width: calc(33% - 18px); }
-        @media (max-width: 575px) {
-          .wizard .content .purpose-radios-wrapper .purpose-radio {
-            margin-right: 0;
-            margin-bottom: 18px;
-            width: 100%;
-            max-width: none; } }
-        .wizard .content .purpose-radios-wrapper .purpose-radio:last-child {
-          margin-right: 0; }
-  .wizard .actions > ul {
-    list-style: none;
-    padding-left: 0;
-    display: flex;
-    margin-bottom: 0; }
-  .wizard .actions li {
-    margin-left: 12px; }
-    .wizard .actions li:first-child, .wizard .actions li:first-child.disabled + li {
-      margin-left: 0; }
-    .wizard .actions li a {
-      display: inline-block;
-      border-radius: 6px;
-      background-color: #fea500;
-      padding: 16px 30px;
-      font-size: 15px;
-      font-weight: bold;
-      color: #000000; }
-      .wizard .actions li a:hover {
-        text-decoration: none; }
-    .wizard .actions li.disabled {
-      display: none; }
-
 </style>
