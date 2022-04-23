@@ -87,6 +87,7 @@ class CategoriesController extends Controller
     {
         $category = new Category();
         $category->fill($request->all());
+        $category->company_id = auth()->user()->company_id;
         $category->save();
         return $category;
     }

@@ -3,11 +3,11 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a :href="route('Dashboard')" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block">HidroSoft</span>
       </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <i @click="burger" class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <div class="search-bar">
@@ -229,4 +229,20 @@
   </header><!-- End Header -->
 
 </template>
+
+<script setup>
+  const select = (el, all = false) => {
+      el = el.trim()
+    if (all) {
+      return [...document.querySelectorAll(el)]
+    } else {
+      return document.querySelector(el)
+    }
+  }
+  const burger = () => {
+     select('body').classList.toggle('toggle-sidebar')
+  }
+
+
+</script>
 

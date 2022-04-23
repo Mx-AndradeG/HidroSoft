@@ -35,3 +35,4 @@ createInertiaApp({
         return inertiaApp.mount(el);
     },
 });
+
