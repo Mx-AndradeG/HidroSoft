@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Supplier;
+namespace App\Http\Requests\Customer;
 
 use App\Rules\ValidateNameCustomerRule;
 use App\Rules\ValidatePhoneRule;
@@ -27,9 +27,10 @@ class StoreSupplierRequest extends FormRequest
     public function rules()
     {
         return [
-            'company_name'          => ['required', 'string', 'min:3', 'max:255', new ValidateNameCustomerRule()],
+            'name'          => ['required', 'string', 'min:3', 'max:255', new ValidateNameCustomerRule()],
             'address'          => 'required|string|min:3|max:255',
             'phone'          => ['required', new ValidatePhoneRule()],
+            'rfc'          => ['required', new ValidateRfcRule()],
             'email'          => 'required|email',
             'social'          => 'string|min:3|max:255',
         ];
