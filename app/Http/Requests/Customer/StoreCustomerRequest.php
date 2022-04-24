@@ -7,7 +7,7 @@ use App\Rules\ValidatePhoneRule;
 use App\Rules\ValidateRfcRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSupplierRequest extends FormRequest
+class StoreCustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

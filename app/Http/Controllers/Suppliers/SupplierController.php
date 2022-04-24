@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Suppliers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Supplier\StoreSupplierRequest;
+use App\Http\Requests\Customer\StoreSupplierRequest;
 use App\Models\Supplier\Supplier;
 
 class SupplierController extends Controller

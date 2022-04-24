@@ -31,7 +31,7 @@
 
       <!-- Start Suppliers Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" :href="route('Customer')">
+        <a :class="currentURL == '/suppliers' ? 'nav-link' : 'nav-link collapsed'" :href="route('Supplier')">
           <i class="bi bi-person"></i>
           <span>Proveedores</span>
         </a>

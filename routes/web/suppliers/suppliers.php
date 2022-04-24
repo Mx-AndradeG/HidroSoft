@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Customer\CustomerController;
+use App\Http\Controllers\Suppliers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('customer/index', [CustomerController::class, 'index'])->name('customer.index');
+Route::get('supplier', [SupplierController::class, 'index'])->name('customer.index');
 
-Route::apiResource('customer', CustomerController::class, ['names' => 'customer']);
+Route::apiResource('supplier', SupplierController::class, ['names' => 'customer']);
 
-Route::inertia('/customers', 'Customer/CustomerIndex')->name('Customer');
+Route::inertia('/suppliers', 'Supplier/SupplierIndex')->name('Supplier');
