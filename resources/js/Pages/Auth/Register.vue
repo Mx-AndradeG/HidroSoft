@@ -146,13 +146,13 @@
           <div class="actions clearfix">
             <ul role="menu" aria-label="Pagination">
               <li class="" aria-disabled="false" v-if="tab != 1" @click="changeTab((tab-1))">
-                <a role="menuitem">Anterior</a>
+                <a role="menuitem" style="cursor:pointer;">Anterior</a>
               </li>
-              <li aria-hidden="false" v-if="tab != 4" aria-disabled="false" class="" style="display: list-item;" @click="changeTab((tab+1))">
+              <li aria-hidden="false" v-if="tab != 4" aria-disabled="false" class="" style="display: list-item; cursor:pointer;" @click="changeTab((tab+1))">
                 <a role="menuitem">Siguiente</a>
               </li>
               <li aria-hidden="true" v-if="tab == 4 && terms">
-                <a @click="submit" role="menuitem">Terminar</a>
+                <a @click="submit" role="menuitem" style="cursor:pointer;">Terminar</a>
               </li>
             </ul>
           </div>

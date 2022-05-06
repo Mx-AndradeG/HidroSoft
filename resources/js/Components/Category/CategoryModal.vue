@@ -21,11 +21,11 @@
                     <!-- Put your code below -->
                     <alv-form id="alv" ref="form" :action="alvRoute" :method="alvMethod" @after-done="afterDone" :data-object="item">                        
                         <div class="col-md-12"><label for="inputName5" class="form-label">Nombre</label>
-                            <input :disabled="disable" v-model="item.name" name="name" type="text" class="form-control" id="name">
+                            <input :disabled="disable" v-model="item.name" name="name" type="text" class="form-control" id="name" placeholder="Una categoria">
                         </div>
 
                         <div class="col-md-12"><label for="inputEmail5" class="form-label">Descripcion</label> 
-                            <input :disabled="disable" v-model="item.description" name="description" type="text" class="form-control" id="description">
+                          <textarea :disabled="disable" class="form-control"  id="description" name="description" v-model="item.description" placeholder="Escribe una descripcion aqui"></textarea>
                         </div>
 
                     </alv-form>

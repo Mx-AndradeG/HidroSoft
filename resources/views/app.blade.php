@@ -7,11 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @routes
+    <script src="{{ asset(mix('js/app.js')) }}" defer></script>
     <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
     <script src="{{ asset(mix('js/manifest.js')) }}" defer></script>
-    <script src="{{ asset(mix('js/vendor.js')) }}" defer></script>
-    <script src="{{ asset(mix('js/app.js')) }}" defer></script>
     <script src="{{ asset(mix('js/main.js')) }}" defer></script>
+    <script src="{{ asset(mix('js/vendor.js')) }}" defer></script>
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">

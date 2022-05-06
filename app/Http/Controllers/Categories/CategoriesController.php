@@ -28,7 +28,7 @@ class CategoriesController extends Controller
 
         array_push($columns, 'id');
 
-        $query = Category::query()->where(auth()->user()->company_id);
+        $query = Category::query()->where('company_id', auth()->user()->company_id);
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -87,6 +87,7 @@ class CategoriesController extends Controller
     {
         $category = new Category();
         $category->fill($request->all());
+        $category->company_id = auth()->user()->company_id;
         $category->save();
         return $category;
     }
