@@ -136,15 +136,12 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
   _ascending = _ascending === "desc" ? "1" : "2";
   axios
     .get(
-      route("customer.index", {
+      route("supplier.index", {
         columns: JSON.stringify([
           "id",
-          "name",
+          "company_name",
           "address",
-          "email",
           "phone",
-          "rfc",
-          "social",
           "Formatted_created_at",
         ]),
         limit: _limit,
@@ -163,7 +160,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
 const deleteItem = (_id) => {
   Swal.fire({
     title: "Eliminar registro",
-    text: "¿Esta seguro que quiere eliminar este cliente?",
+    text: "¿Esta seguro que quiere eliminar este proveedor?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -172,9 +169,9 @@ const deleteItem = (_id) => {
     confirmButtonText: "Si, borralo!",
   }).then((result) => {
     if (result.isConfirmed) {
-      axios.delete(route("customer.destroy", _id)).then((response) => {
+      axios.delete(route("supplier.destroy", _id)).then((response) => {
         getData(0, 10, "id", "desc");
-        toast.success("Cliente borrado exitosamente", {
+        toast.success("Proveedor borrado exitosamente", {
           position: "top-center",
           closeOnClick: true,
           pauseOnFocusLoss: true,

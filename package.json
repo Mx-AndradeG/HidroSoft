@@ -18,6 +18,7 @@
         "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
+        "@fawmi/vue-google-maps": "^0.9.67",
         "@inertiajs/inertia": "^0.11.0",
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.2.7",
@@ -26,7 +27,6 @@
         "vue-final-modal": "^3.4.3",
         "vue-sweetalert2": "^5.0.2",
         "vue-toastification": "^2.0.0-rc.5",
-        "vue3-google-map": "^0.10.0",
         "vue3-table-lite": "^1.1.9"
     }
 }

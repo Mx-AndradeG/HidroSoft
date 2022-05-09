@@ -31,7 +31,6 @@
 
     <!-- Template Main CSS File -->
     <link href="{{asset('NiceAdmin/css/style.css')}}" rel="stylesheet">
-    <script src="https://unpkg.com/vue3-google-map"></script>
 
     @inertiaHead
 </head>

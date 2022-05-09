@@ -9,7 +9,7 @@ export default {
           },
           {
             label: "Nombre",
-            field: "name",
+            field: "company_name",
             width: "15%",
             sortable: true,
           },
@@ -20,26 +20,8 @@ export default {
             sortable: true,
           },
           {
-            label: "Correo",
-            field: "email",
-            width: "15%",
-            sortable: true,
-          },
-          {
             label: "Teléfono",
             field: "phone",
-            width: "15%",
-            sortable: true,
-          },
-          {
-            label: "RFC",
-            field: "rfc",
-            width: "15%",
-            sortable: true,
-          },
-          {
-            label: "Razón Social",
-            field: "social",
             width: "15%",
             sortable: true,
           },

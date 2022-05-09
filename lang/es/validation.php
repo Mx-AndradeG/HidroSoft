@@ -181,6 +181,8 @@ return [
         'old_password'  => 'antigua contraseña',
         'password_confirmation' => 'confirmación de contraseña',
         'finish_control_hour' => 'hora de fin',
+        'address'   => 'direccion',
+        'company_name'   => 'Nombre del proveedor',
     ],
 
 ];

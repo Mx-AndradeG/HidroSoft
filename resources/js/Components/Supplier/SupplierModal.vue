@@ -40,38 +40,60 @@
             :data-object="item"
           >
             <div class="col-md-12">
-              <label for="inputNameC" class="form-label"
+              <label for="company_name" class="form-label mt-3"
                 >Nombre del Proveedor</label
               >
               <input
                 :disabled="disable"
-                v-model="item.name"
-                name="name"
+                v-model="item.company_name"
+                name="company_name"
                 type="text"
                 class="form-control"
-                id="nameCustomer"
+                id="company_name"
               />
             </div>
 
             <div class="col-md-12">
-              <label for="inputAddressC" class="form-label">Telefono</label>
+              <label for="inputAddressC" class="form-label mt-3">Telefono</label>
               <input
                 :disabled="disable"
-                v-model="item.address"
-                name="address"
+                v-model="item.phone"
+                name="phone"
                 type="text"
                 class="form-control"
-                id="addressCustomer"
+                id="phone"
               />
             </div>
 
             <div class="col-md-12">
-              <label for="inputPhoneC" class="form-label"
-                >Ubicacion</label
-              >
-            <GoogleMap api-key="AIzaSyB6JzoIHSnvtZs703QhK2CLOSsSGGyiIq0" style="width: 100%; height: 500px" :center="center" :zoom="15">
-              <Marker :options="{ position: center }" />
-            </GoogleMap>
+              <label for="address" class="form-label mt-3">Ubicacion</label>
+              <GMapAutocomplete
+                class="form-control"
+                placeholder="Busca una localizacion"
+                @place_changed="setPlace"
+                :value="item.address"
+                :disabled="disable"
+                name="address"
+                id="address"
+              />
+            <center class="mt-5">
+              <GMapMap
+                  :center="center"
+                  :zoom="15"
+                  map-type-id="terrain"
+                 style="width: 100%;  position: relative; overflow: hidden;height: 26rem;">
+                <GMapCluster>
+                  <GMapMarker
+                      :key="index"
+                      v-for="(m, index) in markers"
+                      :position="m.position"
+                      :clickable="true"
+                      :draggable="false"
+                      @click="center=m.position"
+                  />
+                </GMapCluster>
+              </GMapMap>
+            </center>
             </div>
           </alv-form>
           <!-- END Put your code below -->
@@ -99,39 +121,57 @@
 </template>
 
 <script>
-
-import { GoogleMap, Marker } from "vue3-google-map";
-
 export default {
-  name: "ExampleModal",
-  components: { GoogleMap, Marker },
+  name: "SupplierModal",
+  components: {},
   data() {
     return {
       modal_button: {
         show: false,
       },
-      alvRoute: route("customer.store"),
+      alvRoute: route("supplier.store"),
       alvMethod: "PUT",
       event: [],
-      item: {},
+      item: {
+        company_name: '',
+        phone: '',
+        address: '',
+        latitude:'',
+        longitude: ''
+      },
       disable: false,
-      center: { 
-        lat: 40.689247, 
-        lng: -74.044502 
-        },
+      center: {lat: 51.093048, lng: 6.842120},
+      markers: [
+        {
+          position: {
+            lat: 51.093048, lng: 6.842120
+          },
+        }
+        ,
+      ]
     };
   },
   methods: {
+    setPlace(e){
+      this.center.lat = e.geometry.location.lat()
+      this.center.lng = e.geometry.location.lng()
+      this.markers[0].position.lat = e.geometry.location.lat()
+      this.markers[0].position.lng = e.geometry.location.lng()
+      this.item.latitude = e.geometry.location.lat()
+      this.item.longitude = e.geometry.location.lng()
+      this.item.address = e.formatted_address
+    },
+
     afterDone() {
       this.modal_button.show = false;
       this.$refs.form.unsetButtonLoading();
       this.$emit("done");
     },
     beforeOpen(e) {
-      this.alvRoute = route("customer.store");
+      this.alvRoute = route("supplier.store");
       this.alvMethod = "POST";
       this.item = {
-        name: "",
+        company_name: "",
         address: "",
         phone: "",
         rfc: "",
@@ -142,22 +182,25 @@ export default {
 
       if (typeof e.ref.params._rawValue.id != "undefined") {
         axios
-          .get(route("customer.show", e.ref.params._rawValue.id), {
+          .get(route("supplier.show", e.ref.params._rawValue.id), {
             params: {
               columns: JSON.stringify([
-                "name",
-                "address",
+                "company_name",
                 "phone",
-                "rfc",
-                "email",
-                "social",
+                "address",
+                "latitude",
+                "longitude",
               ]),
             },
           })
           .then((response) => {
             this.item = response.data;
+            this.center.lat = Number(response.data.latitude)
+            this.center.lng = Number(response.data.longitude)
+            this.markers[0].position.lat = Number(response.data.latitude)
+            this.markers[0].position.lng = Number(response.data.longitude)
           });
-        this.alvRoute = route("customer.update", e.ref.params._rawValue.id);
+        this.alvRoute = route("supplier.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";
         this.disable = false;
       }

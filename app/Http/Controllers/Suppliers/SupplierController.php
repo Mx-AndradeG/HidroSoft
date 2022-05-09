@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Suppliers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Customer\StoreSupplierRequest;
+use App\Http\Requests\Supplier\StoreSupplierRequest;
 use App\Models\Supplier\Supplier;
 
 class SupplierController extends Controller
@@ -87,6 +87,7 @@ class SupplierController extends Controller
     {
         $supplier = new Supplier();
         $supplier->fill($request->all());
+        $supplier->company_id = auth()->user()->company->id;
         $supplier->save();
         return $supplier;
     }
