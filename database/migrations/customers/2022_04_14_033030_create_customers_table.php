@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('social', 255);
             $table->foreignIdFor(Company::class);
+            $table->string('latitude',255);
+            $table->string('longitude',255);
             $table->softDeletes();
             $table->timestamps();
         });

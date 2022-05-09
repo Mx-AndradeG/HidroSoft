@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Supplier\StoreCustomerRequest;
+use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Models\Customer\Customer;
 
 class CustomerController extends Controller
@@ -87,6 +87,7 @@ class CustomerController extends Controller
     {
         $customer = new Customer();
         $customer->fill($request->all());
+        $customer->company_id = auth()->user()->company_id;     
         $customer->save();
         return $customer;
     }

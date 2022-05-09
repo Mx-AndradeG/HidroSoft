@@ -32,5 +32,7 @@ class Customer extends Model
         'rfc',
         'email',
         'social',
+        'latitude',
+        'longitude'
     ];
 }
