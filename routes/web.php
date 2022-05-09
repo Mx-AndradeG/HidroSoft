@@ -25,4 +25,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     require __DIR__ . '/web/branch/branch.php';
     require __DIR__ . '/web/categories/categories.php';
     require __DIR__ . '/web/customer/customer.php';
+    require __DIR__ . '/web/suppliers/suppliers.php';
 });

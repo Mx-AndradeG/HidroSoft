@@ -14,17 +14,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
-            $table->string('address', 255);
-            $table->string('phone', 255);
-            $table->string('rfc', 255)->unique();
-            $table->string('email')->unique();
-            $table->string('social', 255);
-            $table->foreignIdFor(Company::class);
+            $table->string('company_name',255);
+            $table->string('phone',255);
+            $table->string('address',255);
             $table->string('latitude',255);
             $table->string('longitude',255);
+            $table->foreignIdFor(Company::class);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -37,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('suppliers');
     }
 };

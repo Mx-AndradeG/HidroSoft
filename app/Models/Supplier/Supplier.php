@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Models\Customer;
+namespace App\Models\Supplier;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Customer extends Model
+class Supplier extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use CustomerRelationships;
-    use CustomerAccessors;
+    use SupplierRelationships;
+    use SupplierAccessors;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    public $table = 'customers';
+    public $table = 'suppliers';
 
     /**
      * The attributes that are mass assignable.
@@ -26,13 +26,11 @@ class Customer extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'address',
+        'company_name',
         'phone',
-        'rfc',
-        'email',
-        'social',
+        'address',
         'latitude',
-        'longitude'
+        'longitude',
+        'company_id'
     ];
 }

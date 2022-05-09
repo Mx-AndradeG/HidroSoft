@@ -4,7 +4,6 @@
       v-model="modal_button.show"
       @beforeOpen="beforeOpen"
       name="customer_modal"
-      lock-scroll="false"
       content-style="border-radius:25px"
       classes="modal-container w-50 modal-dialog modal-xl"
       body-scroll-lock="false"
@@ -21,9 +20,7 @@
       <!-- Section Modal Title -->
       <div class="row mt-1 text-center">
         <h3 class="col-12" style="font-weight: bold">
-          {{
-            alvMethod == "POST" ? "Crear " : disable ? "Ver " : "Editar "
-          }}Cliente
+          {{alvMethod == "POST" ? "Crear " : disable ? "Ver " : "Editar "}}Proveedor
         </h3>
       </div>
       <!-- END Section Modal Title -->
@@ -32,7 +29,8 @@
 
       <!-- Section Modal Content -->
       <div class="row mt-2 mb-2" style="margin: 0 5px 0 5px">
-        <div class="row">
+        <div class="col-12">
+          <!-- Put your code below -->
           <alv-form
             id="alv"
             ref="form"
@@ -41,81 +39,34 @@
             @after-done="afterDone"
             :data-object="item"
           >
-          <div class="row">
-            <div class="col-md-6">
-              <label for="inputNameC" class="form-label"
-                >Nombre del cliente</label
+            <div class="col-md-12">
+              <label for="company_name" class="form-label mt-3"
+                >Nombre del Proveedor</label
               >
               <input
-                placeholder="Pepito peréz"
                 :disabled="disable"
-                v-model="item.name"
-                name="name"
+                v-model="item.company_name"
+                name="company_name"
                 type="text"
                 class="form-control"
-                id="nameCustomer"
-              />
-            </div>
-              <div class="col-md-6">
-              <label for="inputSocialC" class="form-label">Razón Social</label>
-              <input
-                placeholder="Pepito peréz S.A de C.V"
-                :disabled="disable"
-                v-model="item.social"
-                name="social"
-                type="text"
-                class="form-control"
-                id="socialCustomer"
-              />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <label for="inputEmailC" class="form-label"
-                >Correo Electronico</label
-              >
-              <input
-                placeholder="Pepito@correo.com"
-                :disabled="disable"
-                v-model="item.email"
-                name="email"
-                type="text"
-                class="form-control"
-                id="emailCustomer"
+                id="company_name"
               />
             </div>
 
-            <div class="col-md-6">
-              <label for="inputPhoneC" class="form-label"
-                >Teléfono</label
-              >
+            <div class="col-md-12">
+              <label for="inputAddressC" class="form-label mt-3">Telefono</label>
               <input
-                placeholder="449-123-23-45"
                 :disabled="disable"
                 v-model="item.phone"
                 name="phone"
                 type="text"
                 class="form-control"
-                id="phoneCustomer"
+                id="phone"
               />
             </div>
+
             <div class="col-md-12">
-              <label for="inputRFCC" class="form-label">RFC</label>
-              <input
-                placeholder="AAAA991122330"
-                :disabled="disable"
-                v-model="item.rfc"
-                name="rfc"
-                type="text"
-                class="form-control"
-                id="rfcCustomer"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <label for="inputAddressC" class="form-label">Dirección</label>
+              <label for="address" class="form-label mt-3">Ubicacion</label>
               <GMapAutocomplete
                 class="form-control"
                 placeholder="Busca una localizacion"
@@ -144,12 +95,9 @@
               </GMapMap>
             </center>
             </div>
-
-          </div>
-
           </alv-form>
           <!-- END Put your code below -->
-        </div>
+        </div>-
       </div>
       <!-- END Section Modal Content -->
       <hr />
@@ -174,16 +122,23 @@
 
 <script>
 export default {
-  name: "ExampleModal",
+  name: "SupplierModal",
+  components: {},
   data() {
     return {
       modal_button: {
         show: false,
       },
-      alvRoute: route("customer.store"),
+      alvRoute: route("supplier.store"),
       alvMethod: "PUT",
       event: [],
-      item: {},
+      item: {
+        company_name: '',
+        phone: '',
+        address: '',
+        latitude:'',
+        longitude: ''
+      },
       disable: false,
       center: {lat: 51.093048, lng: 6.842120},
       markers: [
@@ -206,16 +161,17 @@ export default {
       this.item.longitude = e.geometry.location.lng()
       this.item.address = e.formatted_address
     },
+
     afterDone() {
       this.modal_button.show = false;
       this.$refs.form.unsetButtonLoading();
       this.$emit("done");
     },
     beforeOpen(e) {
-      this.alvRoute = route("customer.store");
+      this.alvRoute = route("supplier.store");
       this.alvMethod = "POST";
       this.item = {
-        name: "",
+        company_name: "",
         address: "",
         phone: "",
         rfc: "",
@@ -226,15 +182,12 @@ export default {
 
       if (typeof e.ref.params._rawValue.id != "undefined") {
         axios
-          .get(route("customer.show", e.ref.params._rawValue.id), {
+          .get(route("supplier.show", e.ref.params._rawValue.id), {
             params: {
               columns: JSON.stringify([
-                "name",
-                "address",
+                "company_name",
                 "phone",
-                "rfc",
-                "email",
-                "social",
+                "address",
                 "latitude",
                 "longitude",
               ]),
@@ -247,7 +200,7 @@ export default {
             this.markers[0].position.lat = Number(response.data.latitude)
             this.markers[0].position.lng = Number(response.data.longitude)
           });
-        this.alvRoute = route("customer.update", e.ref.params._rawValue.id);
+        this.alvRoute = route("supplier.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";
         this.disable = false;
       }

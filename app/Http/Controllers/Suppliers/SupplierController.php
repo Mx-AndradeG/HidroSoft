@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\Suppliers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Customer\StoreCustomerRequest;
-use App\Models\Customer\Customer;
+use App\Http\Requests\Supplier\StoreSupplierRequest;
+use App\Models\Supplier\Supplier;
 
-class CustomerController extends Controller
+class SupplierController extends Controller
 {
     public function __construct()
     {
@@ -28,7 +28,7 @@ class CustomerController extends Controller
 
         array_push($columns, 'id');
 
-        $query = Customer::query()->where('company_id', auth()->user()->company_id);
+        $query = Supplier::query()->where('company_id', auth()->user()->company_id);
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -38,13 +38,13 @@ class CustomerController extends Controller
                         $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
                         $dates = explode(" a ", $value);
                         if (count($dates) > 1) {
-                            $customer = $query->whereBetween($filter, [$dates[0], $dates[1]]);
+                            $supplier = $query->whereBetween($filter, [$dates[0], $dates[1]]);
                         } else {
-                            $customer = $query->whereDate($filter, $dates[0]);
+                            $supplier = $query->whereDate($filter, $dates[0]);
                         }
                         break;
                     default:
-                        $customer = $query->where($filter, 'LIKE', '%' . $value . '%');
+                        $supplier = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
                 }
             }
@@ -80,55 +80,55 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreCustomerRequest $request
+     * @param StoreSupplierRequest $request
      * @return
      */
-    public function store(StoreCustomerRequest $request)
+    public function store(StoreSupplierRequest $request)
     {
-        $customer = new Customer();
-        $customer->fill($request->all());
-        $customer->company_id = auth()->user()->company_id;     
-        $customer->save();
-        return $customer;
+        $supplier = new Supplier();
+        $supplier->fill($request->all());
+        $supplier->company_id = auth()->user()->company->id;
+        $supplier->save();
+        return $supplier;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Customer $customer
+     * @param Supplier $supplier
      * @return array
      */
-    public function show(Customer $customer)
+    public function show(Supplier $supplier)
     {
         $appends = json_decode(request()->get("appends", "[]"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
         array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at');
         array_push($appends, 'formatted_created_at', 'formatted_updated_at');
-        return $customer->append($appends)->only($columns);
+        return $supplier->append($appends)->only($columns);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreCustomerRequest $request
-     * @param Customer $category
-     * @return Customer
+     * @param StoreSupplierRequest $request
+     * @param Supplier $category
+     * @return Supplier
      */
-    public function update(StoreCustomerRequest $request, Customer $customer)
+    public function update(StoreSupplierRequest $request, Supplier $supplier)
     {
-        $customer->fill($request->all());
-        $customer->save();
-        return $customer;
+        $supplier->fill($request->all());
+        $supplier->save();
+        return $supplier;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return Customer
+     * @return Supplier
      */
-    public function destroy(Customer $customer)
+    public function destroy(Supplier $supplier)
     {
-        $customer->delete();
-        return $customer;
+        $supplier->delete();
+        return $supplier;
     }
 }

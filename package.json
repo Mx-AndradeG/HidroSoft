@@ -18,6 +18,7 @@
         "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
+        "@fawmi/vue-google-maps": "^0.9.67",
         "@inertiajs/inertia": "^0.11.0",
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.2.7",
