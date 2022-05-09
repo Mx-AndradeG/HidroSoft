@@ -9,10 +9,12 @@ import alvue from '@myshell/alvue';
 import VueFinalModal from 'vue-final-modal'
 import TableLite from 'vue3-table-lite';
 import Toast from "vue-toastification";
-import VueGoogleMaps from '@fawmi/vue-google-maps'
+import VueGoogleMaps from '@fawmi/vue-google-maps';
+import vSelect from 'vue-select';
 
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+import 'vue-select/dist/vue-select.css';
 
 
 InertiaProgress.init();
@@ -32,6 +34,7 @@ createInertiaApp({
           });
         inertiaApp.use(VueFinalModal());
         inertiaApp.component('TableLite', TableLite);
+        inertiaApp.component('vSelect', vSelect);
         inertiaApp.use(VueGoogleMaps, {
             load: {
                 key: 'AIzaSyBNUQ6dexGtHrNYpKbJprtixL0czyKW5_M',

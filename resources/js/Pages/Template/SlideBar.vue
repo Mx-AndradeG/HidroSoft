@@ -37,6 +37,14 @@
         </a>
       </li>
       <!-- End Suppliers Nav -->
+            <!-- Start Suppliers Nav -->
+      <li class="nav-item">
+        <a :class="currentURL == '/products' ? 'nav-link' : 'nav-link collapsed'" :href="route('Product')">
+          <i class="bi bi-box-seam"></i>
+          <span>Productos</span>
+        </a>
+      </li>
+      <!-- End Suppliers Nav -->
     </ul>
   </aside>
   <!-- End Sidebar-->
