@@ -1,40 +1,43 @@
 <template>
-    <div>
-        <admin-layout>
-            <div class="card-body p-3">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Money</p>
-                    <h5 class="font-weight-bolder">
-                      $53,000
-                    </h5>
-                    <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">+55%</span>
-                      since yesterday
-                    </p>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
-                  </div>
+  <div>
+    <admin-layout>
+      <div class="pagetitle">
+        <h1>Productos</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item">Pages</li>
+            <li class="breadcrumb-item active">Productos</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Productos</h5>
+                <div id="people">
+                  <product-table></product-table>
                 </div>
               </div>
-            </div>        
+            </div>
+          </div>
+        </div>
+      </section>
     </admin-layout>
-    </div>
+  </div>
 </template>
 
 <script>
-import  AdminLayout  from '@/Layouts/AdminLayout.vue'
+import AdminLayout from "@/Layouts/AdminLayout.vue";
+import ProductTable from "../../Components/Product/ProductTable.vue";
+import { defineComponent } from "vue";
 
-export default ({
-  data(){
-    return {}
-    },
-    components: {
-      AdminLayout,
-  }
-})
+export default defineComponent({
+  name: "App",
+  components: { AdminLayout, ProductTable },
+});
 </script>
