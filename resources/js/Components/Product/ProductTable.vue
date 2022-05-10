@@ -19,6 +19,10 @@
                     :is-slot-mode="true"
                     @do-search="getData">
 
+                    <template v-slot:price="data">
+                        $ {{data.value.price}}
+                    </template>
+
                     <template v-slot:actions="data">
                         <div class="row">
                             <div class="col-4"><a type="click" @click="$vfm.show('category_modal', {id:data.value.id, show:true})">
@@ -77,7 +81,7 @@ const fin = () =>{
 const getData = (_offset, _limit, _orderBy, _ascending) => {
 tableOptions.isLoading = true;
 _ascending = _ascending === "desc" ? '1' : '2';
-axios.get(route("product.index", {columns: JSON.stringify(['id','name','description','code','price','category_name','Formatted_created_at']), limit:_limit, page:_offset+1, orderBy:_orderBy, ascending:_ascending})).then((response) => {
+axios.get(route("product.index", {columns: JSON.stringify(['id','name','description','code','price','category_name','supplier_name','Formatted_created_at']), limit:_limit, page:_offset+1, orderBy:_orderBy, ascending:_ascending})).then((response) => {
             tableOptions.rows = response.data.data;
             tableOptions.total = response.data.count;
             tableOptions.isLoading = false;

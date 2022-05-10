@@ -18,7 +18,12 @@ trait ProductAccessors
 
     public function getCategoryNameAttribute()
     {
-        return $this->category ? $this->category->name : 'asdas';
+        return $this->category ? $this->category->name : '';
+    }
+   
+    public function getSupplierNameAttribute()
+    {
+        return $this->supplier ? $this->supplier->company_name : '';
     }
     
 }

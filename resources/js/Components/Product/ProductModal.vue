@@ -1,7 +1,7 @@
 <template>
     <div>
         <vue-final-modal v-model="modal_button.show"  @beforeOpen="beforeOpen" name="category_modal" lock-scroll="false" content-style="border-radius:25px"
-                         classes="modal-container w-50 modal-dialog modal-xl" body-scroll-lock="false"  content-class="modal-content ">
+                         classes="modal-container w-50 modal-dialog modal-xl" :body-scroll-lock="scroll"  content-class="modal-content ">
 
             <button style="border-top-right-radius: 20px;" class="modal__close btn btn-light" @click="modal_button.show = false">
                 <i class="ri-close-fill ri-lg" style="color: #4a5568"></i>
@@ -39,8 +39,11 @@
                             </div>
                         </div>  
                         <div class="row">
-                            <div class="col-md-12"><label for="inputName5" class="form-label mt-3">Categoria</label>
+                            <div class="col-md-6"><label for="inputName5" class="form-label mt-3">Categoria</label>
                                 <v-select :disabled="disable" name="category_id" id="category_id" :options="options" label="name" :reduce="name => name.id"  v-model="item.category_id"/>
+                            </div>
+                            <div class="col-md-6"><label for="inputName5" class="form-label mt-3">Proveedor</label>
+                                <v-select :disabled="disable" name="supplier_id" id="supplier_id" :options="suppliers" label="company_name" :reduce="company_name => company_name.id"  v-model="item.supplier_id"/>
                             </div>
                         </div>
 
@@ -70,7 +73,7 @@
 
 <script>
 export default {
-    name: "ExampleModal",
+    name: "ProductModal",
     data() {
         return {
             modal_button: {
@@ -82,6 +85,9 @@ export default {
             item: {},
             disable: false,
             options: [],
+            suppliers: [],
+            scroll: true
+
         }
     },
     methods:{
@@ -95,6 +101,12 @@ export default {
                     columns: JSON.stringify(['id','name'])
             }}).then((response) => {
                 this.options = response.data.data;
+            });
+
+            axios.get(route("supplier.index"),{ params:{
+                    columns: JSON.stringify(['id','company_name'])
+            }}).then((response) => {
+                this.suppliers = response.data.data;
             });
         },
 

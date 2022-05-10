@@ -31,5 +31,6 @@ class Product extends Model
         'code',
         'price',
         'category_id',
+        'supplier_id'
     ];
 }

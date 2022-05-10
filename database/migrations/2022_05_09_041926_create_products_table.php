@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Categories\Category;
+use App\Models\Supplier\Supplier;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('code',255);
             $table->decimal('price',10,2);
             $table->foreignIdFor(Category::class);
+            $table->foreignIdFor(Supplier::class);
             $table->softDeletes();
             $table->timestamps();
         });
