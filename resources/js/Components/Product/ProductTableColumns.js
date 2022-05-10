@@ -28,6 +28,12 @@ export default {
           {
             label: "Precio",
             field: "price",
+            width: "9%",
+            sortable: true,
+          },
+          {
+            label: "Proveedor",
+            field: "supplier_name",
             width: "15%",
             sortable: true,
           },

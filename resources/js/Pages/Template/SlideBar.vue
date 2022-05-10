@@ -10,6 +10,7 @@
         </a>
       </li>
       <!-- End Dashboard Nav -->
+      <li class="nav-heading">Catálogos</li>
 
       <!-- Start Categories Nav -->
       <li class="nav-item">
