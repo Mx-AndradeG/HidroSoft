@@ -1,53 +1,42 @@
 <template>
   <div>
-    <branch-layout>
-      <div class="card-body p-3">
+    <admin-layout>
+      <div class="pagetitle">
+        <h1>Sucursales</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Sucursales</a></li>
+            <li class="breadcrumb-item active">Sucursales</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section">
         <div class="row">
-          <div class="col-8">
-            <div class="numbers">
-              <p class="text-sm mb-0 text-uppercase font-weight-bold">
-                Este es el Layout de las Sucursales
-              </p>
-              <h5 class="font-weight-bolder">$53,000</h5>
-              <p class="mb-0">
-                <span class="text-success text-sm font-weight-bolder"
-                  >+55%</span
-                >
-                since yesterday
-              </p>
-            </div>
-          </div>
-          <div class="col-4 text-end">
-            <div
-              class="
-                icon icon-shape
-                bg-gradient-primary
-                shadow-primary
-                text-center
-                rounded-circle
-              "
-            >
-              <i
-                class="ni ni-money-coins text-lg opacity-10"
-                aria-hidden="true"
-              ></i>
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Sucursales</h5>
+                <div id="people">
+                  <branch-table></branch-table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </branch-layout>
+      </section>
+    </admin-layout>
   </div>
 </template>
 
 <script>
-import BranchLayout from "@/Layouts/BranchLayout.vue";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
+import BranchTable from "../../Components/Branch/BranchTable.vue";
+import { defineComponent } from "vue";
 
-export default {
-  data() {
-    return {};
-  },
-  components: {
-    BranchLayout,
-  },
-};
+export default defineComponent({
+  name: "App",
+  components: { AdminLayout, BranchTable },
+});
 </script>

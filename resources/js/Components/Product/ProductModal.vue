@@ -122,7 +122,7 @@ export default {
 
            if(typeof e.ref.params._rawValue.id != "undefined" ){
                 axios.get(route("product.show", e.ref.params._rawValue.id),{ params:{
-                    columns: JSON.stringify(['name','description','category_id','price','code'])
+                    columns: JSON.stringify(['name','description','category_id','price','code','supplier_id'])
                 }}).then((response) => {
                     this.item = response.data;
                 });
