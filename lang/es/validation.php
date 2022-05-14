@@ -183,6 +183,8 @@ return [
         'finish_control_hour' => 'hora de fin',
         'address'   => 'direccion',
         'company_name'   => 'Nombre del proveedor',
+        'payment_methods' => 'Metodos de pago'
+
     ],
 
 ];

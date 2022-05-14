@@ -3,7 +3,7 @@
     <vue-final-modal
       v-model="modal_button.show"
       @beforeOpen="beforeOpen"
-      name="customer_modal"
+      name="branch_modal"
       lock-scroll="false"
       content-style="border-radius:25px"
       classes="modal-container w-50 modal-dialog modal-xl"

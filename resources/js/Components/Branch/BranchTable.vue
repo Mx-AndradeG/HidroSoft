@@ -20,7 +20,7 @@
             Exportar
           </button>
           <button
-            @click="$vfm.show('customer_modal')"
+            @click="$vfm.show('branch_modal')"
             type="button"
             class="btn btn-primary"
           >
@@ -41,7 +41,7 @@
     >
       <template v-slot:actions="data">
         <div class="row">
-          <div class="col-4">
+          <div class="col-3">
             <a
               type="click"
               @click="
@@ -52,12 +52,12 @@
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Ver registro"
-                class="ri-eye-fill fs-3"
+                class="ri-eye-fill fs-4"
                 style="color: forestgreen; cursor: pointer"
               ></i>
             </a>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <a
               type="click"
               @click="$vfm.show('customer_modal', { id: data.value.id })"
@@ -66,18 +66,30 @@
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Editar Cliente"
-                class="ri-edit-box-fill fs-3"
+                class="ri-edit-box-fill fs-4"
                 style="color: #0748db; cursor: pointer"
               ></i>
             </a>
           </div>
-          <div class="col-4">
+          <div class="col-3">
+            <a @click="$vfm.show('payment_method_modal', { id: data.value.id })">
+              <i
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Crear metodo de pagó"
+                class="ri-money-dollar-circle-fill fs-4"
+                style="color: forestgreen; cursor: pointer"
+                
+              ></i>
+            </a>
+          </div>
+          <div class="col-3">
             <a @click="deleteItem(data.value.id)">
               <i
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Eliminar cliente"
-                class="ri-chat-delete-fill fs-3"
+                class="ri-chat-delete-fill fs-4"
                 style="color: crimson; cursor: pointer"
               ></i>
             </a>
@@ -86,6 +98,7 @@
       </template>
     </TableLite>
     <branch-modal @done="fin"></branch-modal>
+    <branch-payment-methods-modal @done="fin"></branch-payment-methods-modal>
   </div>
 </template>
 
@@ -94,6 +107,7 @@
 <script setup>
 import BranchTableColumns from "./BranchTableColumns";
 import BranchModal from "./BranchModal.vue";
+import BranchPaymentMethodsModal from "./BranchPaymentMethodsModal.vue";
 import { onMounted, reactive } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
