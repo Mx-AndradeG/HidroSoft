@@ -2,6 +2,8 @@
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-heading">Dashboard</li>
       <!-- Start Dashboard Nav -->
       <li class="nav-item">
         <a :class="currentURL == '/dashboard' ? 'nav-link' : 'nav-link collapsed'" :href="route('Dashboard')">
@@ -9,6 +11,19 @@
           <span>Dashboard</span>
         </a>
       </li>
+
+      <!-- End Dashboard Nav -->
+      <li class="nav-heading">Sucursales</li>
+
+    <!-- Start Categories Nav -->
+      <li class="nav-item">
+        <a :class="currentURL == '/branch' ? 'nav-link' : 'nav-link collapsed'" :href="route('Branch')">
+          <i class="bi bi-grid"></i>
+          <span>Sucursales</span>
+        </a>
+      </li>
+      <!-- End Categories Nav -->
+
       <!-- End Dashboard Nav -->
       <li class="nav-heading">Catálogos</li>
 
