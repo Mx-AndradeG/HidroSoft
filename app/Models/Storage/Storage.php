@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Models\Branch;
+namespace App\Models\Storage;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Branch extends Model
+class Storage extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use BranchRelationships;
-    use BranchAccessors;
+    use StorageRelationships;
+    use StorageAccessors;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    public $table = 'branches';
+    public $table = 'storages';
 
     /**
      * The attributes that are mass assignable.
@@ -27,12 +27,10 @@ class Branch extends Model
      */
     protected $fillable = [
         'name',
-        'phone',
-        'email',
         'address',
         'latitude',
         'longitude',
-        'company_id',
+        'branch_id',
         'main'
     ];
 }

@@ -135,7 +135,7 @@ export default {
       alvRoute: route("payment-method.branch.store"),
       alvMethod: "POST",
       event: [],
-      current_payment: '',
+      current_payment: null,
       item: {
           payment_methods: [],
       },
@@ -150,12 +150,17 @@ export default {
       this.$emit("done");
     },
     pushPaymentMethod(){
-      this.item.payment_methods.push({
-          id: 'null',
-          name: this.current_payment,
-          deleted: false,
-      });
-        this.current_payment = null;
+      if(this.current_payment != null){
+        this.item.payment_methods.push({
+            id: 'null',
+            name: this.current_payment,
+            deleted: false,
+        });
+          this.current_payment = null;
+      }else{
+         this.showToast('El método de pagó no puede ser nulo.')
+      }
+
     },
     deleteInvoice(index){
       this.item.payment_methods[index].deleted = true;
