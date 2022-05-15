@@ -76,7 +76,7 @@
               </thead>
               <tbody>
                 <tr v-for="(data,index) in item.payment_methods.filter(i=>!i.deleted)" :key="index.id">
-                  <td class="align-middle"> <span class="align-middle">{{data.payment_method}}</span> </td>
+                  <td class="align-middle"> <span class="align-middle">{{data.name}}</span> </td>
                   <td class="align-middle">              
                     <button
                         @click="deleteInvoice(index)"
@@ -143,10 +143,16 @@ export default {
     };
   },
   methods: {
+
+    afterDone() {
+      this.modal_button.show = false;
+      this.$refs.form.unsetButtonLoading();
+      this.$emit("done");
+    },
     pushPaymentMethod(){
       this.item.payment_methods.push({
           id: 'null',
-          payment_method: this.current_payment,
+          name: this.current_payment,
           deleted: false,
       });
         this.current_payment = null;
@@ -158,7 +164,7 @@ export default {
     getData(id) {
     axios.get(route("payment-method.index",id))
           .then(Response => {
-            this.transactations_id = Response.data.data;
+            this.item.payment_methods = Response.data;
       });
     },
     afterError(error){
