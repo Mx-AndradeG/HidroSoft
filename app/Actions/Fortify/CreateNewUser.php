@@ -2,7 +2,9 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Branch\Branch;
 use App\Models\Company\Company;
+use App\Models\Storage\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -26,6 +28,22 @@ class CreateNewUser implements CreatesNewUsers
         $company->email = $input['company']['email'];
         $company->phone = $input['company']['phone'];
         $company->save();
+
+        $branch = new Branch();
+        $branch->name = 'Sucursar principal de: '. $input['company']['name'];
+        $branch->email = $input['company']['email'];
+        $branch->phone = $input['company']['phone'];
+        $branch->company_id = $company->id;
+        $branch->main = 1;
+        $branch->save();
+
+        
+        $storage = new Storage();
+        $storage->name = 'Almacen principal de: ' . $input['company']['name'];
+        $storage->branch_id = $branch->id;
+        $storage->main = 1;
+        $storage->save();
+        
         
         $user = new User();
         $user->name = $input['user']['name'];

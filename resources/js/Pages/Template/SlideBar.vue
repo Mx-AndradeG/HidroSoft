@@ -15,11 +15,20 @@
       <!-- End Dashboard Nav -->
       <li class="nav-heading">Sucursales</li>
 
-    <!-- Start Categories Nav -->
+      <!-- Start Categories Nav -->
       <li class="nav-item">
         <a :class="currentURL == '/branch' ? 'nav-link' : 'nav-link collapsed'" :href="route('Branch')">
           <i class="bi bi-grid"></i>
           <span>Sucursales</span>
+        </a>
+      </li>
+      <!-- End Categories Nav -->
+
+          <!-- Start Categories Nav -->
+      <li class="nav-item">
+        <a :class="currentURL == '/storage' ? 'nav-link' : 'nav-link collapsed'" :href="route('Storage')">
+          <i class="bi bi-truck"></i>
+          <span>Almacenes</span>
         </a>
       </li>
       <!-- End Categories Nav -->

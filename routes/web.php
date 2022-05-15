@@ -28,4 +28,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     require __DIR__ . '/web/suppliers/suppliers.php';
     require __DIR__ . '/web/products/products.php';
     require __DIR__ . '/web/payment_method/payment_method.php';
+    require __DIR__ . '/web/storage/storage.php';
 });

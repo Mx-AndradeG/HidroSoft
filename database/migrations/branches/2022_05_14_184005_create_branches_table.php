@@ -18,10 +18,11 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('phone', 255);
-            $table->string('email', 255)->nulleable();
-            $table->string('address',255);
-            $table->string('latitude',255);
-            $table->string('longitude',255);
+            $table->string('email', 255)->nullable();
+            $table->string('latitude',255)->nullable();
+            $table->string('longitude',255)->nullable();
+            $table->boolean('main')->default(false);
+            $table->string('address',255)->nullable();
             $table->foreignIdFor(Company::class);
             $table->softDeletes();
             $table->timestamps();

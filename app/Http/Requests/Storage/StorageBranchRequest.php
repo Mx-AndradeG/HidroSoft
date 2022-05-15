@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Supplier;
+namespace App\Http\Requests\Storage;
 
-use App\Rules\ValidateNameCustomerRule;
 use App\Rules\ValidatePhoneRule;
 use App\Rules\ValidateRfcRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSupplierRequest extends FormRequest
+class StorageBranchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *  
+     *
      * @return bool
      */
     public function authorize()
@@ -27,11 +26,11 @@ class StoreSupplierRequest extends FormRequest
     public function rules()
     {
         return [
-            'company_name'      => ['required', 'string', 'min:3', 'max:255'],
+            'name'      => ['required', 'string', 'min:3', 'max:255'],
             'address'   => 'required|string|min:3|max:255',
-            'phone'     => ['required', new ValidatePhoneRule()],
             'latitude'  => 'required',
-            'longitude'  => 'required',
+            'longitude' => 'required',
+            'branch_id' => 'required|numeric|min:1|exists:branches,id',
         ];
     }
 }
