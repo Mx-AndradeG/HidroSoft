@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Branch;
 
-use App\Rules\ValidateNameCustomerRule;
 use App\Rules\ValidatePhoneRule;
 use App\Rules\ValidateRfcRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,12 +26,12 @@ class StoreBranchRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => ['required', 'string', 'min:3', 'max:255', new ValidateNameCustomerRule()],
-            'address'          => 'required|string|min:3|max:255',
-            'phone'          => ['required', new ValidatePhoneRule()],
-            'email'          => 'required|email',
+            'name'      => ['required', 'string', 'min:3', 'max:255'],
+            'address'   => 'required|string|min:3|max:255',
+            'phone'     => ['required', new ValidatePhoneRule()],
+            'email'     => 'required|email',
             'latitude'  => 'required',
-            'longitude'  => 'required',
+            'longitude' => 'required',
         ];
     }
 }

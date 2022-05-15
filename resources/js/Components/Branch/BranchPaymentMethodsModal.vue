@@ -145,7 +145,7 @@ export default {
   methods: {
     pushPaymentMethod(){
       this.item.payment_methods.push({
-          id: null,
+          id: 'null',
           payment_method: this.current_payment,
           deleted: false,
       });
@@ -189,6 +189,7 @@ export default {
       };
       if(typeof e.ref.params._rawValue.id != "undefined" ){
         this.getData(e.ref.params._rawValue.id);
+        this.item.branch_id = e.ref.params._rawValue.id;
       }
     },
   },

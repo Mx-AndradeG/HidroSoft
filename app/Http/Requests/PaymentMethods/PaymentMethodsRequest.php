@@ -25,7 +25,8 @@ class PaymentMethodsRequest extends FormRequest
     public function rules()
     {
         return [
-            'payment_methods' => 'required|array|',
+            'payment_methods' => 'required|array|min:1',
+            'branch_id' => 'required|numeric|min:1|exists:branches,id',
         ];
     }
 }

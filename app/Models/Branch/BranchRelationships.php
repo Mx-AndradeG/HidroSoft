@@ -6,8 +6,7 @@ use App\Models\PaymentMethod\PaymentMethod;
 
 trait BranchRelationships
 {
-    public function payment_methods()
-    {
-        return $this->belongsToMany(PaymentMethod::class)->withTimestamps();
+    public function payment_methods(){
+        return $this->HasMany(PaymentMethod::class);
     }
 }

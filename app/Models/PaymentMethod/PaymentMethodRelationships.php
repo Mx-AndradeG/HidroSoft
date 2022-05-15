@@ -2,11 +2,11 @@
 
 namespace App\Models\PaymentMethod;
 
+use App\Models\Branch\Branch;
+
 trait PaymentMethodRelationships
 {
-    public function branches()
-    {
-        return $this->belongsToMany(Branch::class)->withTimestamps()
-        ->withPivot('name');
+    public function branch(){
+        return $this->belongsTo(Branch::class);
     }
 }
