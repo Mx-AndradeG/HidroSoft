@@ -3,11 +3,11 @@
     <vue-final-modal
       v-model="modal_button.show"
       @beforeOpen="beforeOpen"
-      name="customer_modal"
-      lock-scroll="false"
+      name="branch_modal"
+      :lock-scroll="true"
+      :hide-overlay="false"
       content-style="border-radius:25px"
       classes="modal-container w-50 modal-dialog modal-xl"
-      body-scroll-lock="true"
       content-class="modal-content"
     >
       <button
