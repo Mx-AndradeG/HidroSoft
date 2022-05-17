@@ -7,7 +7,7 @@
       :lock-scroll="true"
       :hide-overlay="false"
       content-style="border-radius:25px"
-      classes="modal-container w-50 modal-dialog modal-xl"
+      classes="w-50 modal-dialog modal-xl"
       content-class="modal-content"
     >
       <button
@@ -41,88 +41,90 @@
             @after-done="afterDone"
             :data-object="item"
           >
-          <div class="row">
-            <div class="col-md-12">
-              <label for="inputNameC" class="form-label"
-                >Nombre de la sucursal</label
-              >
-              <input
-                placeholder="Tienda 1"
-                :disabled="disable"
-                v-model="item.name"
-                name="name"
-                type="text"
-                class="form-control"
-                id="nameCustomer"
-              />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <label for="inputEmailC" class="form-label"
-                >Correo Electronico</label
-              >
-              <input
-                placeholder="Sucursal_correo@correo.com"
-                :disabled="disable"
-                v-model="item.email"
-                name="email"
-                type="text"
-                class="form-control"
-                id="emailCustomer"
-              />
+            <div class="row">
+              <div class="col-md-12">
+                <label for="inputNameC" class="form-label"
+                  >Nombre de la sucursal</label
+                >
+                <input
+                  placeholder="Tienda 1"
+                  :disabled="disable"
+                  v-model="item.name"
+                  name="name"
+                  type="text"
+                  class="form-control"
+                  id="nameCustomer"
+                />
+              </div>
             </div>
 
-            <div class="col-md-6">
-              <label for="inputPhoneC" class="form-label"
-                >Teléfono</label
-              >
-              <input
-                placeholder="449-123-23-45"
-                :disabled="disable"
-                v-model="item.phone"
-                name="phone"
-                type="text"
-                class="form-control"
-                id="phoneCustomer"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <label for="inputAddressC" class="form-label">Dirección</label>
-              <GMapAutocomplete
-                class="form-control"
-                placeholder="Busca una localizacion"
-                @place_changed="setPlace"
-                :value="item.address"
-                :disabled="disable"
-                name="address"
-                id="address"
-              />
-            <center class="mt-5">
-              <GMapMap
-                  :center="center"
-                  :zoom="15"
-                  map-type-id="terrain"
-                 style="width: 100%;  position: relative; overflow: hidden;height: 26rem;">
-                <GMapCluster>
-                  <GMapMarker
-                      :key="index"
-                      v-for="(m, index) in markers"
-                      :position="m.position"
-                      :clickable="true"
-                      :draggable="false"
-                      @click="center=m.position"
-                  />
-                </GMapCluster>
-              </GMapMap>
-            </center>
-            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="inputEmailC" class="form-label"
+                  >Correo Electronico</label
+                >
+                <input
+                  placeholder="Sucursal_correo@correo.com"
+                  :disabled="disable"
+                  v-model="item.email"
+                  name="email"
+                  type="text"
+                  class="form-control"
+                  id="emailCustomer"
+                />
+              </div>
 
-          </div>
-
+              <div class="col-md-6">
+                <label for="inputPhoneC" class="form-label">Teléfono</label>
+                <input
+                  placeholder="449-123-23-45"
+                  :disabled="disable"
+                  v-model="item.phone"
+                  name="phone"
+                  type="text"
+                  class="form-control"
+                  id="phoneCustomer"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label for="inputAddressC" class="form-label">Dirección</label>
+                <GMapAutocomplete
+                  class="form-control"
+                  placeholder="Busca una localizacion"
+                  @place_changed="setPlace"
+                  :value="item.address"
+                  :disabled="disable"
+                  name="address"
+                  id="address"
+                />
+                <center class="mt-5">
+                  <GMapMap
+                    :center="center"
+                    :zoom="15"
+                    map-type-id="terrain"
+                    style="
+                      width: 100%;
+                      position: relative;
+                      overflow: hidden;
+                      height: 26rem;
+                    "
+                  >
+                    <GMapCluster>
+                      <GMapMarker
+                        :key="index"
+                        v-for="(m, index) in markers"
+                        :position="m.position"
+                        :clickable="true"
+                        :draggable="false"
+                        @click="center = m.position"
+                      />
+                    </GMapCluster>
+                  </GMapMap>
+                </center>
+              </div>
+            </div>
           </alv-form>
           <!-- END Put your code below -->
         </div>
@@ -161,26 +163,26 @@ export default {
       event: [],
       item: {},
       disable: false,
-      center: {lat: 51.093048, lng: 6.842120},
+      center: { lat: 51.093048, lng: 6.84212 },
       markers: [
         {
           position: {
-            lat: 51.093048, lng: 6.842120
+            lat: 51.093048,
+            lng: 6.84212,
           },
-        }
-        ,
-      ]
+        },
+      ],
     };
   },
   methods: {
-    setPlace(e){
-      this.center.lat = e.geometry.location.lat()
-      this.center.lng = e.geometry.location.lng()
-      this.markers[0].position.lat = e.geometry.location.lat()
-      this.markers[0].position.lng = e.geometry.location.lng()
-      this.item.latitude = e.geometry.location.lat()
-      this.item.longitude = e.geometry.location.lng()
-      this.item.address = e.formatted_address
+    setPlace(e) {
+      this.center.lat = e.geometry.location.lat();
+      this.center.lng = e.geometry.location.lng();
+      this.markers[0].position.lat = e.geometry.location.lat();
+      this.markers[0].position.lng = e.geometry.location.lng();
+      this.item.latitude = e.geometry.location.lat();
+      this.item.longitude = e.geometry.location.lng();
+      this.item.address = e.formatted_address;
     },
     afterDone() {
       this.modal_button.show = false;
@@ -205,22 +207,22 @@ export default {
           .get(route("branch.show", e.ref.params._rawValue.id), {
             params: {
               columns: JSON.stringify([
-                'name',
-                'phone',
-                'email',
-                'address',
-                'latitude',
-                'longitude',
-                'company_id',
+                "name",
+                "phone",
+                "email",
+                "address",
+                "latitude",
+                "longitude",
+                "company_id",
               ]),
             },
           })
           .then((response) => {
             this.item = response.data;
-            this.center.lat = Number(response.data.latitude)
-            this.center.lng = Number(response.data.longitude)
-            this.markers[0].position.lat = Number(response.data.latitude)
-            this.markers[0].position.lng = Number(response.data.longitude)
+            this.center.lat = Number(response.data.latitude);
+            this.center.lng = Number(response.data.longitude);
+            this.markers[0].position.lat = Number(response.data.latitude);
+            this.markers[0].position.lng = Number(response.data.longitude);
           });
         this.alvRoute = route("branch.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";
