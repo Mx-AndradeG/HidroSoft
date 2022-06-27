@@ -2,11 +2,12 @@
 
 namespace App\Models\Users;
 
-use App\Models\Company\Company;
+use App\Models\UserTypes\UserType;
 
 trait UserRelationships
 {
-    public function company(){
-        return $this->belongsTo(Company::class);
+    public function user_type(){
+        return $this->belongsTo(UserType::class);
     }
+
 }

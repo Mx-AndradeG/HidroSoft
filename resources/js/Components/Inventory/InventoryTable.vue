@@ -13,18 +13,11 @@
         </div>
         <div class="col-6 d-flex justify-content-end">
           <button
-            type="button"
-            class="btn btn-outline-primary"
-            style="margin-right: 1rem"
-          >
-            Exportar
-          </button>
-          <button
-            @click="$vfm.show('branch_modal')"
+            @click="$vfm.show('customer_modal')"
             type="button"
             class="btn btn-primary"
           >
-            Nueva sucursal
+            Nueva entrada
           </button>
         </div>
       </div>
@@ -41,55 +34,43 @@
     >
       <template v-slot:actions="data">
         <div class="row">
-          <div class="col-3">
+          <div class="col-4">
             <a
               type="click"
               @click="
-                $vfm.show('branch_modal', { id: data.value.id, show: true })
+                $vfm.show('customer_modal', { id: data.value.id, show: true })
               "
             >
               <i
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Ver registro"
-                class="ri-eye-fill fs-4"
+                class="ri-eye-fill fs-3"
                 style="color: forestgreen; cursor: pointer"
               ></i>
             </a>
           </div>
-          <div class="col-3">
+          <div class="col-4">
             <a
               type="click"
-              @click="$vfm.show('branch_modal', { id: data.value.id })"
+              @click="$vfm.show('customer_modal', { id: data.value.id })"
             >
               <i
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Editar Cliente"
-                class="ri-edit-box-fill fs-4"
+                class="ri-edit-box-fill fs-3"
                 style="color: #0748db; cursor: pointer"
               ></i>
             </a>
           </div>
-          <div class="col-3">
-            <a @click="$vfm.show('payment_method_modal', { id: data.value.id })">
-              <i
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Crear metodo de pagó"
-                class="ri-money-dollar-circle-fill fs-4"
-                style="color: forestgreen; cursor: pointer"
-                
-              ></i>
-            </a>
-          </div>
-          <div class="col-3" v-if="!data.value.main">
+          <div class="col-4">
             <a @click="deleteItem(data.value.id)">
               <i
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Eliminar cliente"
-                class="ri-chat-delete-fill fs-4"
+                class="ri-chat-delete-fill fs-3"
                 style="color: crimson; cursor: pointer"
               ></i>
             </a>
@@ -97,17 +78,15 @@
         </div>
       </template>
     </TableLite>
-    <branch-modal @done="fin"></branch-modal>
-    <branch-payment-methods-modal @done="fin"></branch-payment-methods-modal>
+    <inventory-modal @done="fin"></inventory-modal>
   </div>
 </template>
 
 
 
 <script setup>
-import BranchTableColumns from "./BranchTableColumns";
-import BranchModal from "./BranchModal.vue";
-import BranchPaymentMethodsModal from "./BranchPaymentMethodsModal.vue";
+import InventoryTableColumns from "./InventoryTableColumns";
+import InventoryModal from "./InventoryModal.vue";
 import { onMounted, reactive } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
@@ -115,7 +94,7 @@ import { useToast } from "vue-toastification";
 const toast = useToast();
 
 const tableOptions = reactive({
-  columns: BranchTableColumns.columns,
+  columns: InventoryTableColumns.columns,
   sortable: { order: "id", sort: "desc" },
   isLoading: true,
   messages: {
@@ -150,14 +129,12 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
   _ascending = _ascending === "desc" ? "1" : "2";
   axios
     .get(
-      route("branch.index", {
+      route("storage.index", {
         columns: JSON.stringify([
           "id",
-          "name",
+          'name',
           "address",
-          "phone",
-          "rfc",
-          "main",
+          "branch_name",
           "Formatted_created_at",
         ]),
         limit: _limit,
@@ -176,7 +153,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
 const deleteItem = (_id) => {
   Swal.fire({
     title: "Eliminar registro",
-    text: "¿Esta seguro que quiere eliminar esta sucursal?",
+    text: "¿Esta seguro que quiere eliminar este registro?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -185,9 +162,9 @@ const deleteItem = (_id) => {
     confirmButtonText: "Si, borralo!",
   }).then((result) => {
     if (result.isConfirmed) {
-      axios.delete(route("branch.destroy", _id)).then((response) => {
+      axios.delete(route("storage.destroy", _id)).then((response) => {
         getData(0, 10, "id", "desc");
-        toast.success("Cliente borrado exitosamente", {
+        toast.success("Proveedor borrado exitosamente", {
           position: "top-center",
           closeOnClick: true,
           pauseOnFocusLoss: true,

@@ -40,31 +40,28 @@
             :data-object="item"
           >
             <div class="col-md-12">
-              <label for="company_name" class="form-label mt-3"
+              <label for="name" class="form-label mt-3"
                 >Nombre del almacen</label
               >
               <input
                 :disabled="disable"
-                v-model="item.company_name"
-                name="company_name"
+                v-model="item.name"
+                name="name"
                 type="text"
                 class="form-control"
-                id="company_name"
+                id="name"
               />
             </div>
-
-            <div class="col-md-12">
-              <label for="inputAddressC" class="form-label mt-3">Telefono</label>
-              <input
-                :disabled="disable"
-                v-model="item.phone"
-                name="phone"
-                type="text"
-                class="form-control"
-                id="phone"
-              />
+          <div class="col-md-12">
+              <label for="company_name" class="form-label mt-3">Sucursal</label>
+                <v-select 
+                  :disabled="disable" 
+                  name="product_id" 
+                  id="product_id" 
+                  :options="branches" 
+                  label="name" :reduce="name => name.id"  
+                  v-model="item.branch_id"/>
             </div>
-
             <div class="col-md-12">
               <label for="address" class="form-label mt-3">Ubicacion</label>
               <GMapAutocomplete
@@ -129,15 +126,17 @@ export default {
       modal_button: {
         show: false,
       },
-      alvRoute: route("supplier.store"),
+      alvRoute: route("storage.store"),
       alvMethod: "PUT",
       event: [],
+      branches: [],
       item: {
-        name: '',
-        phone: '',
-        address: '',
-        latitude:'',
-        longitude: ''
+        name: "",
+        address: "",
+        latitude: "",
+        longitude: "",
+        branch_id: "",
+        main: "",
       },
       disable: false,
       center: {lat: 51.093048, lng: 6.842120},
@@ -168,28 +167,29 @@ export default {
       this.$emit("done");
     },
     beforeOpen(e) {
-      this.alvRoute = route("supplier.store");
+      this.getData();
+      this.alvRoute = route("storage.store");
       this.alvMethod = "POST";
       this.item = {
-        company_name: "",
+        name: "",
         address: "",
-        phone: "",
-        rfc: "",
-        email: "",
-        social: "",
+        latitude: "",
+        longitude: "",
+        branch_id: "",
+        main: "",
       };
       this.disable = false;
 
       if (typeof e.ref.params._rawValue.id != "undefined") {
         axios
-          .get(route("supplier.show", e.ref.params._rawValue.id), {
+          .get(route("storage.show", e.ref.params._rawValue.id), {
             params: {
               columns: JSON.stringify([
-                "company_name",
-                "phone",
+                "name",
                 "address",
                 "latitude",
                 "longitude",
+                "branch_id",
               ]),
             },
           })
@@ -200,13 +200,22 @@ export default {
             this.markers[0].position.lat = Number(response.data.latitude)
             this.markers[0].position.lng = Number(response.data.longitude)
           });
-        this.alvRoute = route("supplier.update", e.ref.params._rawValue.id);
+        this.alvRoute = route("storage.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";
         this.disable = false;
       }
       if (typeof e.ref.params._rawValue.show != "undefined") {
         this.disable = true;
       }
+    },
+
+    getData(){
+      axios.get(route("branch.index"),{ params:{
+          columns: JSON.stringify(['id','name'])
+        }}).then((response) => {
+          this.branches = response.data.data;
+          console.log(123)
+      });
     },
   },
 };
