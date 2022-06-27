@@ -4,10 +4,9 @@
       v-model="modal_button.show"
       @beforeOpen="beforeOpen"
       name="customer_modal"
-      lock-scroll="false"
+      :lock-scroll="true"
       content-style="border-radius:25px"
-      classes="modal-container w-50 modal-dialog modal-xl"
-      body-scroll-lock="true"
+      classes="w-50 modal-dialog modal-xl"
       content-class="modal-content"
     >
       <button
@@ -41,112 +40,116 @@
             @after-done="afterDone"
             :data-object="item"
           >
-          <div class="row">
-            <div class="col-md-6">
-              <label for="inputNameC" class="form-label"
-                >Nombre del cliente</label
-              >
-              <input
-                placeholder="Pepito peréz"
-                :disabled="disable"
-                v-model="item.name"
-                name="name"
-                type="text"
-                class="form-control"
-                id="nameCustomer"
-              />
-            </div>
+            <div class="row">
               <div class="col-md-6">
-              <label for="inputSocialC" class="form-label">Razón Social</label>
-              <input
-                placeholder="Pepito peréz S.A de C.V"
-                :disabled="disable"
-                v-model="item.social"
-                name="social"
-                type="text"
-                class="form-control"
-                id="socialCustomer"
-              />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <label for="inputEmailC" class="form-label"
-                >Correo Electronico</label
-              >
-              <input
-                placeholder="Pepito@correo.com"
-                :disabled="disable"
-                v-model="item.email"
-                name="email"
-                type="text"
-                class="form-control"
-                id="emailCustomer"
-              />
-            </div>
-
-            <div class="col-md-6">
-              <label for="inputPhoneC" class="form-label"
-                >Teléfono</label
-              >
-              <input
-                placeholder="449-123-23-45"
-                :disabled="disable"
-                v-model="item.phone"
-                name="phone"
-                type="text"
-                class="form-control"
-                id="phoneCustomer"
-              />
-            </div>
-            <div class="col-md-12">
-              <label for="inputRFCC" class="form-label">RFC</label>
-              <input
-                placeholder="AAAA991122330"
-                :disabled="disable"
-                v-model="item.rfc"
-                name="rfc"
-                type="text"
-                class="form-control"
-                id="rfcCustomer"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <label for="inputAddressC" class="form-label">Dirección</label>
-              <GMapAutocomplete
-                class="form-control"
-                placeholder="Busca una localizacion"
-                @place_changed="setPlace"
-                :value="item.address"
-                :disabled="disable"
-                name="address"
-                id="address"
-              />
-            <center class="mt-5">
-              <GMapMap
-                  :center="center"
-                  :zoom="15"
-                  map-type-id="terrain"
-                 style="width: 100%;  position: relative; overflow: hidden;height: 26rem;">
-                <GMapCluster>
-                  <GMapMarker
-                      :key="index"
-                      v-for="(m, index) in markers"
-                      :position="m.position"
-                      :clickable="true"
-                      :draggable="false"
-                      @click="center=m.position"
-                  />
-                </GMapCluster>
-              </GMapMap>
-            </center>
+                <label for="inputNameC" class="form-label"
+                  >Nombre del cliente</label
+                >
+                <input
+                  placeholder="Pepito peréz"
+                  :disabled="disable"
+                  v-model="item.name"
+                  name="name"
+                  type="text"
+                  class="form-control"
+                  id="nameCustomer"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="inputSocialC" class="form-label"
+                  >Razón Social</label
+                >
+                <input
+                  placeholder="Pepito peréz S.A de C.V"
+                  :disabled="disable"
+                  v-model="item.social"
+                  name="social"
+                  type="text"
+                  class="form-control"
+                  id="socialCustomer"
+                />
+              </div>
             </div>
 
-          </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="inputEmailC" class="form-label"
+                  >Correo Electronico</label
+                >
+                <input
+                  placeholder="Pepito@correo.com"
+                  :disabled="disable"
+                  v-model="item.email"
+                  name="email"
+                  type="text"
+                  class="form-control"
+                  id="emailCustomer"
+                />
+              </div>
 
+              <div class="col-md-6">
+                <label for="inputPhoneC" class="form-label">Teléfono</label>
+                <input
+                  placeholder="449-123-23-45"
+                  :disabled="disable"
+                  v-model="item.phone"
+                  name="phone"
+                  type="text"
+                  class="form-control"
+                  id="phoneCustomer"
+                />
+              </div>
+              <div class="col-md-12">
+                <label for="inputRFCC" class="form-label">RFC</label>
+                <input
+                  placeholder="AAAA991122330"
+                  :disabled="disable"
+                  v-model="item.rfc"
+                  name="rfc"
+                  type="text"
+                  class="form-control"
+                  id="rfcCustomer"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label for="inputAddressC" class="form-label">Dirección</label>
+                <GMapAutocomplete
+                  class="form-control"
+                  placeholder="Busca una localizacion"
+                  @place_changed="setPlace"
+                  :value="item.address"
+                  :disabled="disable"
+                  name="address"
+                  id="address"
+                />
+                <center class="mt-5">
+                  <GMapMap
+                    :center="center"
+                    :zoom="15"
+                    map-type-id="terrain"
+                    style="
+                      width: 100%;
+                      position: relative;
+                      overflow: hidden;
+                      height: 26rem;
+                    "
+                  >
+                    <GMapCluster>
+                      <GMapMarker
+                        :key="index"
+                        v-for="(m, index) in markers"
+                        :position="m.position"
+                        :clickable="true"
+                        :draggable="false"
+                        @click="center = m.position"
+                      />
+                    </GMapCluster>
+                  </GMapMap>
+                </center>
+              </div>
+            </div>
           </alv-form>
           <!-- END Put your code below -->
         </div>
@@ -174,7 +177,8 @@
 
 <script>
 export default {
-  name: "ExampleModal",
+  name: "customer_modal",
+
   data() {
     return {
       modal_button: {
@@ -185,26 +189,26 @@ export default {
       event: [],
       item: {},
       disable: false,
-      center: {lat: 51.093048, lng: 6.842120},
+      center: { lat: 51.093048, lng: 6.84212 },
       markers: [
         {
           position: {
-            lat: 51.093048, lng: 6.842120
+            lat: 51.093048,
+            lng: 6.84212,
           },
-        }
-        ,
-      ]
+        },
+      ],
     };
   },
   methods: {
-    setPlace(e){
-      this.center.lat = e.geometry.location.lat()
-      this.center.lng = e.geometry.location.lng()
-      this.markers[0].position.lat = e.geometry.location.lat()
-      this.markers[0].position.lng = e.geometry.location.lng()
-      this.item.latitude = e.geometry.location.lat()
-      this.item.longitude = e.geometry.location.lng()
-      this.item.address = e.formatted_address
+    setPlace(e) {
+      this.center.lat = e.geometry.location.lat();
+      this.center.lng = e.geometry.location.lng();
+      this.markers[0].position.lat = e.geometry.location.lat();
+      this.markers[0].position.lng = e.geometry.location.lng();
+      this.item.latitude = e.geometry.location.lat();
+      this.item.longitude = e.geometry.location.lng();
+      this.item.address = e.formatted_address;
     },
     afterDone() {
       this.modal_button.show = false;
@@ -242,10 +246,10 @@ export default {
           })
           .then((response) => {
             this.item = response.data;
-            this.center.lat = Number(response.data.latitude)
-            this.center.lng = Number(response.data.longitude)
-            this.markers[0].position.lat = Number(response.data.latitude)
-            this.markers[0].position.lng = Number(response.data.longitude)
+            this.center.lat = Number(response.data.latitude);
+            this.center.lng = Number(response.data.longitude);
+            this.markers[0].position.lat = Number(response.data.latitude);
+            this.markers[0].position.lng = Number(response.data.longitude);
           });
         this.alvRoute = route("customer.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";
@@ -254,6 +258,12 @@ export default {
       if (typeof e.ref.params._rawValue.show != "undefined") {
         this.disable = true;
       }
+    },
+    openModal() {
+      this.open = true;
+    },
+    closeModal() {
+      this.open = false;
     },
   },
 };
@@ -268,8 +278,6 @@ export default {
 
 ::v-deep .modal-content {
   position: relative;
-  display: flex;
-  flex-direction: column;
   margin: 0 1rem;
   padding: 1rem;
   border: 1px solid #e2e8f0;

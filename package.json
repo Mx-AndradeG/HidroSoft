@@ -24,6 +24,7 @@
         "@inertiajs/progress": "^0.2.7",
         "@myshell/alvue": "^1.2.4",
         "body-scroll-lock": "^4.0.0-beta.0",
+        "v-scroll-lock": "^1.3.1",
         "vue": "^3.2.31",
         "vue-final-modal": "^3.4.3",
         "vue-select": "^4.0.0-beta.3",

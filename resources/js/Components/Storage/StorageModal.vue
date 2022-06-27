@@ -5,7 +5,7 @@
       @beforeOpen="beforeOpen"
       name="customer_modal"
       content-style="border-radius:25px"
-      classes="modal-container w-50 modal-dialog modal-xl"
+      classes="w-50 modal-dialog modal-xl"
       body-scroll-lock="false"
       content-class="modal-content"
     >
@@ -20,7 +20,9 @@
       <!-- Section Modal Title -->
       <div class="row mt-1 text-center">
         <h3 class="col-12" style="font-weight: bold">
-          {{alvMethod == "POST" ? "Crear " : disable ? "Ver " : "Editar "}}Almacen
+          {{
+            alvMethod == "POST" ? "Crear " : disable ? "Ver " : "Editar "
+          }}Almacen
         </h3>
       </div>
       <!-- END Section Modal Title -->
@@ -61,6 +63,7 @@
                   :options="branches" 
                   label="name" :reduce="name => name.id"  
                   v-model="item.branch_id"/>
+
             </div>
             <div class="col-md-12">
               <label for="address" class="form-label mt-3">Ubicacion</label>
@@ -73,28 +76,35 @@
                 name="address"
                 id="address"
               />
-            <center class="mt-5">
-              <GMapMap
+              <center class="mt-5">
+                <GMapMap
                   :center="center"
                   :zoom="15"
                   map-type-id="terrain"
-                 style="width: 100%;  position: relative; overflow: hidden;height: 26rem;">
-                <GMapCluster>
-                  <GMapMarker
+                  style="
+                    width: 100%;
+                    position: relative;
+                    overflow: hidden;
+                    height: 26rem;
+                  "
+                >
+                  <GMapCluster>
+                    <GMapMarker
                       :key="index"
                       v-for="(m, index) in markers"
                       :position="m.position"
                       :clickable="true"
                       :draggable="false"
-                      @click="center=m.position"
-                  />
-                </GMapCluster>
-              </GMapMap>
-            </center>
+                      @click="center = m.position"
+                    />
+                  </GMapCluster>
+                </GMapMap>
+              </center>
             </div>
           </alv-form>
           <!-- END Put your code below -->
-        </div>-
+        </div>
+        -
       </div>
       <!-- END Section Modal Content -->
       <hr />
@@ -139,26 +149,26 @@ export default {
         main: "",
       },
       disable: false,
-      center: {lat: 51.093048, lng: 6.842120},
+      center: { lat: 51.093048, lng: 6.84212 },
       markers: [
         {
           position: {
-            lat: 51.093048, lng: 6.842120
+            lat: 51.093048,
+            lng: 6.84212,
           },
-        }
-        ,
-      ]
+        },
+      ],
     };
   },
   methods: {
-    setPlace(e){
-      this.center.lat = e.geometry.location.lat()
-      this.center.lng = e.geometry.location.lng()
-      this.markers[0].position.lat = e.geometry.location.lat()
-      this.markers[0].position.lng = e.geometry.location.lng()
-      this.item.latitude = e.geometry.location.lat()
-      this.item.longitude = e.geometry.location.lng()
-      this.item.address = e.formatted_address
+    setPlace(e) {
+      this.center.lat = e.geometry.location.lat();
+      this.center.lng = e.geometry.location.lng();
+      this.markers[0].position.lat = e.geometry.location.lat();
+      this.markers[0].position.lng = e.geometry.location.lng();
+      this.item.latitude = e.geometry.location.lat();
+      this.item.longitude = e.geometry.location.lng();
+      this.item.address = e.formatted_address;
     },
 
     afterDone() {
@@ -195,10 +205,10 @@ export default {
           })
           .then((response) => {
             this.item = response.data;
-            this.center.lat = Number(response.data.latitude)
-            this.center.lng = Number(response.data.longitude)
-            this.markers[0].position.lat = Number(response.data.latitude)
-            this.markers[0].position.lng = Number(response.data.longitude)
+            this.center.lat = Number(response.data.latitude);
+            this.center.lng = Number(response.data.longitude);
+            this.markers[0].position.lat = Number(response.data.latitude);
+            this.markers[0].position.lng = Number(response.data.longitude);
           });
         this.alvRoute = route("storage.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";

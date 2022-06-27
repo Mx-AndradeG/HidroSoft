@@ -11,6 +11,7 @@ import TableLite from 'vue3-table-lite';
 import Toast from "vue-toastification";
 import VueGoogleMaps from '@fawmi/vue-google-maps';
 import vSelect from 'vue-select';
+import VScrollLock from 'v-scroll-lock';
 
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
@@ -27,6 +28,7 @@ createInertiaApp({
         const inertiaApp = createApp({render: () => h(App, props)});
         inertiaApp.use(plugin);
         inertiaApp.use(alvue);
+        inertiaApp.use(VScrollLock);
         inertiaApp.use(Toast, {
             transition: "Vue-Toastification__bounce",
             maxToasts: 20,
