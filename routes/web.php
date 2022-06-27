@@ -29,4 +29,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     require __DIR__ . '/web/products/products.php';
     require __DIR__ . '/web/payment_method/payment_method.php';
     require __DIR__ . '/web/storage/storage.php';
+    require __DIR__ . '/web/user/user.php';
+    require __DIR__ . '/web/user_type/user_type.php';
+    require __DIR__ . '/web/inventory/inventory.php';
+    require __DIR__ . '/web/inventory_movement_types/inventory_movement_types.php';
+
+
 });

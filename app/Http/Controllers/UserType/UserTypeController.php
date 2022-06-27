@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Suppliers;
+namespace App\Http\Controllers\UserType;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Supplier\StoreSupplierRequest;
-use App\Models\Supplier\Supplier;
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\ValidateFirstStepRequest;
+use App\Http\Requests\User\ValidateSecondStepRequest;
+use App\Models\User;
+use App\Models\UserTypes\UserType;
+use App\Notifications\CompleateUserRegister;
 
-class SupplierController extends Controller
+class UserTypeController extends Controller
 {
     public function __construct()
     {
@@ -28,7 +32,7 @@ class SupplierController extends Controller
 
         array_push($columns, 'id');
 
-        $query = Supplier::query()->where('company_id', auth()->user()->company_id);
+        $query = UserType::query();
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -38,13 +42,13 @@ class SupplierController extends Controller
                         $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
                         $dates = explode(" a ", $value);
                         if (count($dates) > 1) {
-                            $supplier = $query->whereBetween($filter, [$dates[0], $dates[1]]);
+                            $user_types = $query->whereBetween($filter, [$dates[0], $dates[1]]);
                         } else {
-                            $supplier = $query->whereDate($filter, $dates[0]);
+                            $user_types = $query->whereDate($filter, $dates[0]);
                         }
                         break;
                     default:
-                        $supplier = $query->where($filter, 'LIKE', '%' . $value . '%');
+                        $user_types = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
                 }
             }
@@ -75,60 +79,5 @@ class SupplierController extends Controller
         });
 
         return compact("data", "count");
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreSupplierRequest $request
-     * @return
-     */
-    public function store(StoreSupplierRequest $request)
-    {
-        $supplier = new Supplier();
-        $supplier->fill($request->all());
-        $supplier->company_id = auth()->user()->company_id;
-        $supplier->save();
-        return $supplier;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Supplier $supplier
-     * @return array
-     */
-    public function show(Supplier $supplier)
-    {
-        $appends = json_decode(request()->get("appends", "[]"), true);
-        $columns = json_decode(request()->get("columns", "[]"), true);
-        array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at');
-        array_push($appends, 'formatted_created_at', 'formatted_updated_at');
-        return $supplier->append($appends)->only($columns);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param StoreSupplierRequest $request
-     * @param Supplier $category
-     * @return Supplier
-     */
-    public function update(StoreSupplierRequest $request, Supplier $supplier)
-    {
-        $supplier->fill($request->all());
-        $supplier->save();
-        return $supplier;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return Supplier
-     */
-    public function destroy(Supplier $supplier)
-    {
-        $supplier->delete();
-        return $supplier;
     }
 }

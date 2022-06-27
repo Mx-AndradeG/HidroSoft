@@ -25,5 +25,10 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return Inertia::render('Auth/Register', [ 'title' => 'Register',]);
 })->name('register');
+Route::get('/confim-password/{id}', function () {
+    return Inertia::render('Auth/ConfirmPassword', [ 'title' => 'ConfirmPassword',]);
+})->name('confirmPassword');
+
+Route::post('user/validation', [UserController::class, 'validation'])->name('user.validation');
 Route::post('user/first-step', [UserController::class, 'validateFirstStep'])->name('user.first.step');
 Route::post('user/second-step', [UserController::class, 'validateSecondStep'])->name('user.second.step');

@@ -32,6 +32,14 @@
         </a>
       </li>
       <!-- End Categories Nav -->
+                <!-- Start Categories Nav -->
+      <li class="nav-item">
+        <a :class="currentURL == '/inventory' ? 'nav-link' : 'nav-link collapsed'" :href="route('Inventory')">
+          <i class="bi bi-arrow-down-square"></i>
+          <span>Inventarios</span>
+        </a>
+      </li>
+      <!-- End Categories Nav -->
 
       <!-- End Dashboard Nav -->
       <li class="nav-heading">Catálogos</li>
@@ -70,6 +78,18 @@
         </a>
       </li>
       <!-- End Suppliers Nav -->
+
+      <!-- End Dashboard Nav -->
+        <li class="nav-heading">Administración</li>
+        
+        <li class="nav-item">
+        <a :class="currentURL == '/user' ? 'nav-link' : 'nav-link collapsed'" :href="route('User')">
+          <i class="bi bi-people"></i>
+          <span>Usuarios</span>
+        </a>
+      </li>
+      <!-- End Suppliers Nav -->
+    
     </ul>
   </aside>
   <!-- End Sidebar-->

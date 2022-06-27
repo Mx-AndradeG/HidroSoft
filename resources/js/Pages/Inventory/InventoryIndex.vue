@@ -2,11 +2,11 @@
   <div>
     <admin-layout>
       <div class="pagetitle">
-        <h1>Usuarios</h1>
+        <h1>Inventarios</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Administración</a></li>
-            <li class="breadcrumb-item active">Usuarios</li>
+            <li class="breadcrumb-item"><a href="index.html">Sucursales</a></li>
+            <li class="breadcrumb-item active">Inventarios</li>
           </ol>
         </nav>
       </div>
@@ -17,9 +17,9 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Usuarios</h5>
+                <h5 class="card-title">Inventarios</h5>
                 <div id="people">
-                  <user-table></user-table>
+                  <inventory-table></inventory-table>
                 </div>
               </div>
             </div>
@@ -32,11 +32,11 @@
 
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import UserTable from "../../Components/User/UserTable.vue";
+import InventoryTable from "../../Components/Inventory/InventoryTable.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "App",
-  components: { AdminLayout, UserTable },
+  components: { AdminLayout, InventoryTable },
 });
 </script>
