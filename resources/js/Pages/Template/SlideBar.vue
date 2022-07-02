@@ -12,6 +12,18 @@
         </a>
       </li>
 
+       <!-- End Dashboard Nav -->
+      <li class="nav-heading">Ventas</li>
+
+      <!-- Start Categories Nav -->
+      <li class="nav-item">
+        <a :class="currentURL == '/branch' ? 'nav-link' : 'nav-link collapsed'" :href="route('Branch')">
+          <i class="bi bi-grid"></i>
+          <span>Punto de venta</span>
+        </a>
+      </li>
+      <!-- End Categories Nav -->
+
       <!-- End Dashboard Nav -->
       <li class="nav-heading">Sucursales</li>
 
@@ -36,7 +48,7 @@
       <li class="nav-item">
         <a :class="currentURL == '/inventory' ? 'nav-link' : 'nav-link collapsed'" :href="route('Inventory')">
           <i class="bi bi-arrow-down-square"></i>
-          <span>Inventarios</span>
+          <span>Movimientos de inventario</span>
         </a>
       </li>
       <!-- End Categories Nav -->

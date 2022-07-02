@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models\Sale;
+
+use Carbon\Carbon;
+
+trait SaleAccessors
+{
+    public function getFormattedCreatedAtAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('Y-m-d');
+    }
+
+    public function getFormattedUpdatedAtAttribute()
+    {
+        return Carbon::parse($this->updated_at)->format('Y-m-d');
+    }
+
+    public function getCategoryNameAttribute()
+    {
+        return $this->category ? $this->category->name : '';
+    }
+   
+    public function getSupplierNameAttribute()
+    {
+        return $this->supplier ? $this->supplier->company_name : '';
+    }
+    
+}

@@ -96,7 +96,6 @@
               <table class="table table-sm">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Almacen</th>
                     <th scope="col">Producto</th>
                     <th scope="col">Cantidad</th>
@@ -105,7 +104,73 @@
                 </thead>
                 <tbody>
                   <tr v-for="(item, index) in item.entry_movements " :key="index">
-                    <th scope="row">1</th>
+                    <td>{{getStorageName(item.storage_id)}}</td>
+                    <td>{{getProductName(item.product_id)}}</td>
+                    <td>{{(item.quantity)}}</td>
+                    <td v-if="!disable">
+                       <button type="button" @click="removeItemEntry(item)" class="btn btn-danger d-flex justify-content-end">
+                          <i class="bi bi-trash-fill"></i>
+                       </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div v-if="item.inventory_movement_type_id == 2">
+            <div class="row" name="output_movements" v-if="!disable">
+              <div class="col-md-3">
+                <label for="company_name" class="form-label mt-3"
+                  >Almacen</label
+                >
+                <v-select 
+                  :disabled="disable" 
+                  name="storage_id" 
+                  id="storage_id" 
+                  :options="storages" 
+                  label="name" :reduce="name => name.id"  
+                  v-model="currentEntryMovement.storage_id"/>
+              </div>
+              <div class="col-md-3">
+                <label for="company_name" class="form-label mt-3">Producto</label>
+                  <v-select 
+                    :disabled="disable" 
+                    name="product_id" 
+                    id="product_id" 
+                    :options="products" 
+                    label="name" :reduce="name => name.id"  
+                    v-model="currentEntryMovement.product_id"/>
+              </div>
+              <div class="col-md-3">
+                <label for="inputEmailC" class="form-label mt-3"
+                  >Cantidad</label
+                >
+                <input
+                  :disabled="disable"
+                  v-model="currentEntryMovement.quantity"
+                  name="number"
+                  min="1"
+                  type="text"
+                  class="form-control"
+                  id="emailCustomer"
+                />
+              </div>
+              <div class="col-3 mt-6 d-flex justify-content-end">
+                <button type="button" @click="addMovement" class="btn btn-primary mt-5">Agregar</button>
+              </div>
+            </div>
+            <div class="row mt-5" v-if="item.entry_movements.length > 0">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Almacen</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col" v-if="!disable">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in item.entry_movements " :key="index">
                     <td>{{getStorageName(item.storage_id)}}</td>
                     <td>{{getProductName(item.product_id)}}</td>
                     <td>{{(item.quantity)}}</td>
@@ -164,6 +229,7 @@ export default {
       item: {
         inventory_movement_type_id: '',
         entry_movements: [],
+        output_movements: [],
       },
       currentEntryMovement: {
         storage_id: '',
@@ -171,6 +237,7 @@ export default {
         quantity: '',
       },
       disable: false,
+      num: 1,
     };
   },
   methods: {

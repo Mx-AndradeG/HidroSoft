@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('name',255);
             $table->string('description',255);
             $table->string('code',255);
-            $table->decimal('price',10,2);
+            $table->decimal('sale_price',10,2);
+            $table->decimal('purchase_price',10,2);
             $table->foreignIdFor(Category::class);
             $table->foreignIdFor(Supplier::class);
             $table->softDeletes();
