@@ -8,28 +8,16 @@ export default {
             isKey: true,
           },
           {
-            label: "Nombre",
-            field: "name",
+            label: "Tipo de movimiento",
+            field: "inventory_movement_type_name",
             width: "15%",
             sortable: true,
           },
           {
-            label: "Domicilio",
-            field: "address",
+            label: "Fecha de creación",
+            field: "formatted_created_at",
             width: "15%",
             sortable: true,
-          },
-          {
-            label: "Sucursal",
-            field: "branch_name",
-            width: "15%",
-            sortable: true,
-          },
-          {
-            label: "Fecha de registro",
-            field: "Formatted_created_at",
-            width: "3%",
-            sortable: false,
           },
           {
             label: "Acciones",

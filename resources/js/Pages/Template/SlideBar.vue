@@ -88,6 +88,12 @@
           <span>Usuarios</span>
         </a>
       </li>
+        <li class="nav-item">
+        <a :class="currentURL == '/user' ? 'nav-link' : 'nav-link collapsed'" :href="route('User')">
+          <i class="bi bi-people"></i>
+          <span>Bitácora</span>
+        </a>
+      </li>
       <!-- End Suppliers Nav -->
     
     </ul>

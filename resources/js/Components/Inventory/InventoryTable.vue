@@ -34,7 +34,7 @@
     >
       <template v-slot:actions="data">
         <div class="row">
-          <div class="col-4">
+          <div class="col-12">
             <a
               type="click"
               @click="
@@ -47,31 +47,6 @@
                 title="Ver registro"
                 class="ri-eye-fill fs-3"
                 style="color: forestgreen; cursor: pointer"
-              ></i>
-            </a>
-          </div>
-          <div class="col-4">
-            <a
-              type="click"
-              @click="$vfm.show('customer_modal', { id: data.value.id })"
-            >
-              <i
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Editar Cliente"
-                class="ri-edit-box-fill fs-3"
-                style="color: #0748db; cursor: pointer"
-              ></i>
-            </a>
-          </div>
-          <div class="col-4">
-            <a @click="deleteItem(data.value.id)">
-              <i
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Eliminar cliente"
-                class="ri-chat-delete-fill fs-3"
-                style="color: crimson; cursor: pointer"
               ></i>
             </a>
           </div>
@@ -129,13 +104,11 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
   _ascending = _ascending === "desc" ? "1" : "2";
   axios
     .get(
-      route("storage.index", {
+      route("inventory-movement.index", {
         columns: JSON.stringify([
           "id",
-          'name',
-          "address",
-          "branch_name",
-          "Formatted_created_at",
+          'inventory_movement_type_name',
+          'formatted_created_at'
         ]),
         limit: _limit,
         page: _offset + 1,
