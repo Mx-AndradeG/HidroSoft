@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Storage;
+namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Storage\StorageBranchRequest;
-use App\Models\Storage\Storage;
+use App\Http\Requests\Products\StoreProductRequest;
+use App\Models\Products\Product;
+use App\Models\Stock\Stock;
 
-class StorageController extends Controller
+class StocksController extends Controller
 {
     public function __construct()
     {
@@ -28,9 +29,7 @@ class StorageController extends Controller
 
         array_push($columns, 'id');
 
-        $query = Storage::query()->whereHas('branch', function ($query){
-            return $query->where('company_id', auth()->user()->company_id);
-        });
+        $query = Stock::query()->where('quantity', '>', 0);
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -40,13 +39,13 @@ class StorageController extends Controller
                         $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
                         $dates = explode(" a ", $value);
                         if (count($dates) > 1) {
-                            $storage = $query->whereBetween($filter, [$dates[0], $dates[1]]);
+                            $product = $query->whereBetween($filter, [$dates[0], $dates[1]]);
                         } else {
-                            $storage = $query->whereDate($filter, $dates[0]);
+                            $product = $query->whereDate($filter, $dates[0]);
                         }
                         break;
                     default:
-                        $storage = $query->where($filter, 'LIKE', '%' . $value . '%');
+                        $product = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
                 }
             }
@@ -77,60 +76,5 @@ class StorageController extends Controller
         });
 
         return compact("data", "count");
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StorageBranchRequest $request
-     * @return
-     */
-    public function store(StorageBranchRequest $request)
-    {
-        $storage = new Storage();
-        $storage->fill($request->all());  
-        $storage->main = true;
-        $storage->save();
-        return $storage;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Storage $storage
-     * @return array
-     */
-    public function show(Storage $storage)
-    {
-        $appends = json_decode(request()->get("appends", "[]"), true);
-        $columns = json_decode(request()->get("columns", "[]"), true);
-        array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at');
-        array_push($appends, 'formatted_created_at', 'formatted_updated_at');
-        return $storage->append($appends)->only($columns);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param StorageBranchRequest $request
-     * @param Storage $category
-     * @return Storage
-     */
-    public function update(StorageBranchRequest $request, Storage $storage)
-    {
-        $storage->fill($request->all());
-        $storage->save();
-        return $storage;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return Storage
-     */
-    public function destroy(Storage $storage)
-    {
-        $storage->delete();
-        return $storage;
     }
 }

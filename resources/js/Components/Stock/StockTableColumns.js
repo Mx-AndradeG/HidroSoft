@@ -8,24 +8,23 @@ export default {
             isKey: true,
           },
           {
-            label: "Tipo de movimiento",
-            field: "inventory_movement_type_name",
-            width: "15%",
+            label: "Nombre del producto",
+            field: "product_name",
+            width: "33%",
             sortable: true,
           },
           {
-            label: "Fecha de creación",
-            field: "formatted_created_at",
-            width: "15%",
+            label: "Almacen",
+            field: "storage_name",
+            width: "33%",
             sortable: true,
           },
           {
-            label: "Acciones",
-            field: "actions",
-            width: "3%",
-            sortable: false,
+            label: "Cantidad de unidades",
+            field: "quantity",
+            width: "33%",
+            sortable: true,
           },
-          
       ],
 }
       

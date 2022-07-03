@@ -2,16 +2,17 @@
 
 namespace App\Models\Stock;
 
-use App\Models\Categories\Category;
+use App\Models\Products\Product;
+use App\Models\Storage\Storage;
 use App\Models\Supplier\Supplier;
 
 trait StockRelationships
 {
-    public function category(){
-        return $this->belongsTo(Category::class);
+    public function product(){
+        return $this->belongsTo(Product::class);
     }
 
-    public function supplier(){
-        return $this->belongsTo(Supplier::class);
+    public function storage(){
+        return $this->belongsTo(Storage::class);
     }
 }
