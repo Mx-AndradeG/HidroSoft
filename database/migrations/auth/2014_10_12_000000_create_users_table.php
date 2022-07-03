@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Branch\Branch;
 use App\Models\Company\Company;
 use App\Models\UserTypes\UserType;
 use Illuminate\Database\Migrations\Migration;
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->foreignIdFor(Company::class)->nullable();
             $table->foreignIdFor(UserType::class)->nullable();
+            $table->foreignIdFor(Branch::class)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

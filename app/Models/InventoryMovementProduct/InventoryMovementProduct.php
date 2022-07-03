@@ -11,6 +11,7 @@ class InventoryMovementProduct extends Model
     use HasFactory;
     use SoftDeletes;
     use InventoryMovementProductRelationships;
+    use InventoryMovementProductActions;
 
     /**
      * The table associated with the model.

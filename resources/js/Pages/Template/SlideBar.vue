@@ -17,8 +17,8 @@
 
       <!-- Start Categories Nav -->
       <li class="nav-item">
-        <a :class="currentURL == '/branch' ? 'nav-link' : 'nav-link collapsed'" :href="route('Branch')">
-          <i class="bi bi-grid"></i>
+        <a :class="currentURL == '/point-of-sale' ? 'nav-link' : 'nav-link collapsed'" :href="route('PointOfSale')">
+          <i class="bi bi-currency-dollar"></i>
           <span>Punto de venta</span>
         </a>
       </li>
@@ -44,11 +44,19 @@
         </a>
       </li>
       <!-- End Categories Nav -->
-                <!-- Start Categories Nav -->
+      <!-- Start Categories Nav -->
       <li class="nav-item">
-        <a :class="currentURL == '/inventory' ? 'nav-link' : 'nav-link collapsed'" :href="route('Inventory')">
+        <a :class="currentURL == '/inventory-movements' ? 'nav-link' : 'nav-link collapsed'" :href="route('InventoryMovement')">
           <i class="bi bi-arrow-down-square"></i>
           <span>Movimientos de inventario</span>
+        </a>
+      </li>
+      <!-- End Categories Nav -->
+      <!-- Start Categories Nav -->
+      <li class="nav-item">
+        <a :class="currentURL == '/inventory' ? 'nav-link' : 'nav-link collapsed'" :href="route('Inventory')">
+          <i class="bi bi-truck"></i>
+          <span>Inventarios</span>
         </a>
       </li>
       <!-- End Categories Nav -->

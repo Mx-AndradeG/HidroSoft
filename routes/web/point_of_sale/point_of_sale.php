@@ -7,4 +7,4 @@ Route::get('point-of-sale/index', [BranchController::class, 'index'])->name('poi
 
 Route::apiResource('point_of_sale', BranchController::class, ['names' => 'branch']);
 
-Route::inertia('/branch', 'Branch/BranchIndex')->name('Branch');
+Route::inertia('/point-of-sale', 'PointOfSale/PointOfSaleIndex')->name('PointOfSale');

@@ -72,7 +72,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="inputName5" class="form-label mt-3">Codigo</label>
                 <input
                   :disabled="disable"
@@ -84,15 +84,27 @@
                   placeholder="12345678"
                 />
               </div>
-              <div class="col-md-6">
-                <label for="inputName5" class="form-label mt-3">Precio</label>
+              <div class="col-md-4">
+                <label for="inputName5" class="form-label mt-3">Precio de compra</label>
                 <input
                   :disabled="disable"
-                  v-model="item.price"
-                  name="price"
+                  v-model="item.purchase_price"
+                  name="purchase_price"
                   type="number"
                   class="form-control"
-                  id="price"
+                  id="purchase_price"
+                  placeholder="$123"
+                />
+              </div>
+              <div class="col-md-4">
+                <label for="inputName5" class="form-label mt-3">Precio de venta</label>
+                <input
+                  :disabled="disable"
+                  v-model="item.sale_price"
+                  name="sale_price"
+                  type="number"
+                  class="form-control"
+                  id="sale_price"
                   placeholder="$123"
                 />
               </div>
@@ -216,8 +228,9 @@ export default {
                 "name",
                 "description",
                 "category_id",
-                "price",
+                "sale_price",
                 "code",
+                "purchase_price",
                 "supplier_id",
               ]),
             },

@@ -1,0 +1,160 @@
+<template>
+  <div>
+    <div>
+      <div class="row mb-3">
+        <div class="col-6">
+          <input
+            v-model="valueFilter"
+            type="text"
+            class="form-control"
+            id="floatingInput"
+            placeholder="Escriba algo para buscar..."
+          />
+        </div>
+        <div class="col-6 d-flex justify-content-end">
+          <button
+            @click="$vfm.show('customer_modal')"
+            type="button"
+            class="btn btn-primary"
+          >
+            Nueva entrada
+          </button>
+        </div>
+      </div>
+    </div>
+    <TableLite
+      :is-loading="tableOptions.isLoading"
+      :columns="tableOptions.columns"
+      :rows="tableOptions.rows"
+      :sortable="tableOptions.sortable"
+      :total="tableOptions.total"
+      :messages="tableOptions.messages"
+      :is-slot-mode="true"
+      @do-search="getData"
+    >
+      <template v-slot:actions="data">
+        <div class="row">
+          <div class="col-12">
+            <a
+              type="click"
+              @click="
+                $vfm.show('customer_modal', { id: data.value.id, show: true })
+              "
+            >
+              <i
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Ver registro"
+                class="ri-eye-fill fs-3"
+                style="color: forestgreen; cursor: pointer"
+              ></i>
+            </a>
+          </div>
+        </div>
+      </template>
+    </TableLite>
+    <stock-table-columns @done="fin"></stock-table-columns>
+  </div>
+</template>
+
+
+
+<script setup>
+import StockTableColumns from "./StockTableColumns";
+import { onMounted, reactive } from "vue";
+import Swal from "sweetalert2";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
+const tableOptions = reactive({
+  columns: StockTableColumns.columns,
+  sortable: { order: "id", sort: "desc" },
+  isLoading: true,
+  messages: {
+    pagingInfo: "Mostrando {0}-{1} de {2}",
+    pageSizeChangeLabel: "Numero de registros:",
+    gotoPageLabel: "Ir a pagina:",
+    noDataAvailable: "Sin informacion",
+  },
+  rows: [],
+  total: 0,
+});
+
+const fin = () => {
+  getData(0, 10, "id", "desc");
+  toast.success("Accion realizada correctamente", {
+    position: "top-center",
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: true,
+    closeButton: "button",
+    icon: true,
+    rtl: false,
+  });
+};
+
+const getData = (_offset, _limit, _orderBy, _ascending) => {
+  tableOptions.isLoading = true;
+  _ascending = _ascending === "desc" ? "1" : "2";
+  axios
+    .get(
+      route("inventory-movement.index", {
+        columns: JSON.stringify([
+          "id",
+          'inventory_movement_type_name',
+          'formatted_created_at'
+        ]),
+        limit: _limit,
+        page: _offset + 1,
+        orderBy: _orderBy,
+        ascending: _ascending,
+      })
+    )
+    .then((response) => {
+      tableOptions.rows = response.data.data;
+      tableOptions.total = response.data.count;
+      tableOptions.isLoading = false;
+    });
+};
+
+const deleteItem = (_id) => {
+  Swal.fire({
+    title: "Eliminar registro",
+    text: "¿Esta seguro que quiere eliminar este registro?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "No, dejalo",
+    confirmButtonText: "Si, borralo!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axios.delete(route("storage.destroy", _id)).then((response) => {
+        getData(0, 10, "id", "desc");
+        toast.success("Proveedor borrado exitosamente", {
+          position: "top-center",
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: false,
+          closeButton: "button",
+          icon: true,
+          rtl: false,
+        });
+      });
+    }
+  });
+};
+
+onMounted(() => {
+  getData(0, 10, "id", "desc");
+});
+</script>

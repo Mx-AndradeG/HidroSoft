@@ -29,7 +29,8 @@ class Product extends Model
         'name',
         'description',
         'code',
-        'price',
+        'sale_price',
+        'purchase_price',
         'category_id',
         'supplier_id'
     ];

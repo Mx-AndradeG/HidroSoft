@@ -50,6 +50,7 @@ class CreateNewUser implements CreatesNewUsers
         $user->name = $input['user']['name'];
         $user->email = $input['user']['email'];
         $user->company_id = $company->id;
+        $user->branch_id = $branch->id;
         $user->user_type_id = UserType::ADMIN;
         $user->password = Hash::make($input['user']['password']);
         $user->save();

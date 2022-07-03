@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Company\Company;
-use App\Models\InventoryMovementType\InventoryMovementType;
-use App\Models\User;
+use App\Models\Products\Product;
+use App\Models\Storage\Storage;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,11 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('inventory_movements', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(InventoryMovementType::class);
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Company::class);
+            $table->foreignIdFor(Product::class);
+            $table->foreignIdFor(Storage::class);
+            $table->integer('quantity');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inventory_movements');
+        Schema::dropIfExists('stocks');
     }
 };

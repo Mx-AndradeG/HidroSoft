@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Models\InventoryMovement;
+namespace App\Models\Stock;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class InventoryMovement extends Model
+class Stock extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use InventoryMovementRelationships;
-    use InventoryMovementAccessors;
+    use StockRelationships;
+    use StockAccessors;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    public $table = 'inventory_movements';
+    public $table = 'stocks';
 
     /**
      * The attributes that are mass assignable.
@@ -26,8 +26,8 @@ class InventoryMovement extends Model
      * @var array
      */
     protected $fillable = [
-        'inventory_movement_type_id',
-        'user_id',
-        'company_id',
+        'product_id',
+        'storage_id',
+        'quantity',
     ];
 }

@@ -30,7 +30,7 @@ class InventoryMovementController extends Controller
 
         array_push($columns, 'id');
 
-        $query = InventoryMovement::query();
+        $query = InventoryMovement::query()->where('company_id', auth()->user()->company_id);
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -92,6 +92,7 @@ class InventoryMovementController extends Controller
                 $inventory_movement = new InventoryMovement();
                 $inventory_movement->inventory_movement_type_id = InventoryMovementType::ENTRY;
                 $inventory_movement->user_id = auth()->user()->id;
+                $inventory_movement->company_id = auth()->user()->company_id;
                 $inventory_movement->save();
                 foreach($request->entry_movements as $product){
                     $inventory_movement_product = new InventoryMovementProduct();
@@ -100,6 +101,7 @@ class InventoryMovementController extends Controller
                     $inventory_movement_product->storage_id =  $product['storage_id'];
                     $inventory_movement_product->quantity   =  $product['quantity'];
                     $inventory_movement_product->save();
+                    $inventory_movement_product->addStock();
                 }
             break;
         };
