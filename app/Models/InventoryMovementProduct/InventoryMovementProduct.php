@@ -1,33 +1,34 @@
 <?php
 
-namespace App\Models\InventoryMovementType;
+namespace App\Models\InventoryMovementProduct;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class InventoryMovementType extends Model
+class InventoryMovementProduct extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use InventoryMovementTypeRelationships;
+    use InventoryMovementProductRelationships;
+    use InventoryMovementProductActions;
 
-    const ENTRY = 1; 
-    const OUTPUT = 2; 
-    const TRANSFER = 3; 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    public $table = 'inventory_movement_types';
-    
+    public $table = 'inventory_movement_product';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name',
+        'inventory_movement_id',
+        'product_id',
+        'storage_id',
+        'quantity',
     ];
 }

@@ -1,33 +1,29 @@
 <template>
     <div>
-        <admin-layout>
-            <div class="card-body p-3">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Money</p>
-                    <h5 class="font-weight-bolder">
-                      $53,000
-                    </h5>
-                    <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">+55%</span>
-                      since yesterday
-                    </p>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
-                  </div>
-                </div>
-              </div>
-            </div>        
+    <admin-layout>
+      <div class="pagetitle">
+        <h1>Punto de venta</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Ventas</a></li>
+            <li class="breadcrumb-item active">Punto de venta</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+
+      <section class="section">
+        <div class="row">
+          <point-of-sale-table></point-of-sale-table>      
+        </div>
+      </section>
     </admin-layout>
-    </div>
+  </div>
 </template>
 
 <script>
 import  AdminLayout  from '@/Layouts/AdminLayout.vue'
+import PointOfSaleTable from "../../Components/PointOfSale/PointOfSaleTable.vue";
 
 export default ({
   data(){
@@ -35,6 +31,7 @@ export default ({
     },
     components: {
       AdminLayout,
+      PointOfSaleTable
   }
 })
 </script>

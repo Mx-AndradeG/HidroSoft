@@ -160,4 +160,10 @@ class UserController extends Controller
     {
         return true;
     }
+
+    public function getAuthUser()
+    {
+        $branch = auth()->user()->branch;
+        return $branch;
+    }
 }

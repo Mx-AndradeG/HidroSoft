@@ -26,8 +26,14 @@ export default {
             sortable: true,
           },
           {
-            label: "Precio",
-            field: "price",
+            label: "Precio de venta",
+            field: "sale_price",
+            width: "9%",
+            sortable: true,
+          },
+          {
+            label: "Precio de compra",
+            field: "purchase_price",
             width: "9%",
             sortable: true,
           },

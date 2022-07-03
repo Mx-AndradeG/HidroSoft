@@ -33,6 +33,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     require __DIR__ . '/web/user_type/user_type.php';
     require __DIR__ . '/web/inventory/inventory.php';
     require __DIR__ . '/web/inventory_movement_types/inventory_movement_types.php';
-
-
+    require __DIR__ . '/web/point_of_sale/point_of_sale.php';
+    require __DIR__ . '/web/inventory_movement/inventory_movement.php';
 });

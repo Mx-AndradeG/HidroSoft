@@ -53,15 +53,14 @@
         </div>
       </template>
     </TableLite>
-    <inventory-modal @done="fin"></inventory-modal>
+    <stock-table-columns @done="fin"></stock-table-columns>
   </div>
 </template>
 
 
 
 <script setup>
-import InventoryTableColumns from "./InventoryTableColumns";
-import InventoryModal from "./InventoryModal.vue";
+import StockTableColumns from "./StockTableColumns";
 import { onMounted, reactive } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
@@ -69,7 +68,7 @@ import { useToast } from "vue-toastification";
 const toast = useToast();
 
 const tableOptions = reactive({
-  columns: InventoryTableColumns.columns,
+  columns: StockTableColumns.columns,
   sortable: { order: "id", sort: "desc" },
   isLoading: true,
   messages: {
