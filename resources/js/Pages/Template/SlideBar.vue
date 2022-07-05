@@ -24,6 +24,15 @@
       </li>
       <!-- End Categories Nav -->
 
+      <!-- Start Categories Nav -->
+      <li class="nav-item">
+        <a :class="currentURL == '/point-of-sale' ? 'nav-link' : 'nav-link collapsed'" :href="route('PointOfSale')">
+          <i class="bi bi-currency-dollar"></i>
+          <span>Ventas realizadas</span>
+        </a>
+      </li>
+      <!-- End Categories Nav -->
+
       <!-- End Dashboard Nav -->
       <li class="nav-heading">Sucursales</li>
 

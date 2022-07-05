@@ -3,6 +3,7 @@
 namespace App\Models\Stock;
 
 use Carbon\Carbon;
+use Faker\Core\Number;
 
 trait StockAccessors
 {
@@ -21,9 +22,19 @@ trait StockAccessors
         return $this->product ? $this->product->name : '';
     }
 
+    public function getProductFormattNameAttribute()
+    {
+        return $this->product ? $this->product->name . '-' .$this->product->code  : '';
+    }
+
     public function getStorageNameAttribute()
     {
         return $this->storage ? $this->storage->name : '';
+
+    }
+    public function getProductPriceAttribute()
+    {
+        return $this->product ? doubleval($this->product->sale_price) : 0;
 
     }
 }

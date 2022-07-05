@@ -22,14 +22,15 @@ class StocksController extends Controller
     {
         $page = request()->get("page", false);
         $limit = request()->get("limit", false);
-        $orderBy = request()->get("orderBy", 'id');
+        $orderBy = request()->get("orderBy", 'stocks.id');
         $ascending = request()->get("ascending", "1");
         $filters = json_decode(request()->get("filters", "{}"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
 
         array_push($columns, 'id');
 
-        $query = Stock::query()->where('quantity', '>', 0);
+        $query = Stock::query()->where('quantity', '>', 0)
+                ->leftjoin('products', 'products.id', '=', 'stocks.product_id');
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -43,6 +44,9 @@ class StocksController extends Controller
                         } else {
                             $product = $query->whereDate($filter, $dates[0]);
                         }
+                        break;
+                    case 'pos_product_name':
+                        $product = $query->where('products.name', 'LIKE', '%' . $value . '%')->orWhere('products.code', 'LIKE', '%' . $value . '%');
                         break;
                     default:
                         $product = $query->where($filter, 'LIKE', '%' . $value . '%');

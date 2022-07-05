@@ -231,6 +231,11 @@ export default {
         entry_movements: [],
         output_movements: [],
       },
+      currentOutputMovement: {
+        storage_id: '',
+        product_id: '',
+        quantity: '',
+      },
       currentEntryMovement: {
         storage_id: '',
         product_id: '',
@@ -372,6 +377,59 @@ export default {
             this.products = response.data.data;
         });
     },
+  },
+  watch: {
+    'currentOutputMovement.storage_id': {
+      handler(newValue, oldValue) {
+        switch(this.item.inventory_movement_type_id){
+          case 1:
+            axios.get(route("product.index"),{ params:{
+                columns: JSON.stringify(['id','name'])
+              }}).then((response) => {
+                  this.products = response.data.data;
+              });
+          break;
+          case 2:
+            axios.get(route("stock.index", {
+            columns: JSON.stringify([
+              "product_id",
+              'product_name',
+              'storage_name',
+              'quantity'
+            ]),
+            filters: JSON.stringify({
+              'storage_id': newValue,
+            }),
+          }),
+        ).then((response) => {
+          this.products = response.data.data;
+        });
+          break;
+          default:
+          break;
+        }
+      },
+      deep: true,
+    },
+
+    'item.inventory_movement_type_id': {
+      handler(newValue, oldValue) {
+        this.products = [];	
+        this.currentEntryMovement = {
+          storage_id: '',
+          product_id: '',
+          quantity: '',
+        };
+        this.currentOutputMovement = {
+          storage_id: '',
+          product_id: '',
+          quantity: '',
+        };
+        
+      },
+      deep: true,
+    },
+
   },
 
   computed:{
