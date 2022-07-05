@@ -20,7 +20,7 @@
                                     >
                                         <template v-slot:no-options="{ search, searching }">
                                             <template style="opacity: 0.8" v-if="searching">
-                                                Puede que <strong><em>{{ search }}</em></strong> no tenga inventario o su almacén no sea principal
+                                                Puede que <strong><em>{{ search }}</em></strong> no tenga existencias.
                                             </template>
                                             <em v-else style="opacity: 0.8"
                                                 >No hay opciones para seleccionar.</em
@@ -34,27 +34,31 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title"> Lista de productos </h5>
-                            <table class="table table-borderless" v-if="current_produts.length > 0">
+                            <table class="table table-borderless" v-if="sale.current_produts.length > 0">
                             <thead>
                                 <tr>
                                     <th scope="col" style="background-color: #F6F6FE;">Producto</th>
-                                    <th scope="col" style="background-color: #F6F6FE;">Precio</th>
-                                    <th scope="col" style="background-color: #F6F6FE;">Cantidad</th>
-                                    <th scope="col" style="background-color: #F6F6FE;">Subtotal</th>
-                                    <th scope="col" style="background-color: #F6F6FE;">Total</th>
+                                    <th scope="col" style="background-color: #F6F6FE; text-align: center;">Precio</th>
+                                    <th scope="col" style="background-color: #F6F6FE; text-align: center;">Cantidad</th>
+                                    <th scope="col" style="background-color: #F6F6FE; text-align: center;">Subtotal</th>
+                                    <th scope="col" style="background-color: #F6F6FE; text-align: center;">Total</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr  v-for="(item, index) in current_produts " :key="index">
-                                    <td><a class="text-primary fw-bold">{{item.product_name}}</a></td>
-                                    <td>{{formatPrice(item.product_price, item.quantity_to_sale, 1 )}}</td>
-                                    <td > <input type="number" min="0" :max="item.quantity" v-model="item.quantity_to_sale"></td>
-                                    <td>{{formatPrice(item.product_price, item.quantity_to_sale, 2 )}}</td>
+                                <tr  v-for="(item, index) in sale.current_produts " :key="index">
+                                    <td><button type="button" class="btn btn-warning" @click="deletItem(item)"><i class="bi bi-trash"></i></button> <a class="text-primary fw-bold">{{item.product_name}}</a></td>
+                                    <td style="text-align: center;">{{formatPrice(item.product_price, item.quantity_to_sale, 1 )}}</td>
+                                    <td style="text-align: center;"> <vue-number-input :min="1" :max="item.quantity" v-model="item.quantity_to_sale" size="small" center inline controls></vue-number-input></td>
+                                    <td style="text-align: center;">{{formatPrice(item.product_price, item.quantity_to_sale, 2 )}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: end;">Total:</td>
+                                    <td colspan="1" style="text-align: center;">{{formatPrice(total_sale, 1, 2)}}</td>
                                 </tr>
                                 </tbody>
                             </table>
                             <div v-else style="text-align: center;">
-                                <img src="../../../Templates/NiceAdmin/img/undraw_deliveries_2r4y.svg" alt="" style="width:40%">
+                                <img src="../../../Templates/NiceAdmin/img/undraw_empty_cart_co35.svg" alt="" style="width:40%">
                                 <br> <br> <span class="h6 pt-4">Agrega productos</span>
                             </div>
                         </div>
@@ -63,7 +67,100 @@
                 <div class="col-xl-4 col-lg-4 col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Productos</h5>
+                           <div class="row pt-2">
+                            <div class="col-12 pt-2">
+                            <label for="inputName5" class="form-label">Cliente</label>
+                                <v-select
+                                    :disabled="disable"
+                                    class="p-2"
+                                    name="client_id" 
+                                    id="client_id" 
+                                    :options="customers"
+                                    label="name" 
+                                    :clearable="false"
+                                    :reduce="name => name.id"  
+                                    v-model="sale.client_id"
+                                >
+                                    <template v-slot:no-options="{ search, searching }">
+                                        <template style="opacity: 0.8" v-if="searching">
+                                            Puede que <strong><em>{{ search }}</em></strong> no este registrado como cliente.
+                                        </template>
+                                        <em v-else style="opacity: 0.8"
+                                            >No hay opciones para seleccionar.</em
+                                        >
+                                    </template>
+                                </v-select>
+                            </div>
+                            <div class="col-12 pt-4">
+                            <label for="inputName5" class="form-label">Metodo de pago</label>
+                                <v-select
+                                    :disabled="disable"
+                                    class="p-2"
+                                    name="payment_method_id" 
+                                    id="payment_method_id" 
+                                    :options="payment_methods"
+                                    label="name" 
+                                    :clearable="false"
+                                    :reduce="name => name.id"  
+                                    v-model="sale.payment_method_id"
+                                >
+                                    <template v-slot:no-options="{ search, searching }">
+                                        <template style="opacity: 0.8" v-if="searching">
+                                            Puede que <strong><em>{{ search }}</em></strong> no este registrado como metodo de pago.
+                                        </template>
+                                        <em v-else style="opacity: 0.8"
+                                            >No hay opciones para seleccionar.</em
+                                        >
+                                    </template>
+                                </v-select>
+                            </div>
+                            <div class="col-12 pt-4">
+                                <label for="inputName5" class="form-label">Agregar codigo de referencia</label>
+                                    <div class="p-2">
+                                        <input
+                                            :disabled="disable"
+                                            placeholder="Codigo para pagos con tarjeta"
+                                            v-model="sale.reference_code"
+                                            name="reference_code"
+                                            type="text"
+                                            class="form-control"
+                                            id="reference_code"
+                                        />
+                                    </div>
+                            </div>
+                             <div class="col-12 pt-4">
+                                <div class="p-2" style="text-align: center;">
+                                    <a class="text-primary fw-bold h5">Total de venta: {{formatPrice(total_sale, 1, 2)}}</a>
+                                </div>
+                            </div>
+                            <div class="col-12 pt-4">
+                                <label for="inputName5" class="form-label">Cantidad recibida</label>
+                                    <div class="p-2">
+                                        <input
+                                            :disabled="disable"
+                                            placeholder="$0.00"
+                                            v-model="sale.received_amount"
+                                            name="reference_code"
+                                            min="0"
+                                            step="0.01"
+                                            type="numeric"
+                                            class="form-control"
+                                            id="reference_code"
+                                        />
+                                    </div>
+                            </div>
+                            <div class="col-12 pt-4">
+                                <div class="d-grid gap-2 mt-3">
+                                    <button 
+                                        class="btn btn-primary" 
+                                        type="button"
+                                        :disabled="sale.received_amount < sale.total_sale || disable "
+                                        @click="sendData">
+                                        Pagar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -77,13 +174,23 @@
 <script>
 import { useToast } from "vue-toastification";
 const toast = useToast();
+import Swal from "sweetalert2";
 
 export default ({
   data(){
     return {
       storage_id:'',
       products: [],
-      current_produts: [],
+      customers: [],
+      payment_methods: [],
+      sale:{
+        current_produts: [],
+        client_id: '',
+        total_sale: 0,
+        payment_method_id: '',
+        reference_code: '',
+        received_amount: 0,
+      }
     }
     },
     components: {
@@ -119,7 +226,7 @@ export default ({
                 });
         }, 350),
         addItem(item) {
-            const index = this.current_produts.findIndex(i => i.id == item.id);
+            const index = this.sale.current_produts.findIndex(i => i.id == item.id);
             if(index != -1){
                 toast.warning("El producto ya esta en la lista.", {
                     position: "top-center",
@@ -136,9 +243,28 @@ export default ({
                 });
             }else{
                 item.quantity_to_sale = 1;
-                this.current_produts.push(item);
+                this.sale.current_produts.push(item);
+                this.products = [];
             }
 
+        },
+        sendData(){
+            var change = this.sale.received_amount - this.sale.total_sale;
+            var mensage =  change > 0 ? 'Quieres confirmar la venta con un cambio de ' + this.formatPrice(change, 1, 2) : 'Quieres confirmar la venta';
+            Swal.fire({
+                title: "Realizar venta",
+                text: mensage,
+                icon: "success",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                cancelButtonText: "No, cancelar",
+                confirmButtonText: "Si, cobrar!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                }
+            });
         },
         formatPrice(value, quantity, type) {
         switch(type){
@@ -157,14 +283,52 @@ export default ({
                     minimumFractionDigits: 2
                 });
                 return formatter.format(value * quantity);
-        }
-
-    },
+            }
+        },
+        deletItem(item) {
+            this.sale.current_produts.splice(item, 1);
+        },
   },	
   mounted() {
-      axios.get(route("user.getAuthUser")).then((response) => {
-          this.storage_id = response.data;
-      });
+        axios.get(route("user.getAuthUser")).then((response) => {
+            this.storage_id = response.data;
+             axios.get(route("payment-method.index", this.storage_id)).then(response => {
+                this.payment_methods = response.data;
+                if(this.payment_methods.length > 0){
+                    this.sale.payment_method_id = this.payment_methods[0].id;
+                }
+            }); 
+        });
+        axios.get(route("customer.index", {
+            columns: JSON.stringify([
+                "id",
+                "name",
+            ])})).then((response) => {
+            this.customers = response.data.data;
+            this.customers.push({
+                id: 0,
+                name: "Publico en general",
+            })
+            this.sale.client_id = 0;
+        });  
+       
+  },
+    computed:{
+        total_sale(){
+            var total = 0;
+            this.sale.current_produts.forEach(item => {
+                total += item.product_price * item.quantity_to_sale;
+            });
+            this.sale.total_sale = total;
+            return total;
+        },
+        disable(){
+            if(this.sale.current_produts.length > 0){
+                return false;
+            }else{
+                return true;
+            }
+        },
   }
 })
 </script>

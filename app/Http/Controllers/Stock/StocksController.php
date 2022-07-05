@@ -29,8 +29,7 @@ class StocksController extends Controller
 
         array_push($columns, 'id');
 
-        $query = Stock::query()->where('quantity', '>', 0)
-                ->leftjoin('products', 'products.id', '=', 'stocks.product_id');
+        $query = Stock::query()->where('quantity', '>', 0);
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -46,6 +45,7 @@ class StocksController extends Controller
                         }
                         break;
                     case 'pos_product_name':
+                        $query = Stock::query()->where('quantity', '>', 0)->leftjoin('products', 'products.id', '=', 'stocks.product_id');
                         $product = $query->where('products.name', 'LIKE', '%' . $value . '%')->orWhere('products.code', 'LIKE', '%' . $value . '%');
                         break;
                     default:

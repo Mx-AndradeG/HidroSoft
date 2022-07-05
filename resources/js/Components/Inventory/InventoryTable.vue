@@ -5,7 +5,7 @@
         <div class="col-6">
           <input
             v-model="valueFilter"
-            type="text"
+            type="text" 
             class="form-control"
             id="floatingInput"
             placeholder="Escriba algo para buscar..."
