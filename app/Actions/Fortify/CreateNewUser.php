@@ -31,7 +31,7 @@ class CreateNewUser implements CreatesNewUsers
         $company->save();
 
         $branch = new Branch();
-        $branch->name = 'Sucursar principal de: '. $input['company']['name'];
+        $branch->name = 'Sucursar principal';
         $branch->email = $input['company']['email'];
         $branch->phone = $input['company']['phone'];
         $branch->company_id = $company->id;
@@ -40,7 +40,7 @@ class CreateNewUser implements CreatesNewUsers
 
         
         $storage = new Storage();
-        $storage->name = 'Almacen principal de: ' . $input['company']['name'];
+        $storage->name = 'Almacen principal';
         $storage->branch_id = $branch->id;
         $storage->main = 1;
         $storage->save();

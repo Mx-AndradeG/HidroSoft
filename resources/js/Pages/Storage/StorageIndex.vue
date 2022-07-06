@@ -2,11 +2,11 @@
   <div>
     <admin-layout>
       <div class="pagetitle">
-        <h1>Inventarios</h1>
+        <h1>Almacenes</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Sucursales</a></li>
-            <li class="breadcrumb-item active">Inventarios</li>
+            <li class="breadcrumb-item active">Almacenes</li>
           </ol>
         </nav>
       </div>

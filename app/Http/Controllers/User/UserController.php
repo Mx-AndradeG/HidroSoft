@@ -7,6 +7,7 @@ use App\Http\Requests\User\PasswordRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\ValidateFirstStepRequest;
 use App\Http\Requests\User\ValidateSecondStepRequest;
+use App\Models\Storage\Storage;
 use App\Models\User;
 use App\Notifications\CompleateUserRegister;
 use Carbon\Carbon;
@@ -164,6 +165,11 @@ class UserController extends Controller
     public function getAuthUser()
     {
         $branch = auth()->user()->branch;
-        return $branch;
+        $storage = Storage::where('branch_id', $branch->id)->first();
+        
+        return [
+            'branch' => $branch,
+            'storage' => $storage
+        ];
     }
 }

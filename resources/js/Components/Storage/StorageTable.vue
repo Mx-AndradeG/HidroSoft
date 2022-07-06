@@ -71,7 +71,7 @@
               ></i>
             </a>
           </div>
-          <div class="col-4">
+          <div class="col-4" v-if="!data.value.has_stock" >
             <a @click="deleteItem(data.value.id)">
               <i
                 data-toggle="tooltip"
@@ -142,6 +142,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           'name',
           "address",
           "branch_name",
+          "has_stock",
           "Formatted_created_at",
         ]),
         limit: _limit,

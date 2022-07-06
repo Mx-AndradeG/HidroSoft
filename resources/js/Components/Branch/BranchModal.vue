@@ -203,8 +203,7 @@ export default {
       this.disable = false;
 
       if (typeof e.ref.params._rawValue.id != "undefined") {
-        axios
-          .get(route("branch.show", e.ref.params._rawValue.id), {
+        axios.get(route("branch.show", e.ref.params._rawValue.id), {
             params: {
               columns: JSON.stringify([
                 "name",

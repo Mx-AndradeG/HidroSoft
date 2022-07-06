@@ -89,6 +89,7 @@ class StorageController extends Controller
     {
         $storage = new Storage();
         $storage->fill($request->all());  
+        $storage->main = true;
         $storage->save();
         return $storage;
     }

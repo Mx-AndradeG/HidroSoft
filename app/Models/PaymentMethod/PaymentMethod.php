@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentMethod extends Model
 {
+    const CASH = '1';
+    const CARD = '2';
+
     use HasFactory;
     use SoftDeletes;
     use PaymentMethodRelationships;
@@ -27,6 +30,5 @@ class PaymentMethod extends Model
      */
     protected $fillable = [
         'name',
-        'branch_id'
     ];
 }

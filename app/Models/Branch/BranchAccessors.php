@@ -15,4 +15,9 @@ trait BranchAccessors
     {
         return Carbon::parse($this->updated_at)->format('Y-m-d');
     }
+
+    public function getHasStorageAttribute()
+    {
+        return $this->storage ? true : false;
+    }
 }
