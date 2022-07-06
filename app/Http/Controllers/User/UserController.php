@@ -166,6 +166,10 @@ class UserController extends Controller
     {
         $branch = auth()->user()->branch;
         $storage = Storage::where('branch_id', $branch->id)->first();
-        return $storage->id;
+        
+        return [
+            'branch' => $branch,
+            'storage' => $storage
+        ];
     }
 }

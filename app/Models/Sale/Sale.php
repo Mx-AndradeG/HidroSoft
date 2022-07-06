@@ -27,7 +27,9 @@ class Sale extends Model
      */
     protected $fillable = [
         'user_id',
-        'total',
-        'sale_code',
+        'total_sale',
+        'reference_code',
+        'customer_id',
+        'payment_method_id',
     ];
 }

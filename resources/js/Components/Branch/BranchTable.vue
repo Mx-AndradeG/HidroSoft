@@ -71,19 +71,7 @@
               ></i>
             </a>
           </div>
-          <div class="col-3">
-            <a @click="$vfm.show('payment_method_modal', { id: data.value.id })">
-              <i
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Crear metodo de pagó"
-                class="ri-money-dollar-circle-fill fs-4"
-                style="color: forestgreen; cursor: pointer"
-                
-              ></i>
-            </a>
-          </div>
-          <div class="col-3" v-if="!data.value.main">
+          <div class="col-3" v-if="!data.value.has_storage">
             <a @click="deleteItem(data.value.id)">
               <i
                 data-toggle="tooltip"
@@ -98,16 +86,14 @@
       </template>
     </TableLite>
     <branch-modal @done="fin"></branch-modal>
-    <branch-payment-methods-modal @done="fin"></branch-payment-methods-modal>
   </div>
-</template>
+</template>x
 
 
 
 <script setup>
 import BranchTableColumns from "./BranchTableColumns";
 import BranchModal from "./BranchModal.vue";
-import BranchPaymentMethodsModal from "./BranchPaymentMethodsModal.vue";
 import { onMounted, reactive } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
@@ -157,7 +143,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           "address",
           "phone",
           "rfc",
-          "main",
+          "has_storage",
           "Formatted_created_at",
         ]),
         limit: _limit,

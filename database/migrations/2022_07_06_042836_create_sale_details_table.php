@@ -19,8 +19,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Sale::class);
             $table->foreignIdFor(Product::class);
-            $table->decimal('quantity',10,2);
-            $table->decimal('price',10,2);
+            $table->integer('quantity');
+            $table->decimal('price', 10,2);
             $table->softDeletes();
             $table->timestamps();
         });

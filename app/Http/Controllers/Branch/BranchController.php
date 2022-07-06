@@ -26,6 +26,7 @@ class BranchController extends Controller
         $filters = json_decode(request()->get("filters", "{}"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
 
+        
         array_push($columns, 'id');
 
         $query = Branch::query()->where('company_id', auth()->user()->company_id);
@@ -41,6 +42,11 @@ class BranchController extends Controller
                             $branch = $query->whereBetween($filter, [$dates[0], $dates[1]]);
                         } else {
                             $branch = $query->whereDate($filter, $dates[0]);
+                        }
+                        break;
+                    case 'without_storage':
+                        if($value == '1'){
+                            $branch = $query->whereDoesntHave('storage');
                         }
                         break;
                     default:
@@ -98,8 +104,9 @@ class BranchController extends Controller
      * @param Branch $branch
      * @return array
      */
-    public function show(Branch $branch)
+    public function show($id)
     {
+        $branch = Branch::findOrFail($id);
         $appends = json_decode(request()->get("appends", "[]"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
         array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at');
@@ -114,8 +121,9 @@ class BranchController extends Controller
      * @param Branch $category
      * @return Branch
      */
-    public function update(StoreBranchRequest $request, Branch $branch)
+    public function update(StoreBranchRequest $request, $id)
     {
+        $branch = Branch::findOrFail($id);
         $branch->fill($request->all());
         $branch->save();
         return $branch;
@@ -126,8 +134,9 @@ class BranchController extends Controller
      *
      * @return Branch
      */
-    public function destroy(Branch $branch)
+    public function destroy($id)
     {
+        $branch = Branch::findOrFail($id);
         $branch->delete();
         return $branch;
     }

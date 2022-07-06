@@ -27,6 +27,9 @@
                                             >
                                         </template>
                                     </v-select>
+                                    <button class="input-group-text btn-primary" id="basic-addon3" @click="showModal"
+                                        >Ver existencias
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +117,7 @@
                                     </template>
                                 </v-select>
                             </div>
-                            <div class="col-12 pt-4">
+                            <div class="col-12 pt-4" v-if="see_reference_code">
                                 <label for="inputName5" class="form-label">Agregar codigo de referencia</label>
                                     <div class="p-2">
                                         <input
@@ -133,7 +136,7 @@
                                     <a class="text-primary fw-bold h5">Total de venta: {{formatPrice(total_sale, 1, 2)}}</a>
                                 </div>
                             </div>
-                            <div class="col-12 pt-4">
+                            <div class="col-12 pt-4" v-if="!see_reference_code">
                                 <label for="inputName5" class="form-label">Cantidad recibida</label>
                                     <div class="p-2">
                                         <input
@@ -149,7 +152,7 @@
                                         />
                                     </div>
                             </div>
-                            <div class="col-12 pt-4">
+                            <div class="col-12 pt-4" v-if="sale.payment_method_id == 1 ? true : false">
                                 <div class="d-grid gap-2 mt-3">
                                     <button 
                                         class="btn btn-primary" 
@@ -157,6 +160,17 @@
                                         :disabled="sale.received_amount < sale.total_sale || disable "
                                         @click="sendData">
                                         Pagar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-12 pt-4"  v-if="sale.payment_method_id == 2 ? true : false">
+                                <div class="d-grid gap-2 mt-3">
+                                    <button 
+                                        class="btn btn-primary" 
+                                        type="button"
+                                        :disabled="sale.reference_code != '' ? false : true"
+                                        @click="sendData">
+                                       Confirmar pago
                                     </button>
                                 </div>
                             </div>
@@ -183,6 +197,8 @@ export default ({
       products: [],
       customers: [],
       payment_methods: [],
+      current_storage: {},
+      current_branch: {},
       sale:{
         current_produts: [],
         client_id: '',
@@ -249,8 +265,17 @@ export default ({
 
         },
         sendData(){
-            var change = this.sale.received_amount - this.sale.total_sale;
-            var mensage =  change > 0 ? 'Quieres confirmar la venta con un cambio de ' + this.formatPrice(change, 1, 2) : 'Quieres confirmar la venta';
+            var mensage = '';
+            this.sale.total_sale = this.total_sale;
+             switch(this.sale.payment_method_id){
+                case 1:
+                    var change = this.sale.received_amount - this.sale.total_sale;
+                     mensage =  change > 0 ? 'Quieres confirmar la venta con un cambio de ' + this.formatPrice(change, 1, 2) : 'Quieres confirmar la venta';
+                    break;
+                case 2:
+                     mensage =  'Quieres confirmar la venta con codigo de referencia: ' + this.sale.reference_code;
+                    break;
+             }
             Swal.fire({
                 title: "Realizar venta",
                 text: mensage,
@@ -262,7 +287,42 @@ export default ({
                 confirmButtonText: "Si, cobrar!",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    
+                    axios.post(route('sales.store'), this.sale).then((response) => {
+                        toast.success("Venta realizada con exito.", {
+                            position: "top-center",
+                            closeOnClick: true,
+                            pauseOnFocusLoss: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            draggablePercent: 0.6,
+                            showCloseButtonOnHover: false,
+                            hideProgressBar: true,
+                            closeButton: "button",
+                            icon: true,
+                            rtl: false,
+                        });
+                        this.sale.current_produts = [];
+                        this.sale.total_sale = 0;
+                        this.sale.received_amount = 0;
+                        this.sale.reference_code = '';
+                        this.sale.payment_method_id = '';
+                        this.sale.client_id = '';
+                    })
+                    .catch((error) => {
+                        toast.error("Error al realizar la venta.", {
+                            position: "top-center",
+                            closeOnClick: true,
+                            pauseOnFocusLoss: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            draggablePercent: 0.6,
+                            showCloseButtonOnHover: false,
+                            hideProgressBar: true,
+                            closeButton: "button",
+                            icon: true,
+                            rtl: false,
+                        });
+                    });
                 }
             });
         },
@@ -291,14 +351,18 @@ export default ({
   },	
   mounted() {
         axios.get(route("user.getAuthUser")).then((response) => {
-            this.storage_id = response.data;
-             axios.get(route("payment-method.index", this.storage_id)).then(response => {
-                this.payment_methods = response.data;
-                if(this.payment_methods.length > 0){
-                    this.sale.payment_method_id = this.payment_methods[0].id;
-                }
-            }); 
+            this.current_storage = response.data.storage;
+            this.current_branch = response.data.branch;
+            this.storage_id = response.storage.id;
         });
+        axios.get(route("payment-method.index" , {
+            columns: JSON.stringify([
+                "id",
+                "name",
+            ])})).then(response => {
+            this.payment_methods = response.data.data;
+            this.sale.payment_method_id = this.payment_methods[1].id;
+        }); 
         axios.get(route("customer.index", {
             columns: JSON.stringify([
                 "id",
@@ -313,6 +377,13 @@ export default ({
         });  
        
   },
+    watch: {
+    'sale.payment_method_id'() {
+        this.sale.reference_code = '';
+        this.sale.received_amount = 0;
+    }
+  },
+  
     computed:{
         total_sale(){
             var total = 0;
@@ -329,6 +400,13 @@ export default ({
                 return true;
             }
         },
+        see_reference_code(){
+            if(this.sale.payment_method_id != 2){
+                return false;
+            }else{
+                return true;
+            }
+        }
   }
 })
 </script>

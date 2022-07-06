@@ -205,7 +205,6 @@ const deleteItem = (_id) => {
 };
 
 onMounted(() => {
-  getData(0, 10, "id", "desc");
   getBranchId()
 });
 </script>

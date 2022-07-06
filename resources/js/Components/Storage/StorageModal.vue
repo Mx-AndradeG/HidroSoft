@@ -220,11 +220,14 @@ export default {
     },
 
     getData(){
-      axios.get(route("branch.index"),{ params:{
-          columns: JSON.stringify(['id','name'])
-        }}).then((response) => {
+      axios.get(route("branch.index"),{ 
+        params:{
+          columns: JSON.stringify(['id','name']),
+          filters: JSON.stringify({
+              'without_storage': 1,
+          })}           
+        }).then((response) => {
           this.branches = response.data.data;
-          console.log(123)
       });
     },
   },
