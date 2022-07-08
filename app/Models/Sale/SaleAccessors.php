@@ -26,4 +26,5 @@ trait SaleAccessors
         return $this->supplier ? $this->supplier->company_name : '';
     }
     
+    
 }

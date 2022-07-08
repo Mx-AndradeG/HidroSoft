@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(Customer::class)->nullable();
             $table->foreignIdFor(PaymentMethod::class);
             $table->decimal('total_sale', 10,2);
-            $table->decimal('received_amount', 10,2);
+            $table->decimal('received_amount', 10,2)->nullable();
             $table->string('reference_code')->nullable();
             $table->softDeletes();
             $table->timestamps();
