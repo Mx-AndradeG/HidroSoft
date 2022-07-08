@@ -183,8 +183,12 @@ return [
         'finish_control_hour' => 'hora de fin',
         'address'   => 'direccion',
         'company_name'   => 'Nombre del proveedor',
-        'payment_methods' => 'Metodos de pago'
-
+        'payment_methods' => 'Metodos de pago',
+        'client_id' => 'Cliente',
+        'total_sale' => 'Total de venta',
+        'payment_method_id' => 'Metodo de pago',
+        'reference_code' => 'Codigo de referencia',
+        'received_amount' => 'Dinero recibido',
     ],
 
 ];

@@ -26,7 +26,7 @@
 
       <!-- Start Categories Nav -->
       <li class="nav-item">
-        <a :class="currentURL == '/point-of-sale' ? 'nav-link' : 'nav-link collapsed'" :href="route('PointOfSale')">
+        <a :class="currentURL == '/realized-sales' ? 'nav-link' : 'nav-link collapsed'" :href="route('RealizedSales')">
           <i class="bi bi-currency-dollar"></i>
           <span>Ventas realizadas</span>
         </a>
