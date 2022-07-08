@@ -45,7 +45,7 @@
             <a
               type="click"
               @click="
-                $vfm.show('customer_modal', { id: data.value.id, show: true })
+                $vfm.show('sale_modal', { id: data.value.id, show: true })
               "
             >
               <i
@@ -54,31 +54,6 @@
                 title="Ver registro"
                 class="ri-eye-fill fs-3"
                 style="color: forestgreen; cursor: pointer"
-              ></i>
-            </a>
-          </div>
-          <div class="col-4">
-            <a
-              type="click"
-              @click="$vfm.show('customer_modal', { id: data.value.id })"
-            >
-              <i
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Editar Cliente"
-                class="ri-edit-box-fill fs-3"
-                style="color: #0748db; cursor: pointer"
-              ></i>
-            </a>
-          </div>
-          <div class="col-4">
-            <a @click="deleteItem(data.value.id)">
-              <i
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Eliminar cliente"
-                class="ri-chat-delete-fill fs-3"
-                style="color: crimson; cursor: pointer"
               ></i>
             </a>
           </div>
@@ -139,13 +114,11 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
       route("sales.index", {
         columns: JSON.stringify([
           "id",
-          "user_id",
-          "branch_id",
-          "customer_id",
-          "payment_method_id",
-          "total_sale",
-          "received_amount",
-          "reference_code",
+          "user_name",
+          "branch_name",
+          "customer_name",
+          "payment_method_name",
+          "formatted_total_sale",
           "Formatted_created_at"
         ]),
         limit: _limit,

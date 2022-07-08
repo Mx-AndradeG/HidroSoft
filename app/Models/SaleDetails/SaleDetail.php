@@ -10,6 +10,8 @@ class SaleDetail extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use SaleDetailRelationships;
+    use SaleDetailAccessors;
     /**
      * The table associated with the model.
      *
