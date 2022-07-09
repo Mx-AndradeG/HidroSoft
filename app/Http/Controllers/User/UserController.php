@@ -172,4 +172,9 @@ class UserController extends Controller
             'storage' => $storage
         ];
     }
+
+    public function getCurrentAuthUser()
+    {
+        return auth()->user();
+    }
 }
