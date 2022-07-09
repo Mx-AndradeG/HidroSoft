@@ -3,7 +3,7 @@
     <vue-final-modal
       v-model="modal_button.show"
       @beforeOpen="beforeOpen"
-      name="customer_modal"
+      name="sale_modal"
       :lock-scroll="true"
       content-style="border-radius:25px"
       classes="w-50 modal-dialog modal-xl"
@@ -22,7 +22,7 @@
         <h3 class="col-12" style="font-weight: bold">
           {{
             alvMethod == "POST" ? "Crear " : disable ? "Ver " : "Editar "
-          }}Cliente
+          }}Detalles de venta
         </h3>
       </div>
       <!-- END Section Modal Title -->
@@ -43,12 +43,12 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="inputNameC" class="form-label"
-                  >Nombre del cliente</label
+                  >Usuario que vendio</label
                 >
                 <input
                   placeholder="Pepito peréz"
                   :disabled="disable"
-                  v-model="item.name"
+                  v-model="item.user_name"
                   name="name"
                   type="text"
                   class="form-control"
@@ -57,12 +57,12 @@
               </div>
               <div class="col-md-6">
                 <label for="inputSocialC" class="form-label"
-                  >Razón Social</label
+                  >Sucursal</label
                 >
                 <input
                   placeholder="Pepito peréz S.A de C.V"
                   :disabled="disable"
-                  v-model="item.social"
+                  v-model="item.branch_name"
                   name="social"
                   type="text"
                   class="form-control"
@@ -74,12 +74,12 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="inputEmailC" class="form-label"
-                  >Correo Electronico</label
+                  >Cliente</label
                 >
                 <input
                   placeholder="Pepito@correo.com"
                   :disabled="disable"
-                  v-model="item.email"
+                  v-model="item.customer_name"
                   name="email"
                   type="text"
                   class="form-control"
@@ -88,66 +88,66 @@
               </div>
 
               <div class="col-md-6">
-                <label for="inputPhoneC" class="form-label">Teléfono</label>
+                <label for="inputPhoneC" class="form-label">Metodo de pago</label>
                 <input
                   placeholder="449-123-23-45"
                   :disabled="disable"
-                  v-model="item.phone"
+                  v-model="item.payment_method_name"
                   name="phone"
                   type="text"
                   class="form-control"
                   id="phoneCustomer"
                 />
               </div>
-              <div class="col-md-12">
-                <label for="inputRFCC" class="form-label">RFC</label>
+              <div class="col-md-6">
+                <label for="inputPhoneC" class="form-label">Total de compra</label>
                 <input
-                  placeholder="AAAA991122330"
+                  placeholder="449-123-23-45"
                   :disabled="disable"
-                  v-model="item.rfc"
-                  name="rfc"
+                  v-model="item.formatted_total_sale"
+                  name="phone"
                   type="text"
                   class="form-control"
-                  id="rfcCustomer"
+                  id="phoneCustomer"
                 />
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <label for="inputAddressC" class="form-label">Dirección</label>
-                <GMapAutocomplete
-                  class="form-control"
-                  placeholder="Busca una localizacion"
-                  @place_changed="setPlace"
-                  :value="item.address"
+              <div class="col-md-6">
+                <label for="inputPhoneC" class="form-label">Fecha de compra</label>
+                <input
+                  placeholder="449-123-23-45"
                   :disabled="disable"
-                  name="address"
-                  id="address"
+                  v-model="item.Formatted_created_at"
+                  name="phone"
+                  type="text"
+                  class="form-control"
+                  id="phoneCustomer"
                 />
-                <center class="mt-5">
-                  <GMapMap
-                    :center="center"
-                    :zoom="15"
-                    map-type-id="terrain"
-                    style="
-                      width: 100%;
-                      position: relative;
-                      overflow: hidden;
-                      height: 26rem;
-                    "
-                  >
-                    <GMapCluster>
-                      <GMapMarker
-                        :key="index"
-                        v-for="(m, index) in markers"
-                        :position="m.position"
-                        :clickable="true"
-                        :draggable="false"
-                        @click="center = m.position"
-                      />
-                    </GMapCluster>
-                  </GMapMap>
-                </center>
+              </div>
+              <div class="col-12 pt-4">
+                  <h5 class="card-title"> Lista de productos </h5>
+                  <table class="table table-borderless">
+                  <thead>
+                      <tr>
+                          <th scope="col" style="background-color: #F6F6FE;">Producto</th>
+                          <th scope="col" style="background-color: #F6F6FE; text-align: center;">Precio</th>
+                          <th scope="col" style="background-color: #F6F6FE; text-align: center;">Cantidad</th>
+                          <th scope="col" style="background-color: #F6F6FE; text-align: center;">Subtotal</th>
+                          <th scope="col" style="background-color: #F6F6FE; text-align: center;">Total</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                       <tr  v-for="(item, index) in item.sale_formatt_details " :key="index">
+                          <td><a class="text-primary fw-bold">{{item.product_name}}</a></td>
+                          <td style="text-align: center;">{{item.price}}</td>
+                          <td style="text-align: center;"> {{item.quantity}} </td>
+                          <td style="text-align: center;">{{item.subtotal}}</td>
+                        </tr> 
+                      <tr>
+                          <td colspan="4" style="text-align: end;">Total:</td>
+                          <td colspan="1" style="text-align: center;">{{item.formatted_total_sale}}</td>
+                      </tr>
+                      </tbody>
+                  </table>
               </div>
             </div>
           </alv-form>
@@ -177,7 +177,7 @@
 
 <script>
 export default {
-  name: "customer_modal",
+  name: "sale_modal",
 
   data() {
     return {
@@ -187,7 +187,18 @@ export default {
       alvRoute: route("customer.store"),
       alvMethod: "PUT",
       event: [],
-      item: {},
+      payment_methods: [],
+      customers: [],
+      item: {
+        id: "",
+        user_name: "",
+        branch_name: "",
+        customer_name: "",
+        payment_method_name: "",
+        formatted_total_sale: "",
+        Formatted_created_at: "",
+        sale_formatt_details: [],
+      },
       disable: false,
       center: { lat: 51.093048, lng: 6.84212 },
       markers: [
@@ -201,55 +212,63 @@ export default {
     };
   },
   methods: {
-    setPlace(e) {
-      this.center.lat = e.geometry.location.lat();
-      this.center.lng = e.geometry.location.lng();
-      this.markers[0].position.lat = e.geometry.location.lat();
-      this.markers[0].position.lng = e.geometry.location.lng();
-      this.item.latitude = e.geometry.location.lat();
-      this.item.longitude = e.geometry.location.lng();
-      this.item.address = e.formatted_address;
-    },
     afterDone() {
       this.modal_button.show = false;
       this.$refs.form.unsetButtonLoading();
       this.$emit("done");
     },
+    formatPrice(value, quantity, type) {
+        switch(type){
+            case 1:
+                var formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2
+                });
+                return formatter.format(value);
+            break;
+            case 2:
+                var formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2
+                });
+                return formatter.format(value * quantity);
+            }
+    },
     beforeOpen(e) {
       this.alvRoute = route("customer.store");
       this.alvMethod = "POST";
       this.item = {
-        name: "",
-        address: "",
-        phone: "",
-        rfc: "",
-        email: "",
-        social: "",
+        id: "",
+        user_name: "",
+        branch_name: "",
+        customer_name: "",
+        payment_method_name: "",
+        formatted_total_sale: "",
+        Formatted_created_at: "",
+        sale_formatt_details: [],
       };
       this.disable = false;
 
       if (typeof e.ref.params._rawValue.id != "undefined") {
         axios
-          .get(route("customer.show", e.ref.params._rawValue.id), {
+          .get(route("sales.show", e.ref.params._rawValue.id), {
             params: {
               columns: JSON.stringify([
-                "name",
-                "address",
-                "phone",
-                "rfc",
-                "email",
-                "social",
-                "latitude",
-                "longitude",
+                  "id",
+                  "user_name",
+                  "branch_name",
+                  "customer_name",
+                  "payment_method_name",
+                  "formatted_total_sale",
+                  "Formatted_created_at",
+                  "sale_formatt_details"
               ]),
             },
           })
           .then((response) => {
             this.item = response.data;
-            this.center.lat = Number(response.data.latitude);
-            this.center.lng = Number(response.data.longitude);
-            this.markers[0].position.lat = Number(response.data.latitude);
-            this.markers[0].position.lng = Number(response.data.longitude);
           });
         this.alvRoute = route("customer.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";

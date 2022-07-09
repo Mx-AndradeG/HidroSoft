@@ -10,6 +10,8 @@ class SaleDetail extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use SaleDetailRelationships;
+    use SaleDetailAccessors;
     /**
      * The table associated with the model.
      *
@@ -27,5 +29,6 @@ class SaleDetail extends Model
         'product_id',
         'quantity',
         'price',
+        'purchase_price'
     ];
 }
