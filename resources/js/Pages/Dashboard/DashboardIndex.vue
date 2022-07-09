@@ -34,12 +34,12 @@
           <div class="col-lg-4">
             <donut-chart-current-info :range_id="range_id"></donut-chart-current-info>
           </div>
-          <div class="col-lg-8">
+          <div class="col-lg-12">
             <product-earning-table :range_id="range_id"></product-earning-table>
           </div>
-          <div class="col-lg-4">
+          <!-- <div class="col-lg-4">
             <donut-products-chart :range_id="range_id"></donut-products-chart>
-          </div>
+          </div> -->
         </div>
       </section>
     </admin-layout>
