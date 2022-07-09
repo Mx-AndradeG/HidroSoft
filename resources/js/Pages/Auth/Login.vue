@@ -100,6 +100,9 @@ export default {
                     remember: this.item.remember ? 'on' : ''
                 }))
                 .post(this.route('login'), {
+                    success: (response) => {
+                      console.log(response)
+                    },
                     onError: (errors) => {
                         if (Object.values(errors)[0])
                             this.$toast.open({duration: 2000, message: Object.values(errors)[0], type: "error"});
