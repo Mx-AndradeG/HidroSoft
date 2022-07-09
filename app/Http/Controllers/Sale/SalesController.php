@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Sale;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sale\StoreSaleRequest;
 use App\Models\Branch\Branch;
+use App\Models\Categories\Category;
 use App\Models\PaymentMethod\PaymentMethod;
+use App\Models\Products\Product;
 use App\Models\Sale\Sale;
 use PhpParser\Node\Stmt\Switch_;
 use Carbon\Carbon;
@@ -370,16 +372,149 @@ class SalesController extends Controller
                     'labels' => $labels,
                     'total_sales_data' => $total_sales_data,
                     'total_purchase_data' => $total_purchase_data,
-                    'total_earning_data' => $total_earning_data
+                    'total_earning_data' => $total_earning_data,
+                    'title' => 'Ventas del día (10 últimas)'
                 ];
             break;
             case 2:
-                // $current_date = Carbon::now()->startOfWeek()->toDateString();
-                // while($current_date <= Carbon::now()->endOfWeek()->toDateString()){
+                $current_date = Carbon::now()->startOfWeek();
+                $labels = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+                $total_sales_data = [];
+                $total_purchase_data = [];
+                $total_earning_data = [];
 
-                // }
+                while($current_date->toDateString() <= Carbon::now()->endOfWeek()->toDateString()){
+                    $sales_today = Sale::whereIn('branch_id', $branches_id)->whereDate('created_at',  $current_date)->get();
+                    $total_sales = 0;
+                    $total_purchase = 0;
+                    if($sales_today->count() > 0){
+                        array_push($total_sales_data, $sales_today->sum('total_sale'));                        
+                        foreach($sales_today as $sale){
+                            foreach($sale->sale_detail as $saleDetail){
+                                $total_purchase +=  ($saleDetail->purchase_price * $saleDetail->quantity);
+                            }
+                        }
+                    }else{
+                        array_push($total_sales_data, 0);                        
+                    }
+                    array_push($total_purchase_data, $total_purchase);
+                    array_push($total_earning_data, ($sales_today->sum('total_sale') - $total_purchase));
+                    $current_date = $current_date->addDay(1);
+                }
 
+                return [
+                    'labels' => $labels,
+                    'total_sales_data' => $total_sales_data,
+                    'total_purchase_data' => $total_purchase_data,
+                    'total_earning_data' => $total_earning_data,
+                    'title' => 'Ventas de la semana ('.Carbon::now()->week.') del: '.Carbon::now()->startOfWeek()->format('d-m-Y').' al '.Carbon::now()->endOfWeek()->format('d-m-Y')
+                ];
             break;
+            case 3:
+                $startOfMonth = now()->startOfMonth();
+                $endOfWeek = $startOfMonth->copy()->endOfWeek();
+                $ranges = [[$startOfMonth->toDateString(), $endOfWeek->toDateString()]];
+                while ($endOfWeek->copy()->addDay()->month == $startOfMonth->month) {
+                    $start = $endOfWeek->copy()->addDay();
+                    $end = $endOfWeek->copy()->addDay()->endOfWeek();
+                    array_push($ranges, [$start->toDateString(), ($end->month == $start->month ? $end :
+                        $start->copy()->endOfMonth())->toDateString()]);
+                    $endOfWeek = $endOfWeek->copy()->addDay()->endOfWeek();
+                }
+                $labels = [];
+                $total_sales_data = [];
+                $total_purchase_data = [];
+                $total_earning_data = [];
+
+                foreach ($ranges as $range) {
+                    $sales_today = Sale::whereIn('branch_id', $branches_id)->whereBetween('created_at', $range)->get();
+                    $total_purchase = 0;
+                    if($sales_today->count() > 0){
+                        foreach($sales_today as $sale){
+                            foreach($sale->sale_detail as $saleDetail){
+                                $total_purchase +=  ($saleDetail->purchase_price * $saleDetail->quantity);
+                            }
+                        }
+                        array_push($total_sales_data, $sales_today->sum('total_sale'));
+                    }else{
+                        array_push($total_sales_data, 0);                        
+                    }
+                    array_push($total_purchase_data, $total_purchase);
+                    array_push($total_earning_data, ($sales_today->sum('total_sale') - $total_purchase));
+                    array_push($labels, 'Semana ' . Carbon::parse($range[0])->week);
+                }
+
+
+                return [
+                    'labels' => $labels,
+                    'total_sales_data' => $total_sales_data,
+                    'total_purchase_data' => $total_purchase_data,
+                    'total_earning_data' => $total_earning_data,
+                    'title' => 'Ventas de mes ('.Carbon::now()->month.') del: '.Carbon::now()->startOfMonth()->format('d-m-Y').' al '.Carbon::now()->endOfMonth()->format('d-m-Y')
+                ];
+            break;
+
+            case 4:
+                $labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                $total_sales_data = [];
+                $total_purchase_data = [];
+                $total_earning_data = [];
+        
+                for ($i = 0; $i < 12; $i++) {
+                    $sales_month = Sale::query()->whereMonth('created_at', $i + 1)->whereYear('created_at', now()->year)->get();
+                    $total_purchase = 0;
+
+                    if($sales_month->count() > 0){
+                        foreach($sales_month as $sale){
+                            foreach($sale->sale_detail as $saleDetail){
+                                $total_purchase +=  ($saleDetail->purchase_price * $saleDetail->quantity);
+                            }
+                        }
+                        array_push($total_sales_data, $sales_month->sum('total_sale'));
+                    }else{
+                        array_push($total_sales_data, 0);                        
+                    }
+                    array_push($total_purchase_data, $total_purchase);
+                    array_push($total_earning_data, ($sales_month->sum('total_sale') - $total_purchase));
+                    
+
+                }
+        
+                return [
+                    'labels' => $labels,
+                    'total_sales_data' => $total_sales_data,
+                    'total_purchase_data' => $total_purchase_data,
+                    'total_earning_data' => $total_earning_data,
+                    'title' => 'Ventas del año ('.Carbon::now()->year.')'
+                ];
+            break;
+
         }
+    }
+
+    public function mostEarnedPerProduct(){
+        $categories_id = Category::where('company_id', auth()->user()->company_id)->pluck('id');
+        $products = Product::query()->whereIn('category_id', $categories_id)->get();
+        $earnings = [];
+        foreach($products as $product){
+            $earnings[$product->id] = $product->sale_price - $product->purchase_price;
+        }
+        arsort($earnings);
+        $final_data = [];
+        foreach($earnings as $key => $value) {
+            $product = Product::findOrFail($key);
+            array_push($final_data, [
+                'name' => $product->name,
+                'sale_price' => $product->sale_price,
+                'purchase_price' => $product->purchase_price,
+                'earning' => $value
+            ]);
+          }
+        $final_data = array_slice($final_data, 0, 9);
+        return $final_data;
+    }
+
+    public function mostProductSold(){
+        //trabajar con la base de datos
     }
 }

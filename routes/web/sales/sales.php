@@ -11,5 +11,7 @@ Route::get('sale/sales-pie-chart-info', [SalesController::class, 'chartPieDataDa
 
 Route::get('sale/sales-bar-chart-info', [SalesController::class, 'barDataChartDashboard'])->name('sales.bar.info');
 
+Route::get('sale/most-erned-per-product', [SalesController::class, 'mostEarnedPerProduct'])->name('sales.erned.product');
+
 Route::apiResource('sales', SalesController::class, ['names' => 'sales']);
 

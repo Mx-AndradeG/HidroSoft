@@ -50,22 +50,22 @@ export default ({
                   {
                   label: "Total de venta",
                   data: [3, 5, 2, 2, 49, 72, 27, 14],
-                  backgroundColor: "rgb(66, 114, 191)",
+                  backgroundColor: "#5282F0",
                   borderColor: "#133B7D",
                   borderWidth: 3
                   },
                   {
                   label: "Ganancia de venta",
                   data: [78, 3, 6, 1, 60, 42, 77, 74],
-                  backgroundColor: "rgb(66, 114, 191)",
-                  borderColor: "#133B7D",
+                  backgroundColor: "#86F32C",
+                  borderColor: "#7BF913",
                   borderWidth: 3
                   },
                   {
                   label: "Costo de productos",
                   data: [0, 0, 1, 2, 79, 82, 27, 14],
-                  backgroundColor: "rgb(66, 114, 191)",
-                  borderColor: "#133B7D",
+                  backgroundColor: "#F9DF51",
+                  borderColor: "#FADB2C",
                   borderWidth: 3
                   },
               ]
@@ -106,6 +106,7 @@ export default ({
                 this.chartData.data.datasets[0].data = response.data.total_sales_data;
                 this.chartData.data.datasets[1].data = response.data.total_earning_data;
                 this.chartData.data.datasets[2].data = response.data.total_purchase_data;
+                this.chartData.options.plugins.title.text = response.data.title;
 
                 const ctx = document.getElementById('week-chart');
                 if(this.myChart){

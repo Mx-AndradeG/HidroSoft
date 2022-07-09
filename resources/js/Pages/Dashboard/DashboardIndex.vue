@@ -34,6 +34,12 @@
           <div class="col-lg-4">
             <donut-chart-current-info :range_id="range_id"></donut-chart-current-info>
           </div>
+          <div class="col-lg-8">
+            <product-earning-table :range_id="range_id"></product-earning-table>
+          </div>
+          <div class="col-lg-4">
+            <donut-products-chart :range_id="range_id"></donut-products-chart>
+          </div>
         </div>
       </section>
     </admin-layout>
@@ -45,6 +51,8 @@ import  AdminLayout  from '@/Layouts/AdminLayout.vue'
 import  HeaderDashboard  from './HeaderDashboard.vue'
 import  ChartCurrentInfo  from './ChartCurrentInfo.vue'
 import  DonutChartCurrentInfo  from './DonutChartCurrentInfo.vue'
+import  ProductEarningTable  from './ProductEarningTable.vue'
+import  DonutProductsChart  from './DonutProductsChart.vue'
 
 export default ({
   data(){
@@ -76,6 +84,8 @@ export default ({
       HeaderDashboard,
       ChartCurrentInfo,
       DonutChartCurrentInfo,
+      ProductEarningTable,
+      DonutProductsChart
   }
 })
 </script>
