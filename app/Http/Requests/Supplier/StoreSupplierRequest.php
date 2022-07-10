@@ -27,11 +27,11 @@ class StoreSupplierRequest extends FormRequest
     public function rules()
     {
         return [
-            'company_name'      => ['required', 'string', 'min:3', 'max:255'],
-            'address'   => 'required|string|min:3|max:255',
-            'phone'     => ['required', new ValidatePhoneRule()],
-            'latitude'  => 'required',
-            'longitude'  => 'required',
+            'company_name'  => ['required', 'string', 'min:3', 'max:255'],
+            'address'       => 'nullable|string|min:3|max:255',
+            'phone'         => ['required', new ValidatePhoneRule()],
+            'latitude'      => 'nullable',
+            'longitude'     => 'nullable',
         ];
     }
 }
