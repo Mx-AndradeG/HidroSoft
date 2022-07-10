@@ -1,13 +1,6 @@
 export default {
      columns: [
           {
-            label: "ID",
-            field: "id",
-            width: "3%",
-            sortable: true,
-            isKey: true,
-          },
-          {
             label: "Nombre",
             field: "company_name",
             width: "15%",

@@ -28,13 +28,13 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name'          => ['required', 'string', 'min:3', 'max:255', new ValidateNameCustomerRule()],
-            'address'          => 'required|string|min:3|max:255',
-            'phone'          => ['required', new ValidatePhoneRule()],
-            'rfc'          => ['required', new ValidateRfcRule()],
-            'email'          => 'required|email',
-            'social'          => 'string|min:3|max:255',
-            'latitude'  => 'required',
-            'longitude'  => 'required',
+            'address'       => 'nullable|string|min:3|max:255',
+            'phone'         => ['required', new ValidatePhoneRule()],
+            'rfc'           => ['nullable', new ValidateRfcRule()],
+            'email'         => 'nullable|email',
+            'social'        => 'nullable|string|min:3|max:255',
+            'latitude'      => 'nullable',
+            'longitude'     => 'nullable',
         ];
     }
 }
