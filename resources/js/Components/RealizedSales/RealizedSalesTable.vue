@@ -39,6 +39,12 @@
       :is-slot-mode="true"
       @do-search="getData"
     >
+      <template v-slot:payment_method_name="data">
+        <span :class="data.value.payment_method_name == 'Efectivo' ? 'badge bg-success': 'badge bg-primary'"> 
+          {{(data.value.payment_method_name)}}
+        </span>
+      </template>
+
       <template v-slot:actions="data">
         <div class="row">
           <div class="col-4">

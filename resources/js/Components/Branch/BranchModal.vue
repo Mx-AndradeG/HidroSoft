@@ -141,7 +141,7 @@
             class="w-100 btn btn-outline-primary d-flex justify-content-center"
           >
             <i class="ri-download-2-line"></i>
-            <span style="margin-left: 3px">Guardar datos</span>
+            <span style="margin-left: 3px">Guardar </span>
           </button>
         </div>
       </div>
@@ -252,4 +252,8 @@ export default {
   border-radius: 0.25rem;
   background: #fff;
 }
+.vfm--inset{
+  overflow-y: scroll !important;
+}
+
 </style>

@@ -19,8 +19,11 @@
                     :is-slot-mode="true"
                     @do-search="getData">
 
-                    <template v-slot:price="data">
-                        $ {{data.value.price}}
+                    <template v-slot:sale_price="data">
+                         {{formatPrice(data.value.sale_price)}}
+                    </template>
+                    <template v-slot:purchase_price="data">
+                         {{formatPrice(data.value.sale_price)}}
                     </template>
 
                     <template v-slot:actions="data">
@@ -51,6 +54,15 @@ import Swal from 'sweetalert2'
 import { useToast } from "vue-toastification";
 
 const toast = useToast()
+
+const formatPrice = (value) => {
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    });
+    return formatter.format(value);
+}
 
 const tableOptions = reactive({
         columns: ProductTableColumns.columns,

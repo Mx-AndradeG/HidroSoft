@@ -33,19 +33,19 @@ export default {
           {
             label: "Proveedor",
             field: "supplier_name",
-            width: "15%",
+            width: "9%",
             sortable: true,
           },
           {
             label: "Categoria",
             field: "category_name",
-            width: "15%",
+            width: "9%",
             sortable: true,
           },
           {
             label: "Fecha de registro",
             field: "Formatted_created_at",
-            width: "3%",
+            width: "8%",
             sortable: false,
           },
           {
