@@ -365,7 +365,7 @@ export default {
           this.inventoryMovementTypes = response.data.data;
       });
       
-      axios.get(route("storage.index"),{ params:{
+      axios.get(route("wherehouses.index"),{ params:{
           columns: JSON.stringify(['id','name'])
         }}).then((response) => {
           this.storages = response.data.data;

@@ -132,7 +132,7 @@ const show = ref(false);
 
 
  const getBranchId = () => {
-      axios.get(route("storage.index", {
+      axios.get(route("wherehouses.index", {
         columns: JSON.stringify([ "id","name",])
       })).then((response) => {
         storages.value = response.data.data;
@@ -184,7 +184,7 @@ const deleteItem = (_id) => {
     confirmButtonText: "Si, borralo!",
   }).then((result) => {
     if (result.isConfirmed) {
-      axios.delete(route("storage.destroy", _id)).then((response) => {
+      axios.delete(route("wherehouses.destroy", _id)).then((response) => {
         getData(0, 10, "id", "desc");
         toast.success("Proveedor borrado exitosamente", {
           position: "top-center",

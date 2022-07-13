@@ -351,9 +351,9 @@ export default ({
   },	
   mounted() {
         axios.get(route("user.getAuthUser")).then((response) => {
-            this.current_storage = response.data.storage;
+            this.current_storage = response.data.wherehouses;
             this.current_branch = response.data.branch;
-            this.storage_id = response.storage.id;
+            this.storage_id = response.wherehouses.id;
         });
         axios.get(route("payment-method.index" , {
             columns: JSON.stringify([

@@ -3,7 +3,7 @@
         <div>
             <div class="row mb-3 ">
                 <div class="col-6">
-                        <input v-model="valueFilter" type="text" class="form-control" id="floatingInput" placeholder="Escriba algo para buscar...">
+                        <input v-model="valueFilter" @keyup="sharedItem" type="text" class="form-control" id="floatingInput" placeholder="Escriba algo para buscar...">
                 </div>
                 <div class="col-6 d-flex justify-content-end">
                      <button type="button" class="btn btn-outline-primary" style="margin-right: 1rem;">Exportar</button>
@@ -82,6 +82,10 @@ axios.get(route("categories.index", {columns: JSON.stringify(['id','name','descr
             tableOptions.total = response.data.count;
             tableOptions.isLoading = false;
     });
+}
+
+const sharedItem = () => {
+    console.log(1);
 }
 
 const deleteItem = (_id) =>{

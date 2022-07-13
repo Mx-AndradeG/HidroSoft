@@ -3,8 +3,8 @@
 use App\Http\Controllers\Storage\StorageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('storage/index', [StorageController::class, 'index'])->name('storage.index');
+Route::get('wherehouses/index', [StorageController::class, 'index'])->name('wherehouses.index');
 
-Route::apiResource('storage', StorageController::class, ['names' => 'storage']);
+Route::apiResource('wherehouses', StorageController::class, ['names' => 'wherehouses']);
 
-Route::inertia('/storage', 'Storage/StorageIndex')->name('Storage');
+Route::inertia('/wherehouses', 'Storage/StorageIndex')->name('Wherehouses');
