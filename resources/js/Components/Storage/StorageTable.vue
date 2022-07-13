@@ -136,7 +136,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
   _ascending = _ascending === "desc" ? "1" : "2";
   axios
     .get(
-      route("storage.index", {
+      route("wherehouses.index", {
         columns: JSON.stringify([
           "id",
           'name',
@@ -170,7 +170,7 @@ const deleteItem = (_id) => {
     confirmButtonText: "Si, borralo!",
   }).then((result) => {
     if (result.isConfirmed) {
-      axios.delete(route("storage.destroy", _id)).then((response) => {
+      axios.delete(route("wherehouses.destroy", _id)).then((response) => {
         getData(0, 10, "id", "desc");
         toast.success("Proveedor borrado exitosamente", {
           position: "top-center",

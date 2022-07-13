@@ -47,7 +47,7 @@
 
           <!-- Start Categories Nav -->
       <li class="nav-item">
-        <a :class="currentURL == '/storage' ? 'nav-link' : 'nav-link collapsed'" :href="route('Storage')">
+        <a :class="currentURL == '/wherehouses' ? 'nav-link' : 'nav-link collapsed'" :href="route('Wherehouses')">
           <i class="bi bi-truck"></i>
           <span>Almacenes</span>
         </a>

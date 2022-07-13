@@ -136,7 +136,7 @@ export default {
       modal_button: {
         show: false,
       },
-      alvRoute: route("storage.store"),
+      alvRoute: route("wherehouses.store"),
       alvMethod: "PUT",
       event: [],
       branches: [],
@@ -178,7 +178,7 @@ export default {
     },
     beforeOpen(e) {
       this.getData();
-      this.alvRoute = route("storage.store");
+      this.alvRoute = route("wherehouses.store");
       this.alvMethod = "POST";
       this.item = {
         name: "",
@@ -192,7 +192,7 @@ export default {
 
       if (typeof e.ref.params._rawValue.id != "undefined") {
         axios
-          .get(route("storage.show", e.ref.params._rawValue.id), {
+          .get(route("wherehouses.show", e.ref.params._rawValue.id), {
             params: {
               columns: JSON.stringify([
                 "name",
@@ -204,19 +204,29 @@ export default {
             },
           })
           .then((response) => {
+            this.getDataEdit();
             this.item = response.data;
             this.center.lat = Number(response.data.latitude);
             this.center.lng = Number(response.data.longitude);
             this.markers[0].position.lat = Number(response.data.latitude);
             this.markers[0].position.lng = Number(response.data.longitude);
           });
-        this.alvRoute = route("storage.update", e.ref.params._rawValue.id);
+        this.alvRoute = route("wherehouses.update", e.ref.params._rawValue.id);
         this.alvMethod = "PUT";
         this.disable = false;
       }
       if (typeof e.ref.params._rawValue.show != "undefined") {
         this.disable = true;
       }
+    },
+
+    getDataEdit(){
+      axios.get(route("branch.index"),{ 
+        params:{
+          columns: JSON.stringify(['id','name'])}           
+        }).then((response) => {
+          this.branches = response.data.data;
+      });
     },
 
     getData(){

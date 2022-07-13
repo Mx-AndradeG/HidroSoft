@@ -40,13 +40,13 @@ class StorageController extends Controller
                         $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
                         $dates = explode(" a ", $value);
                         if (count($dates) > 1) {
-                            $storage = $query->whereBetween($filter, [$dates[0], $dates[1]]);
+                            $wherehouse = $query->whereBetween($filter, [$dates[0], $dates[1]]);
                         } else {
-                            $storage = $query->whereDate($filter, $dates[0]);
+                            $wherehouse = $query->whereDate($filter, $dates[0]);
                         }
                         break;
                     default:
-                        $storage = $query->where($filter, 'LIKE', '%' . $value . '%');
+                        $wherehouse = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
                 }
             }
@@ -80,57 +80,57 @@ class StorageController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in wherehouse.
      *
      * @param StorageBranchRequest $request
      * @return
      */
     public function store(StorageBranchRequest $request)
     {
-        $storage = new Storage();
-        $storage->fill($request->all());  
-        $storage->main = true;
-        $storage->save();
-        return $storage;
+        $wherehouse = new Storage();
+        $wherehouse->fill($request->all());  
+        $wherehouse->main = true;
+        $wherehouse->save();
+        return $wherehouse;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Storage $storage
+     * @param Storage $wherehouse
      * @return array
      */
-    public function show(Storage $storage)
+    public function show(Storage $wherehouse)
     {
         $appends = json_decode(request()->get("appends", "[]"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
         array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at');
         array_push($appends, 'formatted_created_at', 'formatted_updated_at');
-        return $storage->append($appends)->only($columns);
+        return $wherehouse->append($appends)->only($columns);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in wherehouse.
      *
      * @param StorageBranchRequest $request
      * @param Storage $category
      * @return Storage
      */
-    public function update(StorageBranchRequest $request, Storage $storage)
+    public function update(StorageBranchRequest $request, Storage $wherehouse)
     {
-        $storage->fill($request->all());
-        $storage->save();
-        return $storage;
+        $wherehouse->fill($request->all());
+        $wherehouse->save();
+        return $wherehouse;
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from wherehouse.
      *
      * @return Storage
      */
-    public function destroy(Storage $storage)
+    public function destroy(Storage $wherehouse)
     {
-        $storage->delete();
-        return $storage;
+        $wherehouse->delete();
+        return $wherehouse;
     }
 }

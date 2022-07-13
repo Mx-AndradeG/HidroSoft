@@ -135,7 +135,7 @@ const deleteItem = (_id) => {
     confirmButtonText: "Si, borralo!",
   }).then((result) => {
     if (result.isConfirmed) {
-      axios.delete(route("storage.destroy", _id)).then((response) => {
+      axios.delete(route("wherehouses.destroy", _id)).then((response) => {
         getData(0, 10, "id", "desc");
         toast.success("Proveedor borrado exitosamente", {
           position: "top-center",
