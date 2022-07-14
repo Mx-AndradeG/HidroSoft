@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\StoreProductRequest;
+use App\Models\Branch\Branch;
 use App\Models\Products\Product;
 use App\Models\Stock\Stock;
+use App\Models\Storage\Storage;
 
 class StocksController extends Controller
 {
@@ -29,7 +31,9 @@ class StocksController extends Controller
 
         array_push($columns, 'id');
 
-        $query = Stock::query()->where('quantity', '>', 0);
+        $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
+        $storages_id = Storage::whereIn('branch_id', $branches_id)->pluck('id')->toArray();
+        $query = Stock::query()->where('quantity', '>', 0)->whereIn('storage_id', $storages_id);
 
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
@@ -45,7 +49,9 @@ class StocksController extends Controller
                         }
                         break;
                     case 'pos_product_name':
-                        $query = Stock::query()->where('quantity', '>', 0)->leftjoin('products', 'products.id', '=', 'stocks.product_id');
+                        $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
+                        $storages_id = Storage::whereIn('branch_id', $branches_id)->pluck('id')->toArray();
+                        $query = Stock::query()->where('quantity', '>', 0)->whereIn('storage_id', $storages_id)->leftjoin('products', 'products.id', '=', 'stocks.product_id');
                         $product = $query->where('products.name', 'LIKE', '%' . $value . '%')->orWhere('products.code', 'LIKE', '%' . $value . '%');
                         break;
                     default:
