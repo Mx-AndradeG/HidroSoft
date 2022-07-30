@@ -20,6 +20,7 @@ require __DIR__ . '/web/without_auth/auth.php';
 Route::redirect('/', '/login')->name('website.index');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    require __DIR__ . '/web/user/user-profile/user-profile.php';
     require __DIR__ . '/web/dashboard/dashboard.php';
     require __DIR__ . '/web/company/company.php';
     require __DIR__ . '/web/branch/branch.php';
