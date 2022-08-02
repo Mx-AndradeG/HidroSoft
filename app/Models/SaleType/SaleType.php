@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Models\Sale;
+namespace App\Models\SaleType;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Sale extends Model
+class SaleType extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use SaleRelationships;
-    use SaleAccessors;
-    use SaleActions;
+    use SaleTypeRelationships;
+    use SaleTypeAccessors;
+    use SaleTypeActions;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    public $table = 'sales';
+    public $table = 'sale_types';
 
     /**
      * The attributes that are mass assignable.
@@ -27,13 +27,6 @@ class Sale extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        'branch_id',
-        'customer_id',
-        'payment_method_id',
-        'total_sale',
-        'received_amount',
-        'reference_code',
-        'sale_type_id'
+        'name',
     ];
 }
