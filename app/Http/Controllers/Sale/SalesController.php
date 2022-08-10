@@ -27,7 +27,7 @@ class SalesController extends Controller
     {
         $page = request()->get("page", false);
         $limit = request()->get("limit", false);
-        $orderBy = request()->get("orderBy", 'stocks.id');
+        $orderBy = request()->get("orderBy", 'id');
         $ascending = request()->get("ascending", "1");
         $filters = json_decode(request()->get("filters", "{}"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
@@ -41,6 +41,11 @@ class SalesController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
+                    case "branch_name":
+                        $query->whereHas('branch', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                    break;
                     case 'formatted_created_at':
                     case 'formatted_updated_at':
                         $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';

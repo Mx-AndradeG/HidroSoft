@@ -310,7 +310,7 @@
                                             <button 
                                                 class="btn btn-primary" 
                                                 type="button"
-                                                :disabled="sale.received_amount < sale.total_sale || disable "
+                                                :disabled="sale.deadline_id == '' || sale.payment_plan_id == '' || sale.client_id == 0 || disable "
                                                 @click="sendData">
                                                 Pagar
                                             </button>

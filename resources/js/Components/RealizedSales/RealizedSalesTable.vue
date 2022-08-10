@@ -2,15 +2,6 @@
   <div>
     <div>
       <div class="row mb-3">
-        <div class="col-6">
-          <input
-            v-model="valueFilter"
-            type="text"
-            class="form-control"
-            id="floatingInput"
-            placeholder="Escriba algo para buscar..."
-          />
-        </div>
         <div class="col-6 d-flex justify-content-end">
           <button
             type="button"
@@ -30,6 +21,7 @@
       </div>
     </div>
     <TableLite
+      :is-static-mode="true"
       :is-loading="tableOptions.isLoading"
       :columns="tableOptions.columns"
       :rows="tableOptions.rows"
@@ -38,6 +30,8 @@
       :messages="tableOptions.messages"
       :is-slot-mode="true"
       @do-search="getData"
+      @VnodeMounted="initTable"
+
     >
       <template v-slot:payment_method_name="data">
         <span :class="data.value.payment_method_name == 'Efectivo' ? 'badge bg-success': 'badge bg-primary'"> 
@@ -75,11 +69,20 @@
 <script setup>
 import RealizedSalesTableColumns from "./RealizedSalesTableColumns";
 import RealizedSalesModal from "./RealizedSalesModal.vue";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref, createApp, defineComponent, h, watch } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
+const filters = reactive({
+  branch_name:''
+})
 
+
+
+const branch_name_filter = ref(""); // Search text
+const searchTerm2 = ref(""); // Search text
 const toast = useToast();
+const data = ref([]); // fake data
+const valueFilter = ref(""); // Search text
 
 const tableOptions = reactive({
   columns: RealizedSalesTableColumns.columns,
@@ -94,6 +97,11 @@ const tableOptions = reactive({
   rows: [],
   total: 0,
 });
+
+watch(filters, (newValue, oldValue) => {
+   getData(0, 10, "id", "desc");
+})
+
 
 const fin = () => {
   getData(0, 10, "id", "desc");
@@ -112,6 +120,49 @@ const fin = () => {
   });
 };
 
+    const initTable = ({ el: tableComponent }) => {
+      let headerTr = tableComponent.getElementsByClassName("vtl-thead-tr");
+      if (! headerTr[0]) {
+        return;
+      }
+      let cloneTr = headerTr[0].cloneNode(true); // Clone first <tr>
+      let childTh = cloneTr.getElementsByClassName("vtl-thead-th");
+      for(let i = 0; i < childTh.length; i++) {
+        // Clear <th>'s HTML
+        childTh[i].innerHTML = "";
+      }
+      // Create a input element and append to first <th>
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: filters.branch_name,
+                onInput: (e) => {
+                  filters.branch_name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[1]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: searchTerm2.value,
+                onInput: (e) => {
+                  searchTerm2.value = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[2]);
+      // append cloned element to the header after first <tr>
+      headerTr[0].after(cloneTr)
+    };
+
 const getData = (_offset, _limit, _orderBy, _ascending) => {
   tableOptions.isLoading = true;
   _ascending = _ascending === "desc" ? "1" : "2";
@@ -127,6 +178,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           "formatted_total_sale",
           "Formatted_created_at"
         ]),
+        filters: JSON.stringify(filters),
         limit: _limit,
         page: _offset + 1,
         orderBy: _orderBy,

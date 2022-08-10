@@ -30,7 +30,6 @@
 
 
 <script>
-import  AdminLayout  from '@/Layouts/AdminLayout.vue'
 
 export default ({
   props: {
@@ -61,7 +60,6 @@ export default ({
     }
     },
     components: {
-      AdminLayout,
     },
     methods: {
       getData(){
