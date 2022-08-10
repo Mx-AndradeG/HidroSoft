@@ -517,4 +517,89 @@ class SalesController extends Controller
     public function mostProductSold(){
         //trabajar con la base de datos
     }
+
+    public function calculateDates(){
+        $payment_plan_id = request()->get("payment_plan_id", false);
+        $deadline_id = request()->get("deadline_id", false);
+        $total_sale = request()->get("total_sale", false);
+        $current_pay_for_deadline = 0;
+        $payments = [];
+        $times_to_paid = 0;
+        switch($deadline_id){
+            case Sale::DEADLINETREE:
+                $times_to_paid = 3;
+                $current_pay_for_deadline = $total_sale / $times_to_paid;
+            break;
+            case Sale::DEADLINESIX:
+                $times_to_paid = 6;
+                $current_pay_for_deadline = $total_sale / $times_to_paid;
+            
+            break;
+            case Sale::DEADLINETWELVE:
+                $times_to_paid = 12;
+                $current_pay_for_deadline = $total_sale / $times_to_paid;
+            break;
+            default:
+            break;
+        }
+
+
+        switch($payment_plan_id){
+            case Sale::WEEK:
+                $current_date = Carbon::now();
+                $current_amount = $total_sale;
+                $current_paid = 0;
+                $current_debt = 0;
+                for($i = 0; $i < $times_to_paid; $i++){
+                    $current_date = $current_date->addWeek();
+                    $current_paid = $current_paid+=$current_pay_for_deadline;
+                    $current_debt = $current_amount - ($current_paid);
+                    array_push($payments, [
+                        'date' => $current_date->format('d-m-Y'),
+                        'amount' => round($current_pay_for_deadline,2),
+                        'debt' => round($current_debt,2),
+                        'current_paid' => round($current_paid,2)
+                    ]);
+                }
+               
+            break;
+            case Sale::FORTNIGHT:
+                $current_date = Carbon::now();
+                $current_amount = $total_sale;
+                $current_paid = 0;
+                $current_debt = 0;
+                for($i = 0; $i < $times_to_paid; $i++){
+                    $current_date = $current_date->addDays(15);
+                    $current_paid = $current_paid+=$current_pay_for_deadline;
+                    $current_debt = $current_amount - ($current_paid);
+                    array_push($payments, [
+                        'date' => $current_date->format('d-m-Y'),
+                        'amount' => round($current_pay_for_deadline,2),
+                        'debt' => round($current_debt,2),
+                        'current_paid' => round($current_paid,2)
+                    ]);
+                }
+            break;
+            case Sale::MONTH:
+                $current_date = Carbon::now();
+                $current_amount = $total_sale;
+                $current_paid = 0;
+                $current_debt = 0;
+                for($i = 0; $i < $times_to_paid; $i++){
+                    $current_date = $current_date->addMonth();
+                    $current_paid = $current_paid+=$current_pay_for_deadline;
+                    $current_debt = $current_amount - ($current_paid);    
+                    array_push($payments, [
+                        'date' => $current_date->format('d-m-Y'),
+                        'amount' => round($current_pay_for_deadline,2),
+                        'debt' => round($current_debt,2),
+                        'current_paid' => round($current_paid,2)
+                    ]);
+                }
+            break;
+            default:
+            break;
+        }
+        return $payments;   
+    }
 }

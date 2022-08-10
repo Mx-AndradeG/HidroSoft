@@ -14,6 +14,15 @@ class Sale extends Model
     use SaleAccessors;
     use SaleActions;
 
+    public CONST WEEK = 1;
+    public CONST FORTNIGHT = 2;
+    public CONST MONTH = 3;
+
+    public CONST DEADLINETREE = 1;
+    public CONST DEADLINESIX = 2;
+    public CONST DEADLINETWELVE = 3;
+
+
     /**
      * The table associated with the model.
      *

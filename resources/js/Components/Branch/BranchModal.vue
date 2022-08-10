@@ -7,7 +7,7 @@
       :lock-scroll="true"
       :hide-overlay="false"
       content-style="border-radius:25px"
-      classes="w-50 modal-dialog modal-xl"
+      classes="w-100 modal-dialog modal-xl"
       content-class="modal-content"
     >
       <button

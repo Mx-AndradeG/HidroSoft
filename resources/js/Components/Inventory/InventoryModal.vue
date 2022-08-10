@@ -5,7 +5,7 @@
       @beforeOpen="beforeOpen"
       name="customer_modal"
       content-style="border-radius:25px"
-      classes="modal-container w-50 modal-dialog modal-xl"
+      classes="modal-container w-100 modal-dialog modal-xl"
       body-scroll-lock="false"
       content-class="modal-content"
     >

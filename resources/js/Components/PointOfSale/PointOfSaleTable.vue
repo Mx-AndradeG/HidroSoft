@@ -104,26 +104,31 @@
                                 </ul>
                                 <div class="pt-3" v-if="current_tab == 1">
                                     <label for="inputName5" class="form-label">Cliente</label>
-                                    <v-select
-                                        :disabled="disable"
-                                        class="p-2"
-                                        name="client_id" 
-                                        id="client_id" 
-                                        :options="customers"
-                                        label="name" 
-                                        :clearable="false"
-                                        :reduce="name => name.id"  
-                                        v-model="sale.client_id"
-                                    >
-                                        <template v-slot:no-options="{ search, searching }">
-                                            <template style="opacity: 0.8" v-if="searching">
-                                                Puede que <strong><em>{{ search }}</em></strong> no este registrado como cliente.
-                                            </template>
-                                            <em v-else style="opacity: 0.8"
-                                                >No hay opciones para seleccionar.</em
+                                       <div class="input-group">
+                                            <v-select
+                                                :disabled="disable"
+                                                class="p-2 form-control"
+                                                name="client_id" 
+                                                id="client_id" 
+                                                :options="customers"
+                                                label="name" 
+                                                :clearable="false"
+                                                :reduce="name => name.id"  
+                                                v-model="sale.client_id"
                                             >
-                                        </template>
-                                    </v-select>
+                                                <template v-slot:no-options="{ search, searching }">
+                                                    <template style="opacity: 0.8" v-if="searching">
+                                                        Puede que <strong><em>{{ search }}</em></strong> no este registrado como cliente.
+                                                    </template>
+                                                    <em v-else style="opacity: 0.8"
+                                                        >No hay opciones para seleccionar.</em
+                                                    >
+                                                </template>
+                                            </v-select>
+                                            <button  :disabled="disable" class="btn btn-success" type="button" @click="$vfm.show('customer_modal')">
+                                                +    
+                                            </button>
+                                        </div>
                                 <div class="col-12 pt-4">
                                 <label for="inputName5" class="form-label">Metodo de pago</label>
                                     <v-select
@@ -167,7 +172,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 pt-4" v-if="!see_reference_code">
-                                    <label for="inputName5" class="form-label">Cantidad recibida</label>
+                                    <label for="inputName5" class="form-label" type="numeric">Cantidad recibida</label>
                                         <div class="p-2">
                                             <input
                                                 :disabled="disable"
@@ -229,10 +234,10 @@
                                                     >
                                                 </template>
                                             </v-select>
-                                            <button  :disabled="disable" class="btn btn-success" type="button" @click="managerModal(1)">
+                                            <button  :disabled="disable" class="btn btn-success" type="button" @click="$vfm.show('customer_modal')">
                                                 +    
                                             </button>
-                                    </div>
+                                        </div>
                                     
                                     <div class="col-12 pt-4">
                                         <label for="inputName5" class="form-label">Plan de Pagos</label>
@@ -280,6 +285,20 @@
                                                 </template>
                                             </v-select>
                                     </div>
+                                    <div class="col-12 pt-4">
+                                        <div class="d-grid gap-2 mt-3">
+                                            <button 
+                                                class="btn btn-primary" 
+                                                type="button"
+                                                :disabled="sale.deadline_id == '' || sale.payment_plan_id == ''"
+                                                 @click="$vfm.show('preview_payments_modal', {  deadline_id: sale.deadline_id, 
+                                                                                                payment_plan_id: sale.payment_plan_id,
+                                                                                                total_sale: total_sale, })"
+                                                >
+                                                Calcular Pagos
+                                            </button>
+                                        </div>
+                                    </div>
                                     
                                     <div class="col-12 pt-4">
                                         <div class="p-2" style="text-align: center;">
@@ -297,7 +316,6 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <create-customer-rigth-modal @done="managerModal(2)"></create-customer-rigth-modal>
                                 </div>
                             </div>
                         </div>
@@ -306,6 +324,8 @@
                 </div>
             </div>
         </div>
+        <customer-modal @done="fin"></customer-modal>
+        <preview-payment-modal @done="fin"></preview-payment-modal>
     </div>
 </template>
 
@@ -314,7 +334,8 @@
 <script>
 import { useToast } from "vue-toastification";
 const toast = useToast();
-import CreateCustomerRigthModal from './CreateCustomerRigthModal.vue';
+import CustomerModal from './CustomerModal.vue';
+import PreviewPaymentModal from './PreviewPaymentModal.vue';
 import Swal from "sweetalert2";
 
 export default ({
@@ -363,25 +384,42 @@ export default ({
         payment_method_id: '',
         reference_code: '',
         received_amount: 0,
+        deadline_id: '',
+        payment_plan_id: '',
       },
-      myOffcanvas: {},
-      bsOffcanvas: {},
     }
     },
     components: {
-        CreateCustomerRigthModal
+        CustomerModal,
+        PreviewPaymentModal
   },
     methods: {
-        managerModal(option){
-            switch(option){
-                case 1:
-                    console.log(this.bsOffcanvas);
-                    this.bsOffcanvas.show()
-                    break;
-                case 2:
-                    this.bsOffcanvas.hide()
-                    break;
-            }
+        fin(){
+            toast.success("Accion realizada correctamente", {
+                position: "top-center",
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false,
+            });
+            axios.get(route("customer.index", {
+            columns: JSON.stringify([
+                "id",
+                "name",
+            ])})).then((response) => {
+            this.customers = response.data.data;
+            this.customers.push({
+                id: 0,
+                name: "Publico en general",
+            })
+            this.sale.client_id = 0;
+        });  
         },
         searchProduct(search, loading) {
             if (search.length) {
@@ -524,8 +562,6 @@ export default ({
         },
   },	
   mounted() {
-        this.myOffcanvas = document.getElementById('modalCustomer')
-        this.bsOffcanvas = new bootstrap.Offcanvas(this.myOffcanvas)
 
         axios.get(route("user.getAuthUser")).then((response) => {
             this.current_storage = response.data.wherehouses;
