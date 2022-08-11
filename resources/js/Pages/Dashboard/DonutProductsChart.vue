@@ -13,7 +13,6 @@
 
 
 <script>
-import  AdminLayout  from '@/Layouts/AdminLayout.vue'
 import Chart from 'chart.js/auto'
 
 export default ({
@@ -64,7 +63,6 @@ props: {
     }
     },
     components: {
-      AdminLayout,
   },
     methods: {
         getData(){

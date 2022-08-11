@@ -72,106 +72,250 @@
                         <div class="card-body">
                            <div class="row pt-2">
                             <div class="col-12 pt-2">
-                            <label for="inputName5" class="form-label">Cliente</label>
-                                <v-select
-                                    :disabled="disable"
-                                    class="p-2"
-                                    name="client_id" 
-                                    id="client_id" 
-                                    :options="customers"
-                                    label="name" 
-                                    :clearable="false"
-                                    :reduce="name => name.id"  
-                                    v-model="sale.client_id"
-                                >
-                                    <template v-slot:no-options="{ search, searching }">
-                                        <template style="opacity: 0.8" v-if="searching">
-                                            Puede que <strong><em>{{ search }}</em></strong> no este registrado como cliente.
-                                        </template>
-                                        <em v-else style="opacity: 0.8"
-                                            >No hay opciones para seleccionar.</em
+                                <h5 class="card-title"> Tipo de venta </h5>
+                                <!-- Tabs navs -->
+                                <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a
+                                        :class="current_tab == 1 ? 'nav-link active' : 'nav-link'"
+                                        @click="changetab(1)"
+                                        id="ex3-tab-1"
+                                        data-mdb-toggle="tab"
+                                        href="#ex3-tabs-1"
+                                        role="tab"
+                                        aria-controls="ex3-tabs-1"
+                                        aria-selected="true"
+                                        >Contado</a
                                         >
-                                    </template>
-                                </v-select>
-                            </div>
-                            <div class="col-12 pt-4">
-                            <label for="inputName5" class="form-label">Metodo de pago</label>
-                                <v-select
-                                    :disabled="disable"
-                                    class="p-2"
-                                    name="payment_method_id" 
-                                    id="payment_method_id" 
-                                    :options="payment_methods"
-                                    label="name" 
-                                    :clearable="false"
-                                    :reduce="name => name.id"  
-                                    v-model="sale.payment_method_id"
-                                >
-                                    <template v-slot:no-options="{ search, searching }">
-                                        <template style="opacity: 0.8" v-if="searching">
-                                            Puede que <strong><em>{{ search }}</em></strong> no este registrado como metodo de pago.
-                                        </template>
-                                        <em v-else style="opacity: 0.8"
-                                            >No hay opciones para seleccionar.</em
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a
+                                        @click="changetab(2)"
+                                        :class="current_tab == 2 ? 'nav-link active' : 'nav-link'"
+                                        id="ex3-tab-3"
+                                        data-mdb-toggle="tab"
+                                        href="#ex3-tabs-3"
+                                        role="tab"
+                                        aria-controls="ex3-tabs-3"
+                                        aria-selected="false"
+                                        >Credito</a
                                         >
-                                    </template>
-                                </v-select>
-                            </div>
-                            <div class="col-12 pt-4" v-if="see_reference_code">
-                                <label for="inputName5" class="form-label">Agregar codigo de referencia</label>
-                                    <div class="p-2">
-                                        <input
-                                            :disabled="disable"
-                                            placeholder="Codigo para pagos con tarjeta"
-                                            v-model="sale.reference_code"
-                                            name="reference_code"
-                                            type="text"
-                                            class="form-control"
-                                            id="reference_code"
-                                        />
-                                    </div>
-                            </div>
-                             <div class="col-12 pt-4">
-                                <div class="p-2" style="text-align: center;">
-                                    <a class="text-primary fw-bold h5">Total de venta: {{formatPrice(total_sale, 1, 2)}}</a>
+                                    </li>
+                                </ul>
+                                <div class="pt-3" v-if="current_tab == 1">
+                                    <label for="inputName5" class="form-label">Cliente</label>
+                                       <div class="input-group">
+                                            <v-select
+                                                :disabled="disable"
+                                                class="p-2 form-control"
+                                                name="client_id" 
+                                                id="client_id" 
+                                                :options="customers"
+                                                label="name" 
+                                                :clearable="false"
+                                                :reduce="name => name.id"  
+                                                v-model="sale.client_id"
+                                            >
+                                                <template v-slot:no-options="{ search, searching }">
+                                                    <template style="opacity: 0.8" v-if="searching">
+                                                        Puede que <strong><em>{{ search }}</em></strong> no este registrado como cliente.
+                                                    </template>
+                                                    <em v-else style="opacity: 0.8"
+                                                        >No hay opciones para seleccionar.</em
+                                                    >
+                                                </template>
+                                            </v-select>
+                                            <button  :disabled="disable" class="btn btn-success" type="button" @click="$vfm.show('customer_modal')">
+                                                +    
+                                            </button>
+                                        </div>
+                                <div class="col-12 pt-4">
+                                <label for="inputName5" class="form-label">Metodo de pago</label>
+                                    <v-select
+                                        :disabled="disable"
+                                        class="p-2"
+                                        name="payment_method_id" 
+                                        id="payment_method_id" 
+                                        :options="payment_methods"
+                                        label="name" 
+                                        :clearable="false"
+                                        :reduce="name => name.id"  
+                                        v-model="sale.payment_method_id"
+                                    >
+                                        <template v-slot:no-options="{ search, searching }">
+                                            <template style="opacity: 0.8" v-if="searching">
+                                                Puede que <strong><em>{{ search }}</em></strong> no este registrado como metodo de pago.
+                                            </template>
+                                            <em v-else style="opacity: 0.8"
+                                                >No hay opciones para seleccionar.</em
+                                            >
+                                        </template>
+                                    </v-select>
                                 </div>
-                            </div>
-                            <div class="col-12 pt-4" v-if="!see_reference_code">
-                                <label for="inputName5" class="form-label">Cantidad recibida</label>
-                                    <div class="p-2">
-                                        <input
-                                            :disabled="disable"
-                                            placeholder="$0.00"
-                                            v-model="sale.received_amount"
-                                            name="reference_code"
-                                            min="0"
-                                            step="0.01"
-                                            type="numeric"
-                                            class="form-control"
-                                            id="reference_code"
-                                        />
-                                    </div>
-                            </div>
-                            <div class="col-12 pt-4" v-if="sale.payment_method_id == 1 ? true : false">
-                                <div class="d-grid gap-2 mt-3">
-                                    <button 
-                                        class="btn btn-primary" 
-                                        type="button"
-                                        :disabled="sale.received_amount < sale.total_sale || disable "
-                                        @click="sendData">
-                                        Pagar
-                                    </button>
+                                <div class="col-12 pt-4" v-if="see_reference_code">
+                                    <label for="inputName5" class="form-label">Agregar codigo de referencia</label>
+                                        <div class="p-2">
+                                            <input
+                                                :disabled="disable"
+                                                placeholder="Codigo para pagos con tarjeta"
+                                                v-model="sale.reference_code"
+                                                name="reference_code"
+                                                type="text"
+                                                class="form-control"
+                                                id="reference_code"
+                                            />
+                                        </div>
                                 </div>
-                            </div>
-                            <div class="col-12 pt-4"  v-if="sale.payment_method_id == 2 ? true : false">
-                                <div class="d-grid gap-2 mt-3">
-                                    <button 
-                                        class="btn btn-primary" 
-                                        type="button"
-                                        :disabled="sale.reference_code != '' ? false : true"
-                                        @click="sendData">
-                                       Confirmar pago
-                                    </button>
+                                <div class="col-12 pt-4">
+                                    <div class="p-2" style="text-align: center;">
+                                        <a class="text-primary fw-bold h5">Total de venta: {{formatPrice(total_sale, 1, 2)}}</a>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-4" v-if="!see_reference_code">
+                                    <label for="inputName5" class="form-label" type="numeric">Cantidad recibida</label>
+                                        <div class="p-2">
+                                            <input
+                                                :disabled="disable"
+                                                placeholder="$0.00"
+                                                v-model="sale.received_amount"
+                                                name="reference_code"
+                                                min="0"
+                                                step="0.01"
+                                                type="numeric"
+                                                class="form-control"
+                                                id="reference_code"
+                                            />
+                                        </div>
+                                </div>
+                                <div class="col-12 pt-4" v-if="sale.payment_method_id == 1 ? true : false">
+                                    <div class="d-grid gap-2 mt-3">
+                                        <button 
+                                            class="btn btn-primary" 
+                                            type="button"
+                                            :disabled="sale.received_amount < sale.total_sale || disable "
+                                            @click="sendData">
+                                            Pagar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-4"  v-if="sale.payment_method_id == 2 ? true : false">
+                                    <div class="d-grid gap-2 mt-3">
+                                        <button 
+                                            class="btn btn-primary" 
+                                            type="button"
+                                            :disabled="sale.reference_code != '' ? false : true"
+                                            @click="sendData">
+                                        Confirmar pago
+                                        </button>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <div class="pt-3" v-if="current_tab == 2">
+                                    <label for="inputName5" class="form-label">Cliente</label>
+                                       <div class="input-group">
+                                            <v-select
+                                                :disabled="disable"
+                                                class="p-2 form-control"
+                                                name="client_id" 
+                                                id="client_id" 
+                                                :options="customers"
+                                                label="name" 
+                                                :clearable="false"
+                                                :reduce="name => name.id"  
+                                                v-model="sale.client_id"
+                                            >
+                                                <template v-slot:no-options="{ search, searching }">
+                                                    <template style="opacity: 0.8" v-if="searching">
+                                                        Puede que <strong><em>{{ search }}</em></strong> no este registrado como cliente.
+                                                    </template>
+                                                    <em v-else style="opacity: 0.8"
+                                                        >No hay opciones para seleccionar.</em
+                                                    >
+                                                </template>
+                                            </v-select>
+                                            <button  :disabled="disable" class="btn btn-success" type="button" @click="$vfm.show('customer_modal')">
+                                                +    
+                                            </button>
+                                        </div>
+                                    
+                                    <div class="col-12 pt-4">
+                                        <label for="inputName5" class="form-label">Plan de Pagos</label>
+                                            <v-select
+                                                :disabled="disable"
+                                                class="p-2"
+                                                name="payment_plan_id" 
+                                                id="payment_plan_id" 
+                                                :options="payment_plan"
+                                                label="name" 
+                                                :clearable="false"
+                                                :reduce="name => name.id"  
+                                                v-model="sale.payment_plan_id"
+                                            >
+                                                <template v-slot:no-options="{ search, searching }">
+                                                    <template style="opacity: 0.8" v-if="searching">
+                                                        Puede que <strong><em>{{ search }}</em></strong> no este registrado como metodo de pago.
+                                                    </template>
+                                                    <em v-else style="opacity: 0.8"
+                                                        >No hay opciones para seleccionar.</em
+                                                    >
+                                                </template>
+                                            </v-select>
+                                    </div>
+                                    <div class="col-12 pt-4">
+                                        <label for="inputName5" class="form-label">Plazos</label>
+                                            <v-select
+                                                :disabled="disable"
+                                                class="p-2"
+                                                name="deadline_id" 
+                                                id="deadline_id" 
+                                                :options="deadlines"
+                                                label="name" 
+                                                :clearable="false"
+                                                :reduce="name => name.id"  
+                                                v-model="sale.deadline_id"
+                                            >
+                                                <template v-slot:no-options="{ search, searching }">
+                                                    <template style="opacity: 0.8" v-if="searching">
+                                                        Puede que <strong><em>{{ search }}</em></strong> no este registrado como metodo de pago.
+                                                    </template>
+                                                    <em v-else style="opacity: 0.8"
+                                                        >No hay opciones para seleccionar.</em
+                                                    >
+                                                </template>
+                                            </v-select>
+                                    </div>
+                                    <div class="col-12 pt-4">
+                                        <div class="d-grid gap-2 mt-3">
+                                            <button 
+                                                class="btn btn-primary" 
+                                                type="button"
+                                                :disabled="sale.deadline_id == '' || sale.payment_plan_id == ''"
+                                                 @click="$vfm.show('preview_payments_modal', {  deadline_id: sale.deadline_id, 
+                                                                                                payment_plan_id: sale.payment_plan_id,
+                                                                                                total_sale: total_sale, })"
+                                                >
+                                                Calcular Pagos
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12 pt-4">
+                                        <div class="p-2" style="text-align: center;">
+                                            <a class="text-primary fw-bold h5">Total de venta: {{formatPrice(total_sale, 1, 2)}}</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 pt-4" v-if="sale.payment_method_id == 1 ? true : false">
+                                        <div class="d-grid gap-2 mt-3">
+                                            <button 
+                                                class="btn btn-primary" 
+                                                type="button"
+                                                :disabled="sale.deadline_id == '' || sale.payment_plan_id == '' || sale.client_id == 0 || disable "
+                                                @click="sendData">
+                                                Pagar
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -180,6 +324,8 @@
                 </div>
             </div>
         </div>
+        <customer-modal @done="fin"></customer-modal>
+        <preview-payment-modal @done="fin"></preview-payment-modal>
     </div>
 </template>
 
@@ -188,17 +334,49 @@
 <script>
 import { useToast } from "vue-toastification";
 const toast = useToast();
+import CustomerModal from './CustomerModal.vue';
+import PreviewPaymentModal from './PreviewPaymentModal.vue';
 import Swal from "sweetalert2";
 
 export default ({
   data(){
     return {
+      open_dialog: false,
       storage_id:'',
       products: [],
       customers: [],
+      payment_plan: [
+        {
+          id: 1,
+          name: "Semanal"
+        },
+        {
+          id: 2,
+          name: "Quincenal"
+        },
+        {
+          id: 3,
+          name: "Mensual"
+        }
+      ],
+      deadlines:[
+        {
+          id: 1,
+          name: "3"
+        },
+        {
+          id: 2,
+          name: "6"
+        },
+        {
+          id: 3,
+          name: "12"
+        }
+      ],
       payment_methods: [],
       current_storage: {},
       current_branch: {},
+      current_tab: 1,
       sale:{
         current_produts: [],
         client_id: '',
@@ -206,12 +384,43 @@ export default ({
         payment_method_id: '',
         reference_code: '',
         received_amount: 0,
-      }
+        deadline_id: '',
+        payment_plan_id: '',
+      },
     }
     },
     components: {
+        CustomerModal,
+        PreviewPaymentModal
   },
-  methods: {
+    methods: {
+        fin(){
+            toast.success("Accion realizada correctamente", {
+                position: "top-center",
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false,
+            });
+            axios.get(route("customer.index", {
+            columns: JSON.stringify([
+                "id",
+                "name",
+            ])})).then((response) => {
+            this.customers = response.data.data;
+            this.customers.push({
+                id: 0,
+                name: "Publico en general",
+            })
+            this.sale.client_id = 0;
+        });  
+        },
         searchProduct(search, loading) {
             if (search.length) {
                 loading(true);
@@ -326,6 +535,9 @@ export default ({
                 }
             });
         },
+        changetab(tab){
+            this.current_tab = tab;
+        },
         formatPrice(value, quantity, type) {
         switch(type){
             case 1:
@@ -350,6 +562,7 @@ export default ({
         },
   },	
   mounted() {
+
         axios.get(route("user.getAuthUser")).then((response) => {
             this.current_storage = response.data.wherehouses;
             this.current_branch = response.data.branch;
@@ -410,3 +623,19 @@ export default ({
   }
 })
 </script>
+
+<style>
+.offcanvas-end {
+    top: 0;
+    right: 0;
+    width: 45%;
+    border-left: 1px solidrgba(0,0,0,.2);
+    transform: translateX(100%);
+}
+
+@media (max-width: 992px) {
+.offcanvas-end {
+    width: 100%;
+}
+}
+</style>

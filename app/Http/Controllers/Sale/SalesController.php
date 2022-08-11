@@ -27,11 +27,10 @@ class SalesController extends Controller
     {
         $page = request()->get("page", false);
         $limit = request()->get("limit", false);
-        $orderBy = request()->get("orderBy", 'stocks.id');
+        $orderBy = request()->get("orderBy", 'id');
         $ascending = request()->get("ascending", "1");
         $filters = json_decode(request()->get("filters", "{}"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
-
         array_push($columns, 'id');
 
         $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
@@ -41,15 +40,31 @@ class SalesController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $sale = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $sale = $query->whereDate($filter, $dates[0]);
-                        }
+                    case "user_name": 
+                        $query->whereHas('user', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
+                    case "customer_name": 
+                        $query->whereHas('customer', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
+                    case "branch_name":
+                        $query->whereHas('branch', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                    break;
+                    case "payment_method_name":
+                        $query->whereHas('payment_method', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                    break;
+                    case "formatted_total_sale":
+                        $query->where('total_sale', 'like', '%' . $value . '%');
+                    break;
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
                         break;
                     default:
                         $sale = $query->where($filter, 'LIKE', '%' . $value . '%');
@@ -58,13 +73,35 @@ class SalesController extends Controller
             }
         }
 
-        $order = $ascending === "1" ? 'DESC' : 'ASC';
+        $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
+            case "user_name":
+                $query->whereHas('user', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
                 break;
+            case "customer_name":
+                $query->whereHas('customer', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
+                break;
+            case "branch_name":
+                $query->whereHas('branch', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
+                break;
+            case "payment_method_name":
+                $query->whereHas('payment_method', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
+                break;
+            case "formatted_total_sale":
+                    $query->orderBy('total_sale', $order);
+                break;
+            case 'Formatted_created_at':
+                    $query->orderBy('created_at', $order);
+                break;
+            
             default:
                 $query->orderBy($orderBy, $order);
                 break;
@@ -516,5 +553,90 @@ class SalesController extends Controller
 
     public function mostProductSold(){
         //trabajar con la base de datos
+    }
+
+    public function calculateDates(){
+        $payment_plan_id = request()->get("payment_plan_id", false);
+        $deadline_id = request()->get("deadline_id", false);
+        $total_sale = request()->get("total_sale", false);
+        $current_pay_for_deadline = 0;
+        $payments = [];
+        $times_to_paid = 0;
+        switch($deadline_id){
+            case Sale::DEADLINETREE:
+                $times_to_paid = 3;
+                $current_pay_for_deadline = $total_sale / $times_to_paid;
+            break;
+            case Sale::DEADLINESIX:
+                $times_to_paid = 6;
+                $current_pay_for_deadline = $total_sale / $times_to_paid;
+            
+            break;
+            case Sale::DEADLINETWELVE:
+                $times_to_paid = 12;
+                $current_pay_for_deadline = $total_sale / $times_to_paid;
+            break;
+            default:
+            break;
+        }
+
+
+        switch($payment_plan_id){
+            case Sale::WEEK:
+                $current_date = Carbon::now();
+                $current_amount = $total_sale;
+                $current_paid = 0;
+                $current_debt = 0;
+                for($i = 0; $i < $times_to_paid; $i++){
+                    $current_date = $current_date->addWeek();
+                    $current_paid = $current_paid+=$current_pay_for_deadline;
+                    $current_debt = $current_amount - ($current_paid);
+                    array_push($payments, [
+                        'date' => $current_date->format('d-m-Y'),
+                        'amount' => round($current_pay_for_deadline,2),
+                        'debt' => round($current_debt,2),
+                        'current_paid' => round($current_paid,2)
+                    ]);
+                }
+               
+            break;
+            case Sale::FORTNIGHT:
+                $current_date = Carbon::now();
+                $current_amount = $total_sale;
+                $current_paid = 0;
+                $current_debt = 0;
+                for($i = 0; $i < $times_to_paid; $i++){
+                    $current_date = $current_date->addDays(15);
+                    $current_paid = $current_paid+=$current_pay_for_deadline;
+                    $current_debt = $current_amount - ($current_paid);
+                    array_push($payments, [
+                        'date' => $current_date->format('d-m-Y'),
+                        'amount' => round($current_pay_for_deadline,2),
+                        'debt' => round($current_debt,2),
+                        'current_paid' => round($current_paid,2)
+                    ]);
+                }
+            break;
+            case Sale::MONTH:
+                $current_date = Carbon::now();
+                $current_amount = $total_sale;
+                $current_paid = 0;
+                $current_debt = 0;
+                for($i = 0; $i < $times_to_paid; $i++){
+                    $current_date = $current_date->addMonth();
+                    $current_paid = $current_paid+=$current_pay_for_deadline;
+                    $current_debt = $current_amount - ($current_paid);    
+                    array_push($payments, [
+                        'date' => $current_date->format('d-m-Y'),
+                        'amount' => round($current_pay_for_deadline,2),
+                        'debt' => round($current_debt,2),
+                        'current_paid' => round($current_paid,2)
+                    ]);
+                }
+            break;
+            default:
+            break;
+        }
+        return $payments;   
     }
 }

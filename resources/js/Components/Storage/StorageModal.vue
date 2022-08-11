@@ -5,7 +5,7 @@
       @beforeOpen="beforeOpen"
       name="customer_modal"
       content-style="border-radius:25px"
-      classes="w-50 modal-dialog modal-xl"
+      classes="w-100 modal-dialog modal-xl"
       body-scroll-lock="false"
       content-class="modal-content"
     >
@@ -264,6 +264,10 @@ export default {
 
 .vfm--inset{
   overflow-y: scroll !important;
+}
+
+.vfm__container {
+    width: 100% !important;
 }
 
 </style>
