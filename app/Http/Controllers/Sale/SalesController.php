@@ -31,7 +31,6 @@ class SalesController extends Controller
         $ascending = request()->get("ascending", "1");
         $filters = json_decode(request()->get("filters", "{}"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
-
         array_push($columns, 'id');
 
         $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
@@ -41,20 +40,31 @@ class SalesController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
+                    case "user_name": 
+                        $query->whereHas('user', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
+                    case "customer_name": 
+                        $query->whereHas('customer', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
                     case "branch_name":
                         $query->whereHas('branch', function ($query) use ($value) {
                             $query->where('name', 'like', '%' . $value . '%');
                         });
                     break;
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $sale = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $sale = $query->whereDate($filter, $dates[0]);
-                        }
+                    case "payment_method_name":
+                        $query->whereHas('payment_method', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                    break;
+                    case "formatted_total_sale":
+                        $query->where('total_sale', 'like', '%' . $value . '%');
+                    break;
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
                         break;
                     default:
                         $sale = $query->where($filter, 'LIKE', '%' . $value . '%');
@@ -63,13 +73,35 @@ class SalesController extends Controller
             }
         }
 
-        $order = $ascending === "1" ? 'DESC' : 'ASC';
+        $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
+            case "user_name":
+                $query->whereHas('user', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
                 break;
+            case "customer_name":
+                $query->whereHas('customer', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
+                break;
+            case "branch_name":
+                $query->whereHas('branch', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
+                break;
+            case "payment_method_name":
+                $query->whereHas('payment_method', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
+                break;
+            case "formatted_total_sale":
+                    $query->orderBy('total_sale', $order);
+                break;
+            case 'Formatted_created_at':
+                    $query->orderBy('created_at', $order);
+                break;
+            
             default:
                 $query->orderBy($orderBy, $order);
                 break;

@@ -2,7 +2,7 @@
   <div>
     <div>
       <div class="row mb-3">
-        <div class="col-6 d-flex justify-content-end">
+        <div class="col-12 d-flex justify-content-end">
           <button
             type="button"
             class="btn btn-outline-primary"
@@ -21,7 +21,6 @@
       </div>
     </div>
     <TableLite
-      :is-static-mode="true"
       :is-loading="tableOptions.isLoading"
       :columns="tableOptions.columns"
       :rows="tableOptions.rows"
@@ -73,7 +72,12 @@ import { onMounted, reactive, ref, createApp, defineComponent, h, watch } from "
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
 const filters = reactive({
-  branch_name:''
+  user_name: null,
+  branch_name:null,
+  customer_name:null,
+  payment_method_name:null,
+  formatted_total_sale:null,
+  Formatted_created_at:null,
 })
 
 
@@ -137,6 +141,20 @@ const fin = () => {
           setup() {
             return () =>
               h("input", {
+                value: filters.user_name,
+                onInput: (e) => {
+                  filters.user_name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[0]);
+      
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
                 value: filters.branch_name,
                 onInput: (e) => {
                   filters.branch_name = e.target.value;
@@ -151,14 +169,56 @@ const fin = () => {
           setup() {
             return () =>
               h("input", {
-                value: searchTerm2.value,
+                value: filters.customer_name,
                 onInput: (e) => {
-                  searchTerm2.value = e.target.value;
+                  filters.customer_name = e.target.value;
                 },
               });
           },
         })
       ).mount(childTh[2]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: filters.payment_method_name,
+                onInput: (e) => {
+                  filters.payment_method_name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[3]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: filters.formatted_total_sale,
+                onInput: (e) => {
+                  filters.formatted_total_sale = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[4]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: filters.Formatted_created_at,
+                onInput: (e) => {
+                  filters.Formatted_created_at = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[5]);
       // append cloned element to the header after first <tr>
       headerTr[0].after(cloneTr)
     };
