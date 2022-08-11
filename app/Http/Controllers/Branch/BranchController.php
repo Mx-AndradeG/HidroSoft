@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Branch;
 
+use App\Exports\BranchExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Branch\StoreBranchRequest;
 use App\Models\Branch\Branch;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BranchController extends Controller
 {
@@ -130,5 +132,10 @@ class BranchController extends Controller
         $branch = Branch::findOrFail($id);
         $branch->delete();
         return $branch;
+    }
+    
+    public function export() 
+    {
+        return Excel::download(new BranchExport, 'Sucursales.xlsx');
     }
 }

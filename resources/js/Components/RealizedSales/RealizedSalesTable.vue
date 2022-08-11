@@ -235,7 +235,7 @@ const exportToExcel = () => {
     link.href = url;
     link.setAttribute(
       "download",
-      "ventas_realizadas_.xlsx"
+      "Ventas_realizadas_.xlsx"
     );
     document.body.appendChild(link);
     link.click();
