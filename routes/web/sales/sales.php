@@ -15,5 +15,7 @@ Route::get('sale/sales-bar-chart-info', [SalesController::class, 'barDataChartDa
 
 Route::get('sale/most-erned-per-product', [SalesController::class, 'mostEarnedPerProduct'])->name('sales.erned.product');
 
+Route::get('sale/export', [SalesController::class, 'export'])->name('sales.export');
+
 Route::apiResource('sales', SalesController::class, ['names' => 'sales']);
 
