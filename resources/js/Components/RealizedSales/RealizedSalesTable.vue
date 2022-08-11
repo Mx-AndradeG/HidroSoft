@@ -7,6 +7,7 @@
             type="button"
             class="btn btn-outline-primary"
             style="margin-right: 1rem"
+            @click="exportToExcel"
           >
             Exportar
           </button>
@@ -222,6 +223,25 @@ const fin = () => {
       // append cloned element to the header after first <tr>
       headerTr[0].after(cloneTr)
     };
+
+const exportToExcel = () => {
+  axios({
+    url: route("sales.export"),
+    method: "GET",
+    responseType: "blob",
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      "ventas_realizadas_.xlsx"
+    );
+    document.body.appendChild(link);
+    link.click();
+  });
+  
+}
 
 const getData = (_offset, _limit, _orderBy, _ascending) => {
   tableOptions.isLoading = true;

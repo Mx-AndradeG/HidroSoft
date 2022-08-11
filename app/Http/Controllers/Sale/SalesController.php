@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Sale;
 
+use App\Exports\SalesExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sale\StoreSaleRequest;
 use App\Models\Branch\Branch;
@@ -11,6 +12,7 @@ use App\Models\Products\Product;
 use App\Models\Sale\Sale;
 use PhpParser\Node\Stmt\Switch_;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SalesController extends Controller
 {
@@ -638,5 +640,9 @@ class SalesController extends Controller
             break;
         }
         return $payments;   
+    }
+    public function export() 
+    {
+        return Excel::download(new SalesExport, 'Ventas.xlsx');
     }
 }

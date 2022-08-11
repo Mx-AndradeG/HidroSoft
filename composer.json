@@ -14,7 +14,9 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
+        "maatwebsite/excel": "^3.1",
         "nscreed/laravel-migration-paths": "^1.2",
+        "psr/simple-cache": "2.0",
         "tightenco/ziggy": "^1.4"
     },
     "require-dev": {
