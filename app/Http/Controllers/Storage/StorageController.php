@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Storage;
 
+use App\Exports\StorageExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Storage\StorageBranchRequest;
 use App\Models\Storage\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StorageController extends Controller
 {
@@ -35,15 +37,13 @@ class StorageController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $wherehouse = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $wherehouse = $query->whereDate($filter, $dates[0]);
-                        }
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
+                    break;
+                    case 'branch_name':
+                        $sale = $query->whereHas('branch', function ($query) use ($value){
+                            return $query->where('name', 'LIKE', '%' . $value . '%');
+                        });
                         break;
                     default:
                         $wherehouse = $query->where($filter, 'LIKE', '%' . $value . '%');
@@ -54,11 +54,14 @@ class StorageController extends Controller
 
         $order = $ascending === "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
-                break;
+            case 'Formatted_created_at':
+                $query->orderBy('created_at', $order);
+            break;
+            case 'brand_name':
+                $sale = $query->whereHas('branch', function ($query) use ($order){
+                    return $query->orderBy('brand_name', $order);
+                });
+                
             default:
                 $query->orderBy($orderBy, $order);
                 break;
@@ -132,5 +135,10 @@ class StorageController extends Controller
     {
         $wherehouse->delete();
         return $wherehouse;
+    }
+
+    public function export() 
+    {
+        return Excel::download(new StorageExport, 'Almacenes.xlsx');
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Branch;
 
+use App\Exports\BranchExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Branch\StoreBranchRequest;
 use App\Models\Branch\Branch;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BranchController extends Controller
 {
@@ -34,16 +36,9 @@ class BranchController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $branch = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $branch = $query->whereDate($filter, $dates[0]);
-                        }
-                        break;
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
+                    break;
                     case 'without_storage':
                         if($value == '1'){
                             $branch = $query->whereDoesntHave('storage');
@@ -58,11 +53,9 @@ class BranchController extends Controller
 
         $order = $ascending === "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
-                break;
+            case 'Formatted_created_at':
+                $query->orderBy('created_at', $order);
+            break;
             default:
                 $query->orderBy($orderBy, $order);
                 break;
@@ -139,5 +132,10 @@ class BranchController extends Controller
         $branch = Branch::findOrFail($id);
         $branch->delete();
         return $branch;
+    }
+    
+    public function export() 
+    {
+        return Excel::download(new BranchExport, 'Sucursales.xlsx');
     }
 }

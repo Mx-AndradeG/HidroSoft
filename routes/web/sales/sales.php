@@ -3,7 +3,6 @@
 use App\Http\Controllers\Sale\SalesController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('sale/index', [SalesController::class, 'index'])->name('sales.index');
 
 Route::get('sale/sales-header-info', [SalesController::class, 'getHeaderInfoDashboard'])->name('sales.header.info');
 
