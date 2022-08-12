@@ -38,4 +38,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     require __DIR__ . '/web/inventory_movement/inventory_movement.php';
     require __DIR__ . '/web/sales/sales.php';
     require __DIR__ . '/web/realized_sales/realized_sales.php';
+    require __DIR__ . '/web/Log/Log.php';
 });
