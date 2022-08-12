@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Categories;
 
+use App\Exports\CategoriesExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Categories\StoreCategoryRequest;
 use App\Models\Categories\Category;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CategoriesController extends Controller
 {
@@ -33,16 +35,9 @@ class CategoriesController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $category = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $category = $query->whereDate($filter, $dates[0]);
-                        }
-                        break;
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
+                    break;
                     default:
                         $category = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
@@ -52,11 +47,9 @@ class CategoriesController extends Controller
 
         $order = $ascending === "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
-                break;
+            case 'Formatted_created_at':
+                $query->orderBy('created_at', $order);
+            break;
             default:
                 $query->orderBy($orderBy, $order);
                 break;
@@ -130,5 +123,9 @@ class CategoriesController extends Controller
     {
         $category->delete();
         return $category;
+    }
+    public function export() 
+    {
+        return Excel::download(new CategoriesExport, 'Categorias.xlsx');
     }
 }
