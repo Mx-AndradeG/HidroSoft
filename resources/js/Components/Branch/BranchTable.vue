@@ -142,6 +142,7 @@ watch(filters, (newValue, oldValue) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.name,
                 onInput: (e) => {
                   filters.name = e.target.value;
@@ -156,6 +157,7 @@ watch(filters, (newValue, oldValue) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.address,
                 onInput: (e) => {
                   filters.address = e.target.value;
@@ -170,6 +172,7 @@ watch(filters, (newValue, oldValue) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.phone,
                 onInput: (e) => {
                   filters.phone = e.target.value;
@@ -184,6 +187,7 @@ watch(filters, (newValue, oldValue) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.Formatted_created_at,
                 onInput: (e) => {
                   filters.Formatted_created_at = e.target.value;

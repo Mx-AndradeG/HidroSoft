@@ -142,6 +142,7 @@ const fin = () => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.user_name,
                 onInput: (e) => {
                   filters.user_name = e.target.value;
@@ -156,6 +157,7 @@ const fin = () => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.branch_name,
                 onInput: (e) => {
                   filters.branch_name = e.target.value;
@@ -170,6 +172,7 @@ const fin = () => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.customer_name,
                 onInput: (e) => {
                   filters.customer_name = e.target.value;
@@ -184,6 +187,7 @@ const fin = () => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.payment_method_name,
                 onInput: (e) => {
                   filters.payment_method_name = e.target.value;
@@ -198,6 +202,7 @@ const fin = () => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.formatted_total_sale,
                 onInput: (e) => {
                   filters.formatted_total_sale = e.target.value;
@@ -212,6 +217,7 @@ const fin = () => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.Formatted_created_at,
                 onInput: (e) => {
                   filters.Formatted_created_at = e.target.value;

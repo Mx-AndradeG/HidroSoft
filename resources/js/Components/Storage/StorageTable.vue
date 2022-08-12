@@ -141,6 +141,7 @@ const initTable = ({ el: tableComponent }) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.name,
                 onInput: (e) => {
                   filters.name = e.target.value;
@@ -155,6 +156,7 @@ const initTable = ({ el: tableComponent }) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.address,
                 onInput: (e) => {
                   filters.address = e.target.value;
@@ -169,6 +171,7 @@ const initTable = ({ el: tableComponent }) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.branch_name,
                 onInput: (e) => {
                   filters.branch_name = e.target.value;
@@ -183,6 +186,7 @@ const initTable = ({ el: tableComponent }) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.Formatted_created_at,
                 onInput: (e) => {
                   filters.Formatted_created_at = e.target.value;

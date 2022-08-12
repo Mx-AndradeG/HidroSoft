@@ -137,6 +137,7 @@ const initTable = ({ el: tableComponent }) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.product_name,
                 onInput: (e) => {
                   filters.product_name = e.target.value;
@@ -151,6 +152,7 @@ const initTable = ({ el: tableComponent }) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.storage_name,
                 onInput: (e) => {
                   filters.storage_name = e.target.value;
@@ -165,6 +167,7 @@ const initTable = ({ el: tableComponent }) => {
           setup() {
             return () =>
               h("input", {
+                class: "form-control form-control-sm",
                 value: filters.quantity,
                 onInput: (e) => {
                   filters.quantity = e.target.value;

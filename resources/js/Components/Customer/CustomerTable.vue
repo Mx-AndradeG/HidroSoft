@@ -2,23 +2,9 @@
   <div>
     <div>
       <div class="row mb-3">
-        <div class="col-6">
-          <input
-            v-model="valueFilter"
-            type="text"
-            class="form-control"
-            id="floatingInput"
-            placeholder="Escriba algo para buscar..."
-          />
-        </div>
-        <div class="col-6 d-flex justify-content-end">
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            style="margin-right: 1rem"
-          >
-            Exportar
-          </button>
+        <div class="col-12 d-flex justify-content-end">
+          <button type="button" class="btn btn-outline-primary" style="margin-right: 1rem;" 
+            @click="exportToExcel">Exportar</button>
           <button
             @click="$vfm.show('customer_modal')"
             type="button"
@@ -38,7 +24,32 @@
       :messages="tableOptions.messages"
       :is-slot-mode="true"
       @do-search="getData"
+      @VnodeMounted="initTable"
     >
+      <template v-slot:address="data">
+        <span :class="data.value.address == null ? 'badge bg-danger' : ''"> 
+          {{(data.value.address == null ? 'Sin dirección' : data.value.address)}}
+        </span>
+      </template>
+
+      <template v-slot:email="data">
+        <span :class="data.value.email == null ? 'badge bg-danger' : ''"> 
+          {{(data.value.email == null ? 'No tiene email' : data.value.email)}}
+        </span>
+      </template>
+
+      <template v-slot:rfc="data">
+        <span :class="data.value.rfc == null ? 'badge bg-danger' : ''"> 
+          {{(data.value.rfc == null ? 'No tiene RFC' : data.value.rfc)}}
+        </span>
+      </template>
+
+      <template v-slot:social="data">
+        <span :class="data.value.social == null ? 'badge bg-danger' : ''"> 
+          {{(data.value.social == null ? 'Sin razón social' : data.value.social)}}
+        </span>
+      </template>
+
       <template v-slot:actions="data">
         <div class="row">
           <div class="col-4">
@@ -94,11 +105,27 @@
 <script setup>
 import CustomerTableColumns from "./CustomerTableColumns";
 import CustomerModal from "./CustomerModal.vue";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref, createApp, defineComponent, h, watch  } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
 
 const toast = useToast();
+
+
+
+const filters = reactive({
+  name: null,
+  address: null,
+  email: null,
+  phone:null,
+  rfc:null,
+  social:null,
+  Formatted_created_at:null,
+})
+
+watch(filters, (newValue, oldValue) => {
+   getData(0, 10, "id", "desc");
+})
 
 const tableOptions = reactive({
   columns: CustomerTableColumns.columns,
@@ -113,6 +140,140 @@ const tableOptions = reactive({
   rows: [],
   total: 0,
 });
+
+const initTable = ({ el: tableComponent }) => {
+      let headerTr = tableComponent.getElementsByClassName("vtl-thead-tr");
+      if (! headerTr[0]) {
+        return;
+      }
+      let cloneTr = headerTr[0].cloneNode(true); // Clone first <tr>
+      let childTh = cloneTr.getElementsByClassName("vtl-thead-th");
+      for(let i = 0; i < childTh.length; i++) {
+        // Clear <th>'s HTML
+        childTh[i].innerHTML = "";
+      }
+      // Create a input element and append to first <th>
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.name,
+                onInput: (e) => {
+                  filters.name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[0]);
+      
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.address,
+                onInput: (e) => {
+                  filters.address = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[1]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.email,
+                onInput: (e) => {
+                  filters.email = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[2]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.phone,
+                onInput: (e) => {
+                  filters.phone = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[3]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.rfc,
+                onInput: (e) => {
+                  filters.rfc = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[4]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.social,
+                onInput: (e) => {
+                  filters.social = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[5]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.Formatted_created_at,
+                onInput: (e) => {
+                  filters.Formatted_created_at = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[6]);
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.Formatted_created_at,
+                onInput: (e) => {
+                  filters.Formatted_created_at = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[5]);
+      // append cloned element to the header after first <tr>
+      headerTr[0].after(cloneTr)
+  };
 
 const fin = () => {
   getData(0, 10, "id", "desc");
@@ -147,6 +308,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           "social",
           "Formatted_created_at",
         ]),
+        filters: JSON.stringify(filters),
         limit: _limit,
         page: _offset + 1,
         orderBy: _orderBy,
@@ -159,6 +321,25 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
       tableOptions.isLoading = false;
     });
 };
+
+const exportToExcel = () => {
+  axios({
+    url: route("customer.export"),
+    method: "GET",
+    responseType: "blob",
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      "clientes.xlsx"
+    );
+    document.body.appendChild(link);
+    link.click();
+  });
+  
+}
 
 const deleteItem = (_id) => {
   Swal.fire({
