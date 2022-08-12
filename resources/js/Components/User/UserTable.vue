@@ -2,16 +2,7 @@
   <div>
     <div>
       <div class="row mb-3">
-        <div class="col-6">
-          <input
-            v-model="valueFilter"
-            type="text"
-            class="form-control"
-            id="floatingInput"
-            placeholder="Escriba algo para buscar..."
-          />
-        </div>
-        <div class="col-6 d-flex justify-content-end">
+        <div class="col-12 d-flex justify-content-end">
           <button
             type="button"
             class="btn btn-outline-primary"
@@ -165,6 +156,7 @@ const initTable = ({ el: tableComponent }) => {
       setup() {
         return () =>
           h("input", {
+            class: "form-control form-control-sm",
             value: filters.user_name,
             onInput: (e) => {
               filters.user_name = e.target.value;
@@ -179,6 +171,7 @@ const initTable = ({ el: tableComponent }) => {
       setup() {
         return () =>
           h("input", {
+            class: "form-control form-control-sm",
             value: filters.email,
             onInput: (e) => {
               filters.email = e.target.value;
@@ -193,6 +186,7 @@ const initTable = ({ el: tableComponent }) => {
       setup() {
         return () =>
           h("input", {
+            class: "form-control form-control-sm",
             value: filters.user_type,
             onInput: (e) => {
               filters.user_type = e.target.value;
@@ -207,6 +201,7 @@ const initTable = ({ el: tableComponent }) => {
       setup() {
         return () =>
           h("input", {
+            class: "form-control form-control-sm",
             value: filters.Formatted_created_at,
             onInput: (e) => {
               filters.Formatted_created_at = e.target.value;

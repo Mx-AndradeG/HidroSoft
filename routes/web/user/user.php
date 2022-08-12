@@ -10,6 +10,8 @@ Route::get('user/info', [UserController::class, 'getCurrentAuthUser'])->name('us
 
 Route::get('user/export', [UserController::class, 'export'])->name('user.export');
 
+Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
+
 Route::apiResource('user', UserController::class, ['names' => 'user']);
 
 Route::inertia('/user', 'User/UserIndex')->name('User');
