@@ -118,7 +118,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a :class="currentURL == '/user' ? 'nav-link' : 'nav-link collapsed'" :href="route('User')">
+        <a :class="currentURL == '/log' ? 'nav-link' : 'nav-link collapsed'" :href="route('Log')">
           <i class="bi bi-people"></i>
           <span>Bitácora</span>
         </a>
