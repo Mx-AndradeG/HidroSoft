@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Suppliers;
 
+use App\Exports\SupplierExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Supplier\StoreSupplierRequest;
 use App\Models\Supplier\Supplier;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupplierController extends Controller
 {
@@ -33,16 +35,9 @@ class SupplierController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $supplier = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $supplier = $query->whereDate($filter, $dates[0]);
-                        }
-                        break;
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
+                    break;
                     default:
                         $supplier = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
@@ -52,11 +47,9 @@ class SupplierController extends Controller
 
         $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
-                break;
+            case 'Formatted_created_at':
+                $query->orderBy('created_at', $order);
+            break;
             default:
                 $query->orderBy($orderBy, $order);
                 break;
@@ -130,5 +123,10 @@ class SupplierController extends Controller
     {
         $supplier->delete();
         return $supplier;
+    }
+    
+    public function export() 
+    {
+        return Excel::download(new SupplierExport, 'Proveedores.xlsx');
     }
 }
