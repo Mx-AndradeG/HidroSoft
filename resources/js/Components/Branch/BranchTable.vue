@@ -2,9 +2,7 @@
   <div>
     <div>
       <div class="row mb-3">
-        <div class="col-6">
-        </div>
-        <div class="col-6 d-flex justify-content-end">
+        <div class="col-12 d-flex justify-content-end">
           <button
             type="button"
             class="btn btn-outline-primary"
@@ -196,7 +194,7 @@ watch(filters, (newValue, oldValue) => {
       ).mount(childTh[3]);
       // append cloned element to the header after first <tr>
       headerTr[0].after(cloneTr)
-    };
+  };
 
 const fin = () => {
   getData(0, 10, "id", "desc");
