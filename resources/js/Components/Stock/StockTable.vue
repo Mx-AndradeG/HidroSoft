@@ -12,15 +12,16 @@
                 :options="storages"
                 label="name"
                 :reduce="(name) => name.id"
-                v-model="storage_id"
+                v-model="filters.storage_id"
               />
             </div>
-            <div class="col-2 mt-5">
+            <div class="col-2 mt-5 justify-content-end" style="text-align: end; ">
                 <button
-                  v-if="storage_id != ''"
+                  v-if="filters.storage_id != ''"
                   @click="shareInfo()"
                   type="button"
-                  class="btn btn-primary"
+                  style="margin-right: 1rem"
+                  class="btn btn-primary "
                 >
                   Ver inventario
                 </button>
@@ -36,17 +37,16 @@
         </center>
     </div>
     <div v-if="show">
-      <div class="pt-3 mb-3">
-        <div class="row pt-3 mb-3">
-          <div class="col-6">
-            <input
-              v-model="valueFilter"
-              type="text"
-              class="form-control"
-              id="floatingInput"
-              placeholder="Escriba algo para buscar..."
-            />
-          </div>
+      <div class="pt-6 mb-3">
+        <div class="col-12 d-flex justify-content-end" style="text-align: end; padding-top: 2%;">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            style="margin-right: 1rem"
+            @click="exportToExcel"
+          >
+            Exportar
+          </button>
         </div>
       </div>
       <TableLite
@@ -58,6 +58,7 @@
         :messages="tableOptions.messages"
         :is-slot-mode="true"
         @do-search="getData"
+        @VnodeMounted="initTable"
       >
         <template v-slot:actions="data">
           <div class="row">
@@ -89,11 +90,16 @@
 
 <script setup>
 import StockTableColumns from "./StockTableColumns";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, createApp, defineComponent, h, watch  } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
 const toast = useToast();
-
+const filters = reactive({
+  storage_id: null,
+  product_name: null,
+  storage_name:null,
+  quantity:null,
+})
 
 const tableOptions = reactive({
   columns: StockTableColumns.columns,
@@ -108,6 +114,68 @@ const tableOptions = reactive({
   rows: [],
   total: 0,
 });
+
+watch(filters, (newValue, oldValue) => {
+   getData(0, 10, "id", "desc");
+})
+
+
+const initTable = ({ el: tableComponent }) => {
+      let headerTr = tableComponent.getElementsByClassName("vtl-thead-tr");
+      if (! headerTr[0]) {
+        return;
+      }
+      let cloneTr = headerTr[0].cloneNode(true); // Clone first <tr>
+      let childTh = cloneTr.getElementsByClassName("vtl-thead-th");
+      for(let i = 0; i < childTh.length; i++) {
+        // Clear <th>'s HTML
+        childTh[i].innerHTML = "";
+      }
+      // Create a input element and append to first <th>
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: filters.product_name,
+                onInput: (e) => {
+                  filters.product_name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[0]);
+      
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: filters.storage_name,
+                onInput: (e) => {
+                  filters.storage_name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[1]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                value: filters.quantity,
+                onInput: (e) => {
+                  filters.quantity = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[2]);
+      // append cloned element to the header after first <tr>
+      headerTr[0].after(cloneTr)
+  };
 
 const fin = () => {
   getData(0, 10, "id", "desc");
@@ -144,6 +212,25 @@ const shareInfo = () => {
     getData(0, 10, "id", "desc");
 };
 
+const exportToExcel = () => {
+  axios({
+    url: route("stock.export"),
+    method: "GET",
+    responseType: "blob",
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      "Inventario.xlsx"
+    );
+    document.body.appendChild(link);
+    link.click();
+  });
+  
+}
+
 const getData = (_offset, _limit, _orderBy, _ascending) => {
   tableOptions.isLoading = true;
   _ascending = _ascending === "desc" ? "1" : "2";
@@ -156,9 +243,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           'storage_name',
           'quantity'
         ]),
-        filters: JSON.stringify({
-          'storage_id': storage_id.value,
-        }),
+        filters: JSON.stringify(filters),
         limit: _limit,
         page: _offset + 1,
         orderBy: _orderBy,
