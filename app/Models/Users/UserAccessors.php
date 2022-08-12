@@ -19,7 +19,6 @@ trait UserAccessors
 
     public function getUserTypeNameAttribute()
     {
-        return $this->user_type ? ( $this->user_type_id == UserType::ADMIN ? 'Administrador' : 'Empleado') : 'No tiene';
+        return $this->user_type ? ($this->user_type_id == UserType::ADMIN ? 'Administrador' : 'Empleado') : 'No tiene';
     }
-
 }

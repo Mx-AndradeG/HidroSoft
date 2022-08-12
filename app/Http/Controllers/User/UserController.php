@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Notifications\CompleateUserRegister;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UserExport;
 
 class UserController extends Controller
 {
@@ -40,7 +42,21 @@ class UserController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
+                    case "user_name":
+                        $query->where('name', 'like', '%' . $value . '%');
+                        break;
+                    case "email":
+                        $query->where('email', 'like', '%' . $value . '%');
+                        break;
+                    case "user_type":
+                        $query->whereHas('user_type', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
                     case 'formatted_created_at':
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
+                        break;
                     case 'formatted_updated_at':
                         $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
                         $dates = explode(" a ", $value);
@@ -95,7 +111,7 @@ class UserController extends Controller
         return  redirect('/login');
     }
 
-        /**
+    /**
      * Store a newly created resource in storage.
      *
      * @param StoreUserRequest $request
@@ -110,7 +126,7 @@ class UserController extends Controller
         $user->notify(new CompleateUserRegister());
         return $user;
     }
-       
+
     /**
      * Display the specified resource.
      *
@@ -166,7 +182,7 @@ class UserController extends Controller
     {
         $branch = auth()->user()->branch;
         $storage = Storage::where('branch_id', $branch->id)->first();
-        
+
         return [
             'branch' => $branch,
             'storage' => $storage
@@ -176,5 +192,10 @@ class UserController extends Controller
     public function getCurrentAuthUser()
     {
         return auth()->user();
+    }
+
+    public function export()
+    {
+        return Excel::download(new UserExport, 'Usuarios.xlsx');
     }
 }

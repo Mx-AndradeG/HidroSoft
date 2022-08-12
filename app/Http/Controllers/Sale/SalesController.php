@@ -42,12 +42,12 @@ class SalesController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case "user_name": 
+                    case "user_name":
                         $query->whereHas('user', function ($query) use ($value) {
                             $query->where('name', 'like', '%' . $value . '%');
                         });
                         break;
-                    case "customer_name": 
+                    case "customer_name":
                         $query->whereHas('customer', function ($query) use ($value) {
                             $query->where('name', 'like', '%' . $value . '%');
                         });
@@ -56,15 +56,15 @@ class SalesController extends Controller
                         $query->whereHas('branch', function ($query) use ($value) {
                             $query->where('name', 'like', '%' . $value . '%');
                         });
-                    break;
+                        break;
                     case "payment_method_name":
                         $query->whereHas('payment_method', function ($query) use ($value) {
                             $query->where('name', 'like', '%' . $value . '%');
                         });
-                    break;
+                        break;
                     case "formatted_total_sale":
                         $query->where('total_sale', 'like', '%' . $value . '%');
-                    break;
+                        break;
                     case 'Formatted_created_at':
                         $sale = $query->where('created_at', 'like', '%' . $value . '%');
                         break;
@@ -98,12 +98,12 @@ class SalesController extends Controller
                 });
                 break;
             case "formatted_total_sale":
-                    $query->orderBy('total_sale', $order);
+                $query->orderBy('total_sale', $order);
                 break;
             case 'Formatted_created_at':
-                    $query->orderBy('created_at', $order);
+                $query->orderBy('created_at', $order);
                 break;
-            
+
             default:
                 $query->orderBy($orderBy, $order);
                 break;
@@ -124,7 +124,7 @@ class SalesController extends Controller
         return compact("data", "count");
     }
 
-     /**
+    /**
      * Store a newly created resource in storage.
      *
      * @param StoreSaleRequest $request
@@ -139,7 +139,7 @@ class SalesController extends Controller
         $sale->payment_method_id = $request->payment_method_id;
         $sale->total_sale = $request->total_sale;
 
-        Switch($request->payment_method_id){
+        switch ($request->payment_method_id) {
             case PaymentMethod::CASH:
                 $sale->received_amount = $request->received_amount;
                 break;
@@ -199,17 +199,17 @@ class SalesController extends Controller
     {
         $range_id = request()->get("range_id", 1);
         $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
-        switch($range_id){
+        switch ($range_id) {
             case 1:
                 $sales_today = Sale::whereIn('branch_id', $branches_id)->whereDate('created_at',  Carbon::now()->toDateString());
-                if($sales_today->count() > 0){
+                if ($sales_today->count() > 0) {
                     $total_amount_sale_today = $sales_today->sum('total_sale');
                     $total_count_sale_today  = $sales_today->count();
                     $total_inventory_amount_today = 0;
                     $total_products_sale_today = 0;
                     $sales_data = $sales_today->get();
-                    foreach($sales_data as $sale){
-                        foreach($sale->sale_detail as $saleDetail){
+                    foreach ($sales_data as $sale) {
+                        foreach ($sale->sale_detail as $saleDetail) {
                             $total_products_sale_today +=  $saleDetail->quantity;
                             $total_inventory_amount_today +=  ($saleDetail->purchase_price * $saleDetail->quantity);
                         }
@@ -220,7 +220,7 @@ class SalesController extends Controller
                         'total_earnings_today' => ($total_amount_sale_today - $total_inventory_amount_today),
                         'total_products_sale_today' => $total_products_sale_today
                     ];
-                }else{
+                } else {
                     return [
                         'total_amount_sale_today' => 0,
                         'total_count_sale_today' => 0,
@@ -228,17 +228,17 @@ class SalesController extends Controller
                         'total_products_sale_today' => 0
                     ];
                 }
-            break;
+                break;
             case 2:
                 $sales_this_week = Sale::whereIn('branch_id', $branches_id)->whereBetween('created_at', [Carbon::now()->startOfWeek()->toDateString(), Carbon::now()->endOfWeek()->toDateString()]);
-                if($sales_this_week->count() > 0){
+                if ($sales_this_week->count() > 0) {
                     $total_amount_sale_this_week = $sales_this_week->sum('total_sale');
                     $total_count_sale_this_week  = $sales_this_week->count();
                     $total_inventory_amount_this_week = 0;
                     $total_products_sale_this_week = 0;
                     $sales_data = $sales_this_week->get();
-                    foreach($sales_data as $sale){
-                        foreach($sale->sale_detail as $saleDetail){
+                    foreach ($sales_data as $sale) {
+                        foreach ($sale->sale_detail as $saleDetail) {
                             $total_products_sale_this_week +=  $saleDetail->quantity;
                             $total_inventory_amount_this_week +=  ($saleDetail->purchase_price * $saleDetail->quantity);
                         }
@@ -249,7 +249,7 @@ class SalesController extends Controller
                         'total_earnings_today' => ($total_amount_sale_this_week - $total_inventory_amount_this_week),
                         'total_products_sale_today' => $total_products_sale_this_week
                     ];
-                }else{
+                } else {
                     return [
                         'total_amount_sale_today' => 0,
                         'total_count_sale_today' => 0,
@@ -257,17 +257,17 @@ class SalesController extends Controller
                         'total_products_sale_today' => 0
                     ];
                 }
-            break;
+                break;
             case 3:
                 $sales_this_month = Sale::whereIn('branch_id', $branches_id)->whereMonth('created_at', Carbon::now()->month);
-                if($sales_this_month->count() > 0){
+                if ($sales_this_month->count() > 0) {
                     $total_amount_sale_this_month = $sales_this_month->sum('total_sale');
                     $total_count_sale_this_month  = $sales_this_month->count();
                     $total_inventory_amount_this_month = 0;
                     $total_products_sale_this_month = 0;
                     $sales_data = $sales_this_month->get();
-                    foreach($sales_data as $sale){
-                        foreach($sale->sale_detail as $saleDetail){
+                    foreach ($sales_data as $sale) {
+                        foreach ($sale->sale_detail as $saleDetail) {
                             $total_products_sale_this_month +=  $saleDetail->quantity;
                             $total_inventory_amount_this_month +=  ($saleDetail->purchase_price * $saleDetail->quantity);
                         }
@@ -278,7 +278,7 @@ class SalesController extends Controller
                         'total_earnings_today' => ($total_amount_sale_this_month - $total_inventory_amount_this_month),
                         'total_products_sale_today' => $total_products_sale_this_month
                     ];
-                }else{
+                } else {
                     return [
                         'total_amount_sale_today' => 0,
                         'total_count_sale_today' => 0,
@@ -286,17 +286,17 @@ class SalesController extends Controller
                         'total_products_sale_today' => 0
                     ];
                 }
-            break;
+                break;
             case 4:
                 $sales_this_year = Sale::whereIn('branch_id', $branches_id)->whereYear('created_at', Carbon::now()->year);
-                if($sales_this_year->count() > 0){
+                if ($sales_this_year->count() > 0) {
                     $total_amount_sale_this_year = $sales_this_year->sum('total_sale');
                     $total_count_sale_this_year  = $sales_this_year->count();
                     $total_inventory_amount_this_year = 0;
                     $total_products_sale_this_year = 0;
                     $sales_data = $sales_this_year->get();
-                    foreach($sales_data as $sale){
-                        foreach($sale->sale_detail as $saleDetail){
+                    foreach ($sales_data as $sale) {
+                        foreach ($sale->sale_detail as $saleDetail) {
                             $total_products_sale_this_year +=  $saleDetail->quantity;
                             $total_inventory_amount_this_year +=  ($saleDetail->purchase_price * $saleDetail->quantity);
                         }
@@ -307,7 +307,7 @@ class SalesController extends Controller
                         'total_earnings_today' => ($total_amount_sale_this_year - $total_inventory_amount_this_year),
                         'total_products_sale_today' => $total_products_sale_this_year
                     ];
-                }else{
+                } else {
                     return [
                         'total_amount_sale_today' => 0,
                         'total_count_sale_today' => 0,
@@ -315,92 +315,93 @@ class SalesController extends Controller
                         'total_products_sale_today' => 0
                     ];
                 }
-            break;
+                break;
         }
-        
     }
 
-    public function chartPieDataDashboard(){
+    public function chartPieDataDashboard()
+    {
         $range_id = request()->get("range_id", 1);
         $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
 
-        switch($range_id){
+        switch ($range_id) {
             case 1:
                 $sales_today_cash = Sale::whereIn('branch_id', $branches_id)
-                                    ->whereDate('created_at',  Carbon::now()->toDateString())
-                                    ->where('payment_method_id', PaymentMethod::CASH)->sum('total_sale');
+                    ->whereDate('created_at',  Carbon::now()->toDateString())
+                    ->where('payment_method_id', PaymentMethod::CASH)->sum('total_sale');
 
                 $sales_today_card = Sale::whereIn('branch_id', $branches_id)
-                                    ->whereDate('created_at',  Carbon::now()->toDateString())
-                                    ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');                    
+                    ->whereDate('created_at',  Carbon::now()->toDateString())
+                    ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
 
                 return [
                     'cash' => $sales_today_cash,
                     'card' => $sales_today_card
                 ];
-            break;
+                break;
             case 2:
                 $sales_this_week_cash = Sale::whereIn('branch_id', $branches_id)
-                                    ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-                                    ->where('payment_method_id', PaymentMethod::CASH)->sum('total_sale');
-                                    
+                    ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                    ->where('payment_method_id', PaymentMethod::CASH)->sum('total_sale');
+
                 $sales_this_week_card = Sale::whereIn('branch_id', $branches_id)
-                                    ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-                                    ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
-                                    
+                    ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                    ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
+
                 return [
                     'cash' => $sales_this_week_cash,
                     'card' => $sales_this_week_card
                 ];
-            break;
+                break;
             case 3:
                 $sales_this_month_cash = Sale::whereIn('branch_id', $branches_id)
-                                    ->whereMonth('created_at', Carbon::now()->month)
-                                    ->where('payment_method_id', PaymentMethod::CASH)->sum('total_sale');
-                                    
+                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->where('payment_method_id', PaymentMethod::CASH)->sum('total_sale');
+
                 $sales_this_month_card = Sale::whereIn('branch_id', $branches_id)
-                                    ->whereMonth('created_at', Carbon::now()->month)
-                                    ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
-                                    
+                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
+
                 return [
                     'cash' => $sales_this_month_cash,
                     'card' => $sales_this_month_card
                 ];
-            break;
+                break;
             case 4:
                 $sales_this_year_cash = Sale::whereIn('branch_id', $branches_id)
-                                    ->whereYear('created_at', Carbon::now()->year)
-                                    ->where('payment_method_id', PaymentMethod::CASH)->sum('total_sale');
-                                    
+                    ->whereYear('created_at', Carbon::now()->year)
+                    ->where('payment_method_id', PaymentMethod::CASH)->sum('total_sale');
+
                 $sales_this_year_card = Sale::whereIn('branch_id', $branches_id)
-                                    ->whereYear('created_at', Carbon::now()->year)
-                                    ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
-                                    
+                    ->whereYear('created_at', Carbon::now()->year)
+                    ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
+
                 return [
                     'cash' => $sales_this_year_cash,
                     'card' => $sales_this_year_card
                 ];
-            }
+        }
     }
 
-    public function barDataChartDashboard(){
+    public function barDataChartDashboard()
+    {
         $range_id = request()->get("range_id", 1);
         $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
-        switch($range_id){
+        switch ($range_id) {
             case 1:
                 $sales_today = Sale::whereIn('branch_id', $branches_id)->whereDate('created_at',  Carbon::now()
-                                    ->toDateString())->orderBy('created_at', 'desc')->limit(10)->get();
+                    ->toDateString())->orderBy('created_at', 'desc')->limit(10)->get();
                 $labels     = [];
                 $total_sales_data = [];
                 $total_purchase_data = [];
                 $total_earning_data = [];
 
-                if($sales_today->count() > 0){
-                    foreach($sales_today as $sale){
-                        array_push($labels, 'Venta #'.$sale->id);
+                if ($sales_today->count() > 0) {
+                    foreach ($sales_today as $sale) {
+                        array_push($labels, 'Venta #' . $sale->id);
                         array_push($total_sales_data, $sale->total_sale);
                         $total_purchase = 0;
-                        foreach($sale->sale_detail as $saleDetail){
+                        foreach ($sale->sale_detail as $saleDetail) {
                             $total_purchase +=  ($saleDetail->purchase_price * $saleDetail->quantity);
                         }
                         array_push($total_purchase_data, $total_purchase);
@@ -414,7 +415,7 @@ class SalesController extends Controller
                     'total_earning_data' => $total_earning_data,
                     'title' => 'Ventas del día (10 últimas)'
                 ];
-            break;
+                break;
             case 2:
                 $current_date = Carbon::now()->startOfWeek();
                 $labels = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
@@ -422,19 +423,19 @@ class SalesController extends Controller
                 $total_purchase_data = [];
                 $total_earning_data = [];
 
-                while($current_date->toDateString() <= Carbon::now()->endOfWeek()->toDateString()){
+                while ($current_date->toDateString() <= Carbon::now()->endOfWeek()->toDateString()) {
                     $sales_today = Sale::whereIn('branch_id', $branches_id)->whereDate('created_at',  $current_date)->get();
                     $total_sales = 0;
                     $total_purchase = 0;
-                    if($sales_today->count() > 0){
-                        array_push($total_sales_data, $sales_today->sum('total_sale'));                        
-                        foreach($sales_today as $sale){
-                            foreach($sale->sale_detail as $saleDetail){
+                    if ($sales_today->count() > 0) {
+                        array_push($total_sales_data, $sales_today->sum('total_sale'));
+                        foreach ($sales_today as $sale) {
+                            foreach ($sale->sale_detail as $saleDetail) {
                                 $total_purchase +=  ($saleDetail->purchase_price * $saleDetail->quantity);
                             }
                         }
-                    }else{
-                        array_push($total_sales_data, 0);                        
+                    } else {
+                        array_push($total_sales_data, 0);
                     }
                     array_push($total_purchase_data, $total_purchase);
                     array_push($total_earning_data, ($sales_today->sum('total_sale') - $total_purchase));
@@ -446,9 +447,9 @@ class SalesController extends Controller
                     'total_sales_data' => $total_sales_data,
                     'total_purchase_data' => $total_purchase_data,
                     'total_earning_data' => $total_earning_data,
-                    'title' => 'Ventas de la semana ('.Carbon::now()->week.') del: '.Carbon::now()->startOfWeek()->format('d-m-Y').' al '.Carbon::now()->endOfWeek()->format('d-m-Y')
+                    'title' => 'Ventas de la semana (' . Carbon::now()->week . ') del: ' . Carbon::now()->startOfWeek()->format('d-m-Y') . ' al ' . Carbon::now()->endOfWeek()->format('d-m-Y')
                 ];
-            break;
+                break;
             case 3:
                 $startOfMonth = now()->startOfMonth();
                 $endOfWeek = $startOfMonth->copy()->endOfWeek();
@@ -468,15 +469,15 @@ class SalesController extends Controller
                 foreach ($ranges as $range) {
                     $sales_today = Sale::whereIn('branch_id', $branches_id)->whereBetween('created_at', $range)->get();
                     $total_purchase = 0;
-                    if($sales_today->count() > 0){
-                        foreach($sales_today as $sale){
-                            foreach($sale->sale_detail as $saleDetail){
+                    if ($sales_today->count() > 0) {
+                        foreach ($sales_today as $sale) {
+                            foreach ($sale->sale_detail as $saleDetail) {
                                 $total_purchase +=  ($saleDetail->purchase_price * $saleDetail->quantity);
                             }
                         }
                         array_push($total_sales_data, $sales_today->sum('total_sale'));
-                    }else{
-                        array_push($total_sales_data, 0);                        
+                    } else {
+                        array_push($total_sales_data, 0);
                     }
                     array_push($total_purchase_data, $total_purchase);
                     array_push($total_earning_data, ($sales_today->sum('total_sale') - $total_purchase));
@@ -489,58 +490,56 @@ class SalesController extends Controller
                     'total_sales_data' => $total_sales_data,
                     'total_purchase_data' => $total_purchase_data,
                     'total_earning_data' => $total_earning_data,
-                    'title' => 'Ventas de mes ('.Carbon::now()->month.') del: '.Carbon::now()->startOfMonth()->format('d-m-Y').' al '.Carbon::now()->endOfMonth()->format('d-m-Y')
+                    'title' => 'Ventas de mes (' . Carbon::now()->month . ') del: ' . Carbon::now()->startOfMonth()->format('d-m-Y') . ' al ' . Carbon::now()->endOfMonth()->format('d-m-Y')
                 ];
-            break;
+                break;
 
             case 4:
                 $labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
                 $total_sales_data = [];
                 $total_purchase_data = [];
                 $total_earning_data = [];
-        
+
                 for ($i = 0; $i < 12; $i++) {
                     $sales_month = Sale::query()->whereMonth('created_at', $i + 1)->whereYear('created_at', now()->year)->get();
                     $total_purchase = 0;
 
-                    if($sales_month->count() > 0){
-                        foreach($sales_month as $sale){
-                            foreach($sale->sale_detail as $saleDetail){
+                    if ($sales_month->count() > 0) {
+                        foreach ($sales_month as $sale) {
+                            foreach ($sale->sale_detail as $saleDetail) {
                                 $total_purchase +=  ($saleDetail->purchase_price * $saleDetail->quantity);
                             }
                         }
                         array_push($total_sales_data, $sales_month->sum('total_sale'));
-                    }else{
-                        array_push($total_sales_data, 0);                        
+                    } else {
+                        array_push($total_sales_data, 0);
                     }
                     array_push($total_purchase_data, $total_purchase);
                     array_push($total_earning_data, ($sales_month->sum('total_sale') - $total_purchase));
-                    
-
                 }
-        
+
                 return [
                     'labels' => $labels,
                     'total_sales_data' => $total_sales_data,
                     'total_purchase_data' => $total_purchase_data,
                     'total_earning_data' => $total_earning_data,
-                    'title' => 'Ventas del año ('.Carbon::now()->year.')'
+                    'title' => 'Ventas del año (' . Carbon::now()->year . ')'
                 ];
-            break;
-
+                break;
         }
     }
 
-    public function mostEarnedPerProduct(){
+    public function mostEarnedPerProduct()
+    {
         $categories_id = Category::where('company_id', auth()->user()->company_id)->pluck('id');
         $products = Product::query()->whereIn('category_id', $categories_id)->get();
         $earnings = [];
-        foreach($products as $product){
+        foreach ($products as $product) {
             $earnings[$product->id] = $product->sale_price - $product->purchase_price;
         }
         arsort($earnings);
         $final_data = [];
-        foreach($earnings as $key => $value) {
+        foreach ($earnings as $key => $value) {
             $product = Product::findOrFail($key);
             array_push($final_data, [
                 'name' => $product->name,
@@ -548,100 +547,102 @@ class SalesController extends Controller
                 'purchase_price' => $product->purchase_price,
                 'earning' => $value
             ]);
-          }
+        }
         $final_data = array_slice($final_data, 0, 9);
         return $final_data;
     }
 
-    public function mostProductSold(){
+    public function mostProductSold()
+    {
         //trabajar con la base de datos
     }
 
-    public function calculateDates(){
+    public function calculateDates()
+    {
         $payment_plan_id = request()->get("payment_plan_id", false);
         $deadline_id = request()->get("deadline_id", false);
         $total_sale = request()->get("total_sale", false);
         $current_pay_for_deadline = 0;
         $payments = [];
         $times_to_paid = 0;
-        switch($deadline_id){
+        switch ($deadline_id) {
             case Sale::DEADLINETREE:
                 $times_to_paid = 3;
                 $current_pay_for_deadline = $total_sale / $times_to_paid;
-            break;
+                break;
             case Sale::DEADLINESIX:
                 $times_to_paid = 6;
                 $current_pay_for_deadline = $total_sale / $times_to_paid;
-            
-            break;
+
+                break;
             case Sale::DEADLINETWELVE:
                 $times_to_paid = 12;
                 $current_pay_for_deadline = $total_sale / $times_to_paid;
-            break;
+                break;
             default:
-            break;
+                break;
         }
 
 
-        switch($payment_plan_id){
+        switch ($payment_plan_id) {
             case Sale::WEEK:
                 $current_date = Carbon::now();
                 $current_amount = $total_sale;
                 $current_paid = 0;
                 $current_debt = 0;
-                for($i = 0; $i < $times_to_paid; $i++){
+                for ($i = 0; $i < $times_to_paid; $i++) {
                     $current_date = $current_date->addWeek();
-                    $current_paid = $current_paid+=$current_pay_for_deadline;
+                    $current_paid = $current_paid += $current_pay_for_deadline;
                     $current_debt = $current_amount - ($current_paid);
                     array_push($payments, [
                         'date' => $current_date->format('d-m-Y'),
-                        'amount' => round($current_pay_for_deadline,2),
-                        'debt' => round($current_debt,2),
-                        'current_paid' => round($current_paid,2)
+                        'amount' => round($current_pay_for_deadline, 2),
+                        'debt' => round($current_debt, 2),
+                        'current_paid' => round($current_paid, 2)
                     ]);
                 }
-               
-            break;
+
+                break;
             case Sale::FORTNIGHT:
                 $current_date = Carbon::now();
                 $current_amount = $total_sale;
                 $current_paid = 0;
                 $current_debt = 0;
-                for($i = 0; $i < $times_to_paid; $i++){
+                for ($i = 0; $i < $times_to_paid; $i++) {
                     $current_date = $current_date->addDays(15);
-                    $current_paid = $current_paid+=$current_pay_for_deadline;
+                    $current_paid = $current_paid += $current_pay_for_deadline;
                     $current_debt = $current_amount - ($current_paid);
                     array_push($payments, [
                         'date' => $current_date->format('d-m-Y'),
-                        'amount' => round($current_pay_for_deadline,2),
-                        'debt' => round($current_debt,2),
-                        'current_paid' => round($current_paid,2)
+                        'amount' => round($current_pay_for_deadline, 2),
+                        'debt' => round($current_debt, 2),
+                        'current_paid' => round($current_paid, 2)
                     ]);
                 }
-            break;
+                break;
             case Sale::MONTH:
                 $current_date = Carbon::now();
                 $current_amount = $total_sale;
                 $current_paid = 0;
                 $current_debt = 0;
-                for($i = 0; $i < $times_to_paid; $i++){
+                for ($i = 0; $i < $times_to_paid; $i++) {
                     $current_date = $current_date->addMonth();
-                    $current_paid = $current_paid+=$current_pay_for_deadline;
-                    $current_debt = $current_amount - ($current_paid);    
+                    $current_paid = $current_paid += $current_pay_for_deadline;
+                    $current_debt = $current_amount - ($current_paid);
                     array_push($payments, [
                         'date' => $current_date->format('d-m-Y'),
-                        'amount' => round($current_pay_for_deadline,2),
-                        'debt' => round($current_debt,2),
-                        'current_paid' => round($current_paid,2)
+                        'amount' => round($current_pay_for_deadline, 2),
+                        'debt' => round($current_debt, 2),
+                        'current_paid' => round($current_paid, 2)
                     ]);
                 }
-            break;
+                break;
             default:
-            break;
+                break;
         }
-        return $payments;   
+        return $payments;
     }
-    public function export() 
+    public function export()
     {
         return Excel::download(new SalesExport, 'Ventas.xlsx');
     }
