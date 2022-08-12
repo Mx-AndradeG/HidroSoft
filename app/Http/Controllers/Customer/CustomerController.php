@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Exports\CustomerExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Models\Customer\Customer;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
@@ -33,16 +35,9 @@ class CustomerController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $customer = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $customer = $query->whereDate($filter, $dates[0]);
-                        }
-                        break;
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
+                    break;
                     default:
                         $customer = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
@@ -50,13 +45,11 @@ class CustomerController extends Controller
             }
         }
 
-        $order = $ascending === "1" ? 'DESC' : 'ASC';
+        $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
-                break;
+            case 'Formatted_created_at':
+                $query->orderBy('created_at', $order);
+            break;
             default:
                 $query->orderBy($orderBy, $order);
                 break;
@@ -130,5 +123,10 @@ class CustomerController extends Controller
     {
         $customer->delete();
         return $customer;
+    }
+
+    public function export() 
+    {
+        return Excel::download(new CustomerExport, 'Clientes.xlsx');
     }
 }

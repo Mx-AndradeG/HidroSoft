@@ -52,7 +52,7 @@ class StorageController extends Controller
             }
         }
 
-        $order = $ascending === "1" ? 'DESC' : 'ASC';
+        $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
             case 'Formatted_created_at':
                 $query->orderBy('created_at', $order);
