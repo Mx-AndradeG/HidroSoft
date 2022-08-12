@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UserExport;
+use GuzzleHttp\Psr7\Request;
 
 class UserController extends Controller
 {
@@ -197,5 +198,10 @@ class UserController extends Controller
     public function export()
     {
         return Excel::download(new UserExport, 'Usuarios.xlsx');
+    }
+
+    public function logout() {
+        auth()->guard('web')->logout();
+        return redirect('/login');
     }
 }
