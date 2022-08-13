@@ -54,7 +54,3 @@ export default {
     name: "UserAccountDataCard"
 }
 </script>
-
-<style scoped>
-
-</style>
