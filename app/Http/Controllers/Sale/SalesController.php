@@ -62,6 +62,11 @@ class SalesController extends Controller
                             $query->where('name', 'like', '%' . $value . '%');
                         });
                         break;
+                    case "sale_type_name":
+                        $query->whereHas('sale_type', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
                     case "formatted_total_sale":
                         $query->where('total_sale', 'like', '%' . $value . '%');
                         break;
@@ -94,6 +99,11 @@ class SalesController extends Controller
                 break;
             case "payment_method_name":
                 $query->whereHas('payment_method', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
+                break;
+            case "sale_type_name":
+                $query->whereHas('sale_type', function ($query) use ($order) {
                     $query->orderBy('name', $order);
                 });
                 break;

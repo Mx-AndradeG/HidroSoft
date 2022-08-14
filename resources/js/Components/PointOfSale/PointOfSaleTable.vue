@@ -305,14 +305,14 @@
                                             <a class="text-primary fw-bold h5">Total de venta: {{formatPrice(total_sale, 1, 2)}}</a>
                                         </div>
                                     </div>
-                                    <div class="col-12 pt-4" v-if="sale.payment_method_id == 1 ? true : false">
+                                    <div class="col-12 pt-4">
                                         <div class="d-grid gap-2 mt-3">
                                             <button 
                                                 class="btn btn-primary" 
                                                 type="button"
                                                 :disabled="sale.deadline_id == '' || sale.payment_plan_id == '' || sale.client_id == 0 || disable "
                                                 @click="sendData">
-                                                Pagar
+                                                Confirmar venta
                                             </button>
                                         </div>
                                     </div>
@@ -381,6 +381,7 @@ export default ({
         current_produts: [],
         client_id: '',
         total_sale: 0,
+        sale_type_id: 1,
         payment_method_id: '',
         reference_code: '',
         received_amount: 0,
@@ -536,6 +537,7 @@ export default ({
             });
         },
         changetab(tab){
+            this.sale_type_id = tab;
             this.current_tab = tab;
         },
         formatPrice(value, quantity, type) {

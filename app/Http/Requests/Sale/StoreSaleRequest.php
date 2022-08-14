@@ -27,6 +27,7 @@ class StoreSaleRequest extends FormRequest
     public function rules()
     {
         return [
+            'sale_type_id'      => 'required|exists:sale_types,id',
             'current_produts'   => ['required', 'array', 'min:1'],
             'client_id'         => 'required',
             'total_sale'        => ['required', 'numeric', 'min:1'],

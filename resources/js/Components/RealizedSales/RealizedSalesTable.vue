@@ -33,6 +33,12 @@
       @VnodeMounted="initTable"
 
     >
+      <template v-slot:sale_type_name="data">
+        <span :class="data.value.payment_method_name == 'Contado' ? 'badge bg-warning': 'badge bg-primary'"> 
+          {{(data.value.sale_type_name)}}
+        </span>
+      </template>
+
       <template v-slot:payment_method_name="data">
         <span :class="data.value.payment_method_name == 'Efectivo' ? 'badge bg-success': 'badge bg-primary'"> 
           {{(data.value.payment_method_name)}}
@@ -76,6 +82,7 @@ const filters = reactive({
   user_name: null,
   branch_name:null,
   customer_name:null,
+  sale_type_name:null,
   payment_method_name:null,
   formatted_total_sale:null,
   Formatted_created_at:null,
@@ -182,6 +189,22 @@ const fin = () => {
         })
       ).mount(childTh[2]);
 
+      
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.sale_type_name,
+                onInput: (e) => {
+                  filters.sale_type_name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[3]);
+
       createApp(
         defineComponent({
           setup() {
@@ -195,7 +218,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[3]);
+      ).mount(childTh[4]);
 
       createApp(
         defineComponent({
@@ -210,7 +233,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[4]);
+      ).mount(childTh[5]);
 
       createApp(
         defineComponent({
@@ -225,7 +248,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[5]);
+      ).mount(childTh[6]);
       // append cloned element to the header after first <tr>
       headerTr[0].after(cloneTr)
     };
@@ -261,6 +284,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           "branch_name",
           "customer_name",
           "payment_method_name",
+          "sale_type_name",
           "formatted_total_sale",
           "Formatted_created_at"
         ]),
