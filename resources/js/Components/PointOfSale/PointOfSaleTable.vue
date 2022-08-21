@@ -345,6 +345,16 @@ export default ({
       storage_id:'',
       products: [],
       customers: [],
+      payment_methods: [
+        {
+          id: 1,
+          name: "Efectivo",
+        },
+        {
+          id: 2,
+          name: "Tarjeta"
+        },
+      ],
       payment_plan: [
         {
           id: 1,
@@ -373,7 +383,6 @@ export default ({
           name: "12"
         }
       ],
-      payment_methods: [],
       current_storage: {},
       current_branch: {},
       current_tab: 1,
@@ -485,6 +494,10 @@ export default ({
                 case 2:
                      mensage =  'Quieres confirmar la venta con codigo de referencia: ' + this.sale.reference_code;
                     break;
+                case 3: 
+                    var current_customer = this.customers.find(c => c.id == this.sale.client_id);
+                    mensage =  'Quieres confirmar la venta a credito a ' + current_customer.name + ' por el monto de ' + this.formatPrice(this.sale.total_sale, 1, 2);
+                    break;
              }
             Swal.fire({
                 title: "Realizar venta",
@@ -511,12 +524,17 @@ export default ({
                             icon: true,
                             rtl: false,
                         });
-                        this.sale.current_produts = [];
-                        this.sale.total_sale = 0;
-                        this.sale.received_amount = 0;
-                        this.sale.reference_code = '';
-                        this.sale.payment_method_id = '';
-                        this.sale.client_id = '';
+                        this.sale ={
+                            current_produts: [],
+                            client_id: '',
+                            total_sale: 0,
+                            sale_type_id: 1,
+                            payment_method_id: '',
+                            reference_code: '',
+                            received_amount: 0,
+                            deadline_id: '',
+                            payment_plan_id: '',
+                        };
                     })
                     .catch((error) => {
                         toast.error("Error al realizar la venta.", {
@@ -537,7 +555,13 @@ export default ({
             });
         },
         changetab(tab){
-            this.sale_type_id = tab;
+            if(tab == 2){
+                this.sale.payment_method_id = 3
+            }
+            if(tab == 1){
+                this.sale.payment_method_id = ''
+            }
+            this.sale.sale_type_id = tab;
             this.current_tab = tab;
         },
         formatPrice(value, quantity, type) {
@@ -570,14 +594,6 @@ export default ({
             this.current_branch = response.data.branch;
             this.storage_id = response.wherehouses.id;
         });
-        axios.get(route("payment-method.index" , {
-            columns: JSON.stringify([
-                "id",
-                "name",
-            ])})).then(response => {
-            this.payment_methods = response.data.data;
-            this.sale.payment_method_id = this.payment_methods[1].id;
-        }); 
         axios.get(route("customer.index", {
             columns: JSON.stringify([
                 "id",

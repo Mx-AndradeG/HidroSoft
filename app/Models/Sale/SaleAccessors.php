@@ -64,5 +64,11 @@ trait SaleAccessors
         };
         return $data;
     }
+
+    public function getSaleStatusNameAttribute()
+    {
+        return $this->status == Sale::STATUS_PAID ? 'Pagado' :( 
+               $this->status == Sale::STATUS_WITHOUT_PAYMENT ? 'Sin pago' :'Abonado');
+    }
     
 }

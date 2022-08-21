@@ -34,13 +34,20 @@
 
     >
       <template v-slot:sale_type_name="data">
-        <span :class="data.value.payment_method_name == 'Contado' ? 'badge bg-warning': 'badge bg-primary'"> 
+        <span :class="data.value.sale_type_name == 'Contado' ? 'badge bg-success': 'badge bg-warning'"> 
           {{(data.value.sale_type_name)}}
         </span>
       </template>
 
+      <template v-slot:sale_status_name="data">
+        <span :class="data.value.sale_status_name == 'Pagado' ? 'badge bg-success': 
+                      (data.value.sale_status_name == 'Sin pago' ? 'badge bg-danger':'badge bg-warning')"> 
+          {{(data.value.sale_status_name)}}
+        </span>
+      </template>
+
       <template v-slot:payment_method_name="data">
-        <span :class="data.value.payment_method_name == 'Efectivo' ? 'badge bg-success': 'badge bg-primary'"> 
+        <span :class="data.value.payment_method_name == 'Efectivo' ? 'badge bg-success': data.value.payment_method_name == 'Credito' ? 'badge bg-warning' : 'badge bg-primary'"> 
           {{(data.value.payment_method_name)}}
         </span>
       </template>
@@ -226,6 +233,21 @@ const fin = () => {
             return () =>
               h("input", {
                 class: "form-control form-control-sm",
+                value: filters.sale_status_name,
+                onInput: (e) => {
+                  filters.sale_status_name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[5]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
                 value: filters.formatted_total_sale,
                 onInput: (e) => {
                   filters.formatted_total_sale = e.target.value;
@@ -233,7 +255,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[5]);
+      ).mount(childTh[6]);
 
       createApp(
         defineComponent({
@@ -248,7 +270,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[6]);
+      ).mount(childTh[7]);
       // append cloned element to the header after first <tr>
       headerTr[0].after(cloneTr)
     };
@@ -285,6 +307,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           "customer_name",
           "payment_method_name",
           "sale_type_name",
+          "sale_status_name",
           "formatted_total_sale",
           "Formatted_created_at"
         ]),

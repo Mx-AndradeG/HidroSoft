@@ -31,6 +31,12 @@ export default {
             sortable: true,
           },
           {
+            label: "Estado de venta",
+            field: "sale_status_name",
+            width: "15%",
+            sortable: true,
+          },
+          {
             label: "Total de compra",
             field: "formatted_total_sale",
             width: "15%",

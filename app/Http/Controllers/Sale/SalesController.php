@@ -145,6 +145,7 @@ class SalesController extends Controller
         $sale = new Sale();
         $sale->user_id    = auth()->user()->id;
         $sale->branch_id  = auth()->user()->branch->id;
+        $sale->sale_type_id  = $request->sale_type_id;        
         $sale->customer_id = $request->customer_id != 0 ? $request->customer_id : null;
         $sale->payment_method_id = $request->payment_method_id;
         $sale->total_sale = $request->total_sale;
@@ -152,13 +153,19 @@ class SalesController extends Controller
         switch ($request->payment_method_id) {
             case PaymentMethod::CASH:
                 $sale->received_amount = $request->received_amount;
+                $sale->save();
                 break;
             case PaymentMethod::CARD:
                 $sale->reference_code = $request->reference_code;
+                $sale->save();
+                break;
+            case PaymentMethod::CREDIT:
+                $sale->status = Sale::STATUS_WITHOUT_PAYMENT;
+                $sale->save();
+                $sale->createPaymentDates($request->payment_plan_id, $sale->total_sale, $request->deadline_id);
                 break;
         }
 
-        $sale->save();
         $sale->storeSaleDetails($request->current_produts);
 
         return $sale;
