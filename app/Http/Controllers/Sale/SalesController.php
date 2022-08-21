@@ -351,9 +351,14 @@ class SalesController extends Controller
                     ->whereDate('created_at',  Carbon::now()->toDateString())
                     ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
 
+                $sales_today_credit = Sale::whereIn('branch_id', $branches_id)
+                    ->whereDate('created_at',  Carbon::now()->toDateString())
+                    ->where('payment_method_id', PaymentMethod::CREDIT)->sum('total_sale');
+
                 return [
                     'cash' => $sales_today_cash,
-                    'card' => $sales_today_card
+                    'card' => $sales_today_card,
+                    'credit' => $sales_today_credit
                 ];
                 break;
             case 2:
@@ -365,9 +370,15 @@ class SalesController extends Controller
                     ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
                     ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
 
+                $sales_today_credit = Sale::whereIn('branch_id', $branches_id)
+                    ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                    ->where('payment_method_id', PaymentMethod::CREDIT)->sum('total_sale');
+
                 return [
                     'cash' => $sales_this_week_cash,
-                    'card' => $sales_this_week_card
+                    'card' => $sales_this_week_card,
+                    'credit' => $sales_today_credit
+
                 ];
                 break;
             case 3:
@@ -378,10 +389,15 @@ class SalesController extends Controller
                 $sales_this_month_card = Sale::whereIn('branch_id', $branches_id)
                     ->whereMonth('created_at', Carbon::now()->month)
                     ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
+                
+                $sales_today_credit = Sale::whereIn('branch_id', $branches_id)
+                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->where('payment_method_id', PaymentMethod::CREDIT)->sum('total_sale');
 
                 return [
                     'cash' => $sales_this_month_cash,
-                    'card' => $sales_this_month_card
+                    'card' => $sales_this_month_card,
+                    'credit' => $sales_today_credit
                 ];
                 break;
             case 4:
@@ -393,9 +409,14 @@ class SalesController extends Controller
                     ->whereYear('created_at', Carbon::now()->year)
                     ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
 
+                $sales_today_credit = Sale::whereIn('branch_id', $branches_id)
+                    ->whereYear('created_at', Carbon::now()->year)
+                    ->where('payment_method_id', PaymentMethod::CREDIT)->sum('total_sale');
+
                 return [
                     'cash' => $sales_this_year_cash,
-                    'card' => $sales_this_year_card
+                    'card' => $sales_this_year_card,
+                    'credit' => $sales_today_credit
                 ];
         }
     }
