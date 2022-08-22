@@ -23,7 +23,17 @@ trait SaleAccessors
 
     public function getBranchNameAttribute()
     {
-        return $this->branch ? $this->branch->name : '';
+        return $this->branch ? $this->branch->name : 'No tiene';
+    }
+    
+    public function getBranchAddressAttribute()
+    {
+        return $this->branch ? $this->branch->address : 'No tiene';
+    }
+
+    public function getBranchPhoneAttribute()
+    {
+        return $this->branch ? $this->branch->phone : 'No tiene';
     }
 
     public function getCustomerNameAttribute()
@@ -69,6 +79,10 @@ trait SaleAccessors
     {
         return $this->status == Sale::STATUS_PAID ? 'Pagado' :( 
                $this->status == Sale::STATUS_WITHOUT_PAYMENT ? 'Sin pago' :'Abonado');
+    }
+
+    public function getCompanyNameAttribute(){
+        return $this->branch ? $this->branch->company->name : 'No se sabe';
     }
     
 }

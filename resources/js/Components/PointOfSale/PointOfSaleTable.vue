@@ -172,7 +172,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 pt-4" v-if="!see_reference_code">
-                                    <label for="inputName5" class="form-label" type="numeric">Cantidad recibida</label>
+                                    <label for="inputName5" class="form-label">Cantidad recibida</label>
                                         <div class="p-2">
                                             <input
                                                 :disabled="disable"
@@ -181,7 +181,7 @@
                                                 name="reference_code"
                                                 min="0"
                                                 step="0.01"
-                                                type="numeric"
+                                                type="number"
                                                 class="form-control"
                                                 id="reference_code"
                                             />
@@ -535,6 +535,7 @@ export default ({
                             deadline_id: '',
                             payment_plan_id: '',
                         };
+                        this.printJS(response.data.ticket);
                     })
                     .catch((error) => {
                         toast.error("Error al realizar la venta.", {

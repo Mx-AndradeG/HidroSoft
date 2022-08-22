@@ -13,6 +13,7 @@ import VueGoogleMaps from '@fawmi/vue-google-maps';
 import vSelect from 'vue-select';
 import VScrollLock from 'v-scroll-lock';
 import VueNumberInput from '@chenfengyuan/vue-number-input';
+import printJS from 'print-js';
 
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
@@ -46,6 +47,7 @@ createInertiaApp({
             },
         }).mount('#inertiaApp')
         inertiaApp.mixin({methods: {route, $asset: (path) => (process.env.MIX_APP_URL + '/' + path),}});
+        inertiaApp.mixin({ methods: {printJS } });
         return inertiaApp.mount(el);
     },
 });
