@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Sale;
 
 use App\Exports\SalesExport;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\payments\PaymentRequest;
 use App\Http\Requests\Sale\StoreSaleRequest;
 use App\Models\Branch\Branch;
 use App\Models\Categories\Category;
 use App\Models\PaymentMethod\PaymentMethod;
+use App\Models\Payments\PaymentDates\PaymentDate;
+use App\Models\Payments\Payments\Payment;
 use App\Models\Products\Product;
 use App\Models\Sale\Sale;
 use PhpParser\Node\Stmt\Switch_;
@@ -62,6 +65,11 @@ class SalesController extends Controller
                             $query->where('name', 'like', '%' . $value . '%');
                         });
                         break;
+                    case "sale_type_name":
+                        $query->whereHas('sale_type', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
                     case "formatted_total_sale":
                         $query->where('total_sale', 'like', '%' . $value . '%');
                         break;
@@ -94,6 +102,11 @@ class SalesController extends Controller
                 break;
             case "payment_method_name":
                 $query->whereHas('payment_method', function ($query) use ($order) {
+                    $query->orderBy('name', $order);
+                });
+                break;
+            case "sale_type_name":
+                $query->whereHas('sale_type', function ($query) use ($order) {
                     $query->orderBy('name', $order);
                 });
                 break;
@@ -135,6 +148,7 @@ class SalesController extends Controller
         $sale = new Sale();
         $sale->user_id    = auth()->user()->id;
         $sale->branch_id  = auth()->user()->branch->id;
+        $sale->sale_type_id  = $request->sale_type_id;        
         $sale->customer_id = $request->customer_id != 0 ? $request->customer_id : null;
         $sale->payment_method_id = $request->payment_method_id;
         $sale->total_sale = $request->total_sale;
@@ -142,13 +156,19 @@ class SalesController extends Controller
         switch ($request->payment_method_id) {
             case PaymentMethod::CASH:
                 $sale->received_amount = $request->received_amount;
+                $sale->save();
                 break;
             case PaymentMethod::CARD:
                 $sale->reference_code = $request->reference_code;
+                $sale->save();
+                break;
+            case PaymentMethod::CREDIT:
+                $sale->status = Sale::STATUS_WITHOUT_PAYMENT;
+                $sale->save();
+                $sale->createPaymentDates($request->payment_plan_id, $sale->total_sale, $request->deadline_id);
                 break;
         }
 
-        $sale->save();
         $sale->storeSaleDetails($request->current_produts);
 
         return $sale;
@@ -334,9 +354,14 @@ class SalesController extends Controller
                     ->whereDate('created_at',  Carbon::now()->toDateString())
                     ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
 
+                $sales_today_credit = Sale::whereIn('branch_id', $branches_id)
+                    ->whereDate('created_at',  Carbon::now()->toDateString())
+                    ->where('payment_method_id', PaymentMethod::CREDIT)->sum('total_sale');
+
                 return [
                     'cash' => $sales_today_cash,
-                    'card' => $sales_today_card
+                    'card' => $sales_today_card,
+                    'credit' => $sales_today_credit
                 ];
                 break;
             case 2:
@@ -348,9 +373,15 @@ class SalesController extends Controller
                     ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
                     ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
 
+                $sales_today_credit = Sale::whereIn('branch_id', $branches_id)
+                    ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                    ->where('payment_method_id', PaymentMethod::CREDIT)->sum('total_sale');
+
                 return [
                     'cash' => $sales_this_week_cash,
-                    'card' => $sales_this_week_card
+                    'card' => $sales_this_week_card,
+                    'credit' => $sales_today_credit
+
                 ];
                 break;
             case 3:
@@ -361,10 +392,15 @@ class SalesController extends Controller
                 $sales_this_month_card = Sale::whereIn('branch_id', $branches_id)
                     ->whereMonth('created_at', Carbon::now()->month)
                     ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
+                
+                $sales_today_credit = Sale::whereIn('branch_id', $branches_id)
+                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->where('payment_method_id', PaymentMethod::CREDIT)->sum('total_sale');
 
                 return [
                     'cash' => $sales_this_month_cash,
-                    'card' => $sales_this_month_card
+                    'card' => $sales_this_month_card,
+                    'credit' => $sales_today_credit
                 ];
                 break;
             case 4:
@@ -376,9 +412,14 @@ class SalesController extends Controller
                     ->whereYear('created_at', Carbon::now()->year)
                     ->where('payment_method_id', PaymentMethod::CARD)->sum('total_sale');
 
+                $sales_today_credit = Sale::whereIn('branch_id', $branches_id)
+                    ->whereYear('created_at', Carbon::now()->year)
+                    ->where('payment_method_id', PaymentMethod::CREDIT)->sum('total_sale');
+
                 return [
                     'cash' => $sales_this_year_cash,
-                    'card' => $sales_this_year_card
+                    'card' => $sales_this_year_card,
+                    'credit' => $sales_today_credit
                 ];
         }
     }
@@ -642,6 +683,65 @@ class SalesController extends Controller
         }
         return $payments;
     }
+
+    public function getSalesDates(){
+        $id = request()->get("id", 1);
+        $sale = Sale::findOrFail($id);
+        $payment_dates = PaymentDate::where('sale_id', $id)->get();
+        $current_total_paid = PaymentDate::where('sale_id', $id)->sum('total_paid');
+        $data = [];
+        foreach ($payment_dates as $payment_date){
+            array_push($data, [
+                'date' => Carbon::parse($payment_date->date)->format('d-m-Y'),
+                'amount' => $payment_date->amount,
+                'status' => $payment_date->amount - $payment_date->total_paid <= 0.1 ? 'Pagado': (Carbon::parse($payment_date->date) < Carbon::now() ? 'Atrasado' : 'Vigente' ),
+                'debt' => $payment_date->amount - $payment_date->total_paid ?? 0,
+                'total_paid' => $payment_date->total_paid ? $payment_date->total_paid : 0
+            ]);
+        }
+        $total_debt = $sale->total_sale - $current_total_paid;
+
+        return [
+            'payment_dates' => $data,
+            'total_debt' => $total_debt,
+            'current_total_paid' => $current_total_paid,
+            'total_sale' => $sale->total_sale
+        ];
+    }
+
+    public function storePayment(PaymentRequest $request){
+        $remainig_to_pay = $request->amount;
+        $payment_dates = PaymentDate::where('sale_id', $request->sale_id)->whereRaw('total_paid < amount')->orderBy('date', 'asc')->get();
+        $payments = collect();
+        while ($remainig_to_pay > 0) {
+            if (sizeof($payment_dates) != 0) {
+                if ($payment_dates->first()->date > Carbon::now()->toDateString()) {
+                    $date_to_pay = $payment_dates->pop();
+                } else {
+                    $date_to_pay = $payment_dates->shift();
+                }
+
+                $date_debt = $date_to_pay->amount - $date_to_pay->total_paid;
+                $payment = new Payment();
+                $payment->payment_date_id = $date_to_pay->id;
+                $payment->amount = $date_debt > $remainig_to_pay ? $remainig_to_pay : $date_debt;
+                $payment->paid_at = Carbon::now();
+                if($request->payment_method_id == 1){
+                    $payment->received_amount = $request->received_amount;
+                }
+                if($request->payment_method_id == 2){
+                    $payment->reference_code = $request->reference_code;
+                }
+                $payment->save();
+
+                $payments->push($payment);
+                $remainig_to_pay -= $date_debt;
+            }
+        }
+
+        return $payments;
+    }
+
     public function export()
     {
         return Excel::download(new SalesExport, 'Ventas.xlsx');

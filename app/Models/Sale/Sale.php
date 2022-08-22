@@ -22,6 +22,12 @@ class Sale extends Model
     public CONST DEADLINESIX = 2;
     public CONST DEADLINETWELVE = 3;
 
+    //Sale status
+    public CONST STATUS_PAID = 1;
+    public CONST STATUS_WITHOUT_PAYMENT = 2;
+    public CONST STATUS_PARTIALLY_PAID = 3;
+
+
 
     /**
      * The table associated with the model.

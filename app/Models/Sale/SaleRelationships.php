@@ -6,6 +6,7 @@ use App\Models\Branch\Branch;
 use App\Models\Customer\Customer;
 use App\Models\PaymentMethod\PaymentMethod;
 use App\Models\SaleDetails\SaleDetail;
+use App\Models\SaleType\SaleType;
 use App\Models\User;
 
 trait SaleRelationships
@@ -24,6 +25,10 @@ trait SaleRelationships
     
     public function payment_method(){
         return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function sale_type(){
+        return $this->belongsTo(SaleType::class);
     }
 
     public function sale_detail(){

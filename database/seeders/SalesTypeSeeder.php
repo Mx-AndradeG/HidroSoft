@@ -14,7 +14,7 @@ class SalesTypeSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {   
         DB::table('sale_types')->insert([
             'id'   => 1,
             'name' => 'Contado',

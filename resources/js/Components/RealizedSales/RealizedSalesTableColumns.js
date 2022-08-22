@@ -19,8 +19,20 @@ export default {
             sortable: true,
           },
           {
+            label: "Tipo de venta",
+            field: "sale_type_name",
+            width: "15%",
+            sortable: true,
+          },
+          {
             label: "Metodo de pago",
             field: "payment_method_name",
+            width: "15%",
+            sortable: true,
+          },
+          {
+            label: "Estado de venta",
+            field: "sale_status_name",
             width: "15%",
             sortable: true,
           },

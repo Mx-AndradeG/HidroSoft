@@ -36,6 +36,11 @@ trait SaleAccessors
         return $this->payment_method ? $this->payment_method->name : '';
     }    
 
+    public function getSaleTypeNameAttribute()
+    {
+        return $this->sale_type ? $this->sale_type->name : '';
+    }    
+
     public function getFormattedRecievedAmountAttribute()
     {
         return  $this->received_amount ? '$'. number_format($this->received_amount, 2, '.', ',') : 'No se recibió pago en efectivo';
@@ -58,6 +63,12 @@ trait SaleAccessors
             ]);
         };
         return $data;
+    }
+
+    public function getSaleStatusNameAttribute()
+    {
+        return $this->status == Sale::STATUS_PAID ? 'Pagado' :( 
+               $this->status == Sale::STATUS_WITHOUT_PAYMENT ? 'Sin pago' :'Abonado');
     }
     
 }

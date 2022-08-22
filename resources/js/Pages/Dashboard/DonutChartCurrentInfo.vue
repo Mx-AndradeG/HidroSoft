@@ -48,6 +48,7 @@ props: {
                 labels: [
                     'Efectivo',
                     'Tarjeta',
+                    'Credito',
                 ],
                 datasets: [{
                     label: 'Cantidad vendida',
@@ -55,6 +56,7 @@ props: {
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 255)',
+                        'rgb(65, 84, 241)',
                     ],
                     hoverOffset: 4
                 }]
