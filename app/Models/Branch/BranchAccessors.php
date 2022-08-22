@@ -2,6 +2,7 @@
 
 namespace App\Models\Branch;
 
+use App\Models\Company\Company;
 use Carbon\Carbon;
 
 trait BranchAccessors

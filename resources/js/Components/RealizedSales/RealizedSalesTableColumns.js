@@ -51,7 +51,7 @@ export default {
           {
             label: "Acciones",
             field: "actions",
-            width: "3%",
+            width: "10%",
             sortable: false,
           },
           

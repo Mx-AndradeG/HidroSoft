@@ -15,7 +15,9 @@ use App\Models\Products\Product;
 use App\Models\Sale\Sale;
 use PhpParser\Node\Stmt\Switch_;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class SalesController extends Controller
 {
@@ -170,8 +172,11 @@ class SalesController extends Controller
         }
 
         $sale->storeSaleDetails($request->current_produts);
+        $path = $this->ticketInfo($sale->id);
 
-        return $sale;
+        return [
+            'ticket' => $path
+        ];
     }
 
     /**
@@ -745,5 +750,44 @@ class SalesController extends Controller
     public function export()
     {
         return Excel::download(new SalesExport, 'Ventas.xlsx');
+    }
+
+    public function ticketInfo($id)
+    {
+        $sale = Sale::findOrFail($id);
+
+        $columns =[
+            "id",
+            "user_name",
+            "branch_name",
+            "customer_name",
+            "payment_method_name",
+            "formatted_total_sale",
+            "Formatted_created_at",
+            "sale_formatt_details",
+            "received_amount",
+            "reference_code",
+            "company_name",
+            "customer_name",
+            "branch_phone",
+            "company_name",
+            "branch_address",
+            "sale_type_name",
+            "sale_status_name",
+        ];
+
+        array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at');
+        $sale->only($columns);
+
+        $pdf = PDF::loadView('layouts.POS.ticket', compact('sale'));
+        $pdf->setOption('page-size', 'a7');
+        $pdf->setOption('margin-bottom', 0);
+        $pdf->setOption('margin-top', 0);
+        $pdf->setOption('margin-left', 5);
+        $pdf->setOption('margin-right', 0);
+        $path = 'tickets/sale_ticket-' . $sale->id . '.pdf';
+        Storage::disk('public')->put($path, $pdf->download());
+        
+        return asset('storage/' . $path);
     }
 }

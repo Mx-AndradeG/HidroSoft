@@ -18,6 +18,8 @@ Route::get('sale/payments-dates-current', [SalesController::class, 'getSalesDate
 
 Route::get('sale/export', [SalesController::class, 'export'])->name('sales.export');
 
+Route::get('sale/print/ticket/{id}', [SalesController::class, 'ticketInfo'])->name('sales.print.ticket');
+
 Route::post('sale/store-payment', [SalesController::class, 'storePayment'])->name('sales.store.payment');
 
 Route::apiResource('sales', SalesController::class, ['names' => 'sales']);

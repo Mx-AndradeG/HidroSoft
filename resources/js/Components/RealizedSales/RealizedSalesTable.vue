@@ -70,6 +70,9 @@
               ></i>
             </a>
           </div>
+          <div class="col-4"><a type="click" @click="showTicket(data.value.id)">
+                  <i data-toggle="tooltip" data-placement="bottom" title="Imprimir ticket" class="ri-ticket-2-fill fs-3" style="color: #FFC107; cursor:pointer;"></i>
+          </a></div>
           <div class="col-4"><a type="click" @click="$vfm.show('preview_payments_modal', {id:data.value.id})">
                   <i data-toggle="tooltip" data-placement="bottom" title="Ver pagos" class="ri-money-dollar-circle-fill fs-3" style="color: #0748db; cursor:pointer;"></i>
           </a></div>
@@ -302,6 +305,15 @@ const exportToExcel = () => {
     link.click();
   });
   
+}
+
+
+const showTicket = (id) => {
+    axios
+    .get(route("sales.print.ticket", id))
+    .then((response) => {
+      window.open(response.data)
+    });
 }
 
 const getData = (_offset, _limit, _orderBy, _ascending) => {
