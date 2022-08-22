@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Sale;
 
 use App\Exports\SalesExport;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\payments\PaymentRequest;
 use App\Http\Requests\Sale\StoreSaleRequest;
 use App\Models\Branch\Branch;
 use App\Models\Categories\Category;
 use App\Models\PaymentMethod\PaymentMethod;
+use App\Models\Payments\PaymentDates\PaymentDate;
+use App\Models\Payments\Payments\Payment;
 use App\Models\Products\Product;
 use App\Models\Sale\Sale;
 use PhpParser\Node\Stmt\Switch_;
@@ -680,6 +683,67 @@ class SalesController extends Controller
         }
         return $payments;
     }
+
+    public function getSalesDates(){
+        $id = request()->get("id", 1);
+        $sale = Sale::findOrFail($id);
+        $payment_dates = PaymentDate::where('sale_id', $id)->get();
+        $current_total_paid = PaymentDate::where('sale_id', $id)->sum('total_paid');
+        $data = [];
+        foreach ($payment_dates as $payment_date){
+            array_push($data, [
+                'date' => Carbon::parse($payment_date->date)->format('d-m-Y'),
+                'amount' => $payment_date->amount,
+                'status' => $payment_date->amount - $payment_date->total_paid <= 0.1 ? 'Pagado': (Carbon::parse($payment_date->date) < Carbon::now() ? 'Atrasado' : 'Vigente' ),
+                'debt' => $payment_date->amount - $payment_date->total_paid ?? 0,
+                'total_paid' => $payment_date->total_paid ? $payment_date->total_paid : 0
+            ]);
+        }
+        $total_debt = $sale->total_sale - $current_total_paid;
+
+        return [
+            'payment_dates' => $data,
+            'total_debt' => $total_debt,
+            'current_total_paid' => $current_total_paid,
+            'total_sale' => $sale->total_sale
+        ];
+    }
+
+    public function storePayment(PaymentRequest $request){
+        $remainig_to_pay = $request->amount;
+        $payment_dates = PaymentDate::where('sale_id', $request->sale_id)->whereRaw('total_paid < amount')->orderBy('date', 'asc')->get();
+        $payments = collect();
+        while ($remainig_to_pay > 0) {
+            if (sizeof($payment_dates) != 0) {
+                if ($payment_dates->first()->date > Carbon::now()->toDateString()) {
+                    $date_to_pay = $payment_dates->pop();
+                } else {
+                    $date_to_pay = $payment_dates->shift();
+                }
+
+                $date_debt = $date_to_pay->amount - $date_to_pay->total_paid;
+                $payment = new Payment();
+                $payment->payment_date_id = $date_to_pay->id;
+                $payment->amount = $date_debt > $remainig_to_pay ? $remainig_to_pay : $date_debt;
+                $payment->paid_at = Carbon::now();
+                if($request->payment_method_id == 1){
+                    $payment->received_amount = $request->received_amount;
+                }
+                if($request->payment_method_id == 2){
+                    $payment->reference_code = $request->reference_code;
+                }
+                $payment->save();
+
+                $payments->push($payment);
+                $remainig_to_pay -= $date_debt;
+            }
+        }
+
+        return $payments;
+
+        dd('si funciona');
+    }
+
     public function export()
     {
         return Excel::download(new SalesExport, 'Ventas.xlsx');

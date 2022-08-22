@@ -63,7 +63,7 @@ trait SaleActions
             for ($i = 0; $i < $times_to_paid; $i++) {
                 $current_date = $current_date->addWeek();
                 array_push($payments, [
-                    'date' => $current_date,
+                    'date' => $current_date->format('Y-m-d'),
                     'amount' => round($current_pay_for_deadline, 2)
                 ]);
             }
@@ -74,7 +74,7 @@ trait SaleActions
             for ($i = 0; $i < $times_to_paid; $i++) {
                 $current_date = $current_date->addDays(15);
                 array_push($payments, [
-                    'date' => $current_date,
+                    'date' => $current_date->format('Y-m-d'),
                     'amount' => round($current_pay_for_deadline, 2),
                 ]);
             }
@@ -84,7 +84,7 @@ trait SaleActions
             for ($i = 0; $i < $times_to_paid; $i++) {
                 $current_date = $current_date->addMonth();
                 array_push($payments, [
-                    'date' => $current_date,
+                    'date' => $current_date->format('Y-m-d'),
                     'amount' => round($current_pay_for_deadline, 2),
                 ]);
             }
@@ -96,8 +96,9 @@ trait SaleActions
     foreach ($payments as $payment) {
         $payment_date = new PaymentDate();
         $payment_date->sale_id = $this->id;
-        $payment_date->date = $payment['date'];
+        $payment_date->date = Carbon::parse($payment['date']);
         $payment_date->amount = $payment['amount'];
+        $payment_date->total_paid = 0;
         $payment_date->save();
     }
 

@@ -14,7 +14,11 @@ Route::get('sale/sales-bar-chart-info', [SalesController::class, 'barDataChartDa
 
 Route::get('sale/most-erned-per-product', [SalesController::class, 'mostEarnedPerProduct'])->name('sales.erned.product');
 
+Route::get('sale/payments-dates-current', [SalesController::class, 'getSalesDates'])->name('sales.payments.dates.current');
+
 Route::get('sale/export', [SalesController::class, 'export'])->name('sales.export');
+
+Route::post('sale/store-payment', [SalesController::class, 'storePayment'])->name('sales.store.payment');
 
 Route::apiResource('sales', SalesController::class, ['names' => 'sales']);
 

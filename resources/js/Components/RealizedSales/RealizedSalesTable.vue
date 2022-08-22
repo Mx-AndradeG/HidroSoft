@@ -70,10 +70,18 @@
               ></i>
             </a>
           </div>
+          <div class="col-4"><a type="click" @click="$vfm.show('preview_payments_modal', {id:data.value.id})">
+                  <i data-toggle="tooltip" data-placement="bottom" title="Ver pagos" class="ri-money-dollar-circle-fill fs-3" style="color: #0748db; cursor:pointer;"></i>
+          </a></div>
+         <div v-if="data.value.sale_status_name != 'Pagado'" class="col-4"><a type="click" @click="$vfm.show('StorePaymentModal', {id:data.value.id})">
+                  <i data-toggle="tooltip" data-placement="bottom" title="Registrar pago" class="ri-add-circle-fill fs-3" style="color: forestgreen; cursor:pointer;"></i>
+          </a></div>
         </div>
       </template>
     </TableLite>
     <realized-sales-modal @done="fin"></realized-sales-modal>
+    <payment-dates-modal></payment-dates-modal>
+    <store-payment-modal @done="fin"></store-payment-modal>
   </div>
 </template>
 
@@ -82,6 +90,8 @@
 <script setup>
 import RealizedSalesTableColumns from "./RealizedSalesTableColumns";
 import RealizedSalesModal from "./RealizedSalesModal.vue";
+import PaymentDatesModal from "./PaymentDatesModal.vue";
+import StorePaymentModal from "./StorePaymentModal.vue";
 import { onMounted, reactive, ref, createApp, defineComponent, h, watch } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";

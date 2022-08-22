@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Models\Categories\Category;
 use App\Models\Customer\Customer;
+use App\Models\Payments\Payments\Payment;
 use App\Models\Products\Product;
 use App\Models\Supplier\Supplier;
 use App\Observers\CategoryObserver;
 use App\Observers\CustomerObserver;
+use App\Observers\PaymentObserver;
 use App\Observers\ProductObserver;
 use App\Observers\SupplierObserver;
 use Illuminate\Auth\Events\Registered;
@@ -39,7 +41,7 @@ class EventServiceProvider extends ServiceProvider
         Customer::observe(CustomerObserver::class);
         Supplier::observe(SupplierObserver::class);
         Product::observe(ProductObserver::class);
-
+        Payment::observe(PaymentObserver::class);
     }
 
     /**

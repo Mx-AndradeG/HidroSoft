@@ -26,7 +26,7 @@ class PaymentDate extends Model
     protected $fillable = [
         'date',
         'amount',
-        'loan_id',
+        'sale_id',
     ];
 
     
