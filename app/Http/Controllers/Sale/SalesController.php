@@ -740,8 +740,6 @@ class SalesController extends Controller
         }
 
         return $payments;
-
-        dd('si funciona');
     }
 
     public function export()
