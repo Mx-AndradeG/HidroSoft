@@ -10,6 +10,7 @@ class PaymentMethod extends Model
 {
     const CASH = '1';
     const CARD = '2';
+    const CREDIT = '3';
 
     use HasFactory;
     use SoftDeletes;

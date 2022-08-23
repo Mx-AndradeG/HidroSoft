@@ -13,7 +13,6 @@
 
 
 <script>
-import  AdminLayout  from '@/Layouts/AdminLayout.vue'
 import Chart from 'chart.js/auto'
 
 export default ({
@@ -49,6 +48,7 @@ props: {
                 labels: [
                     'Efectivo',
                     'Tarjeta',
+                    'Credito',
                 ],
                 datasets: [{
                     label: 'Cantidad vendida',
@@ -56,6 +56,7 @@ props: {
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 255)',
+                        'rgb(65, 84, 241)',
                     ],
                     hoverOffset: 4
                 }]
@@ -64,7 +65,6 @@ props: {
     }
     },
     components: {
-      AdminLayout,
   },
     methods: {
         getData(){

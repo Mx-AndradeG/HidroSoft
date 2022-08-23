@@ -27,12 +27,16 @@ class StoreSaleRequest extends FormRequest
     public function rules()
     {
         return [
+            'sale_type_id'      => 'required|exists:sale_types,id',
             'current_produts'   => ['required', 'array', 'min:1'],
             'client_id'         => 'required',
             'total_sale'        => ['required', 'numeric', 'min:1'],
             'payment_method_id' => 'required|numeric|exists:payment_methods,id',
             'received_amount'   => ['required_if:payment_method_id,1|numeric|min:1'],
             'reference_code'    => ['required_if:payment_method_id,2|string|min:3|max:255'],
+            'deadline_id'       => ['required_if:sale_type_id,2|numeric'],
+            'payment_plan_id'   => ['required_if:sale_type_id,2|numeric'],
+
         ];
     }
 }

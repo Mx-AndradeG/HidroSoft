@@ -118,16 +118,16 @@
         </a>
       </li>
       <li class="nav-item">
-        <a :class="currentURL == '/user' ? 'nav-link' : 'nav-link collapsed'" :href="route('User')">
+        <a :class="currentURL == '/log' ? 'nav-link' : 'nav-link collapsed'" :href="route('Log')">
           <i class="bi bi-people"></i>
           <span>Bitácora</span>
         </a>
       </li>
       <li class="nav-item">
-        <a :class="currentURL == '/user' ? 'nav-link' : 'nav-link collapsed'" :href="route('User')">
+        <button class="nav-link collapsed" style="width: 100%; border: 0;" @click="logout">
           <i class="bi bi-arrow-left-square"></i>
           <span>Cerrar sesion</span>
-        </a>
+        </button>
       </li>
       <!-- End Suppliers Nav -->
     
@@ -147,7 +147,7 @@ export default {
 
   methods: {
     logout() {
-      this.$inertia.post(route("logout"));
+      this.$inertia.post(route("user.logout"));
     },
   },
   created() {

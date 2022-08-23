@@ -54,7 +54,7 @@ class PaymentMethodController extends Controller
             }
         }
 
-        $order = $ascending === "1" ? 'DESC' : 'ASC';
+        $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
             case 'formatted_created_at':
             case 'formatted_updated_at':

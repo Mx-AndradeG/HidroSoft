@@ -2,6 +2,7 @@
 
 namespace App\Models\Branch;
 
+use App\Models\Company\Company;
 use App\Models\PaymentMethod\PaymentMethod;
 use App\Models\Storage\Storage;
 
@@ -12,5 +13,9 @@ trait BranchRelationships
     }
     public function storage(){
         return $this->hasOne(Storage::class);
+    }
+    
+    public function company(){
+        return $this->belongsTo(Company::class);
     }
 }

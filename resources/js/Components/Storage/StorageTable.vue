@@ -2,20 +2,12 @@
   <div>
     <div>
       <div class="row mb-3">
-        <div class="col-6">
-          <input
-            v-model="valueFilter"
-            type="text"
-            class="form-control"
-            id="floatingInput"
-            placeholder="Escriba algo para buscar..."
-          />
-        </div>
-        <div class="col-6 d-flex justify-content-end">
+        <div class="col-12 d-flex justify-content-end">
           <button
             type="button"
             class="btn btn-outline-primary"
             style="margin-right: 1rem"
+            @click="exportToExcel"
           >
             Exportar
           </button>
@@ -38,7 +30,14 @@
       :messages="tableOptions.messages"
       :is-slot-mode="true"
       @do-search="getData"
+      @VnodeMounted="initTable"
+
     >
+      <template v-slot:address="data">
+        <span :class="data.value.address == null ? 'badge bg-danger' : 'badge bg-success'"> 
+          {{(data.value.address == null ? 'Sin dirección' : data.value.address)}}
+        </span>
+      </template>
       <template v-slot:actions="data">
         <div class="row">
           <div class="col-4">
@@ -94,10 +93,16 @@
 <script setup>
 import StorageTableColumns from "./StorageTableColumns";
 import StorageModal from "./StorageModal.vue";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref, createApp, defineComponent, h, watch  } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
 
+const filters = reactive({
+  name: null,
+  address:null,
+  branch_name:null,
+  Formatted_created_at:null
+})
 const toast = useToast();
 
 const tableOptions = reactive({
@@ -113,6 +118,86 @@ const tableOptions = reactive({
   rows: [],
   total: 0,
 });
+
+watch(filters, (newValue, oldValue) => {
+   getData(0, 10, "id", "desc");
+})
+
+
+const initTable = ({ el: tableComponent }) => {
+      let headerTr = tableComponent.getElementsByClassName("vtl-thead-tr");
+      if (! headerTr[0]) {
+        return;
+      }
+      let cloneTr = headerTr[0].cloneNode(true); // Clone first <tr>
+      let childTh = cloneTr.getElementsByClassName("vtl-thead-th");
+      for(let i = 0; i < childTh.length; i++) {
+        // Clear <th>'s HTML
+        childTh[i].innerHTML = "";
+      }
+      // Create a input element and append to first <th>
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.name,
+                onInput: (e) => {
+                  filters.name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[0]);
+      
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.address,
+                onInput: (e) => {
+                  filters.address = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[1]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.branch_name,
+                onInput: (e) => {
+                  filters.branch_name = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[2]);
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
+                value: filters.Formatted_created_at,
+                onInput: (e) => {
+                  filters.Formatted_created_at = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[3]);
+      // append cloned element to the header after first <tr>
+      headerTr[0].after(cloneTr)
+  };
 
 const fin = () => {
   getData(0, 10, "id", "desc");
@@ -131,6 +216,25 @@ const fin = () => {
   });
 };
 
+const exportToExcel = () => {
+  axios({
+    url: route("wherehouses.export"),
+    method: "GET",
+    responseType: "blob",
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      "Almacenes.xlsx"
+    );
+    document.body.appendChild(link);
+    link.click();
+  });
+  
+}
+
 const getData = (_offset, _limit, _orderBy, _ascending) => {
   tableOptions.isLoading = true;
   _ascending = _ascending === "desc" ? "1" : "2";
@@ -145,6 +249,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           "has_stock",
           "Formatted_created_at",
         ]),
+        filters: JSON.stringify(filters),
         limit: _limit,
         page: _offset + 1,
         orderBy: _orderBy,

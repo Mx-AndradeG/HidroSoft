@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Products;
 
+use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\StoreProductRequest;
 use App\Models\Products\Product;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -35,15 +37,18 @@ class ProductController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $product = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $product = $query->whereDate($filter, $dates[0]);
-                        }
+                    case "supplier_name":
+                        $query->whereHas('supplier', function ($query) use ($value) {
+                            $query->where('company_name', 'like', '%' . $value . '%');
+                        });
+                        break;
+                    case "category_name":
+                        $query->whereHas('category', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
                         break;
                     default:
                         $product = $query->where($filter, 'LIKE', '%' . $value . '%');
@@ -52,12 +57,10 @@ class ProductController extends Controller
             }
         }
 
-        $order = $ascending === "1" ? 'DESC' : 'ASC';
+        $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
+            case 'Formatted_created_at':
+                $query->orderBy('created_at', $order);
                 break;
             default:
                 $query->orderBy($orderBy, $order);
@@ -151,33 +154,44 @@ class ProductController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $product = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $product = $query->whereDate($filter, $dates[0]);
-                        }
+                    case "supplier_name":
+                        $query->whereHas('supplier', function ($query) use ($value) {
+                            $query->where('company_name', 'like', '%' . $value . '%');
+                        });
                         break;
-                    default:
+                    case "category_name":
+                        $query->whereHas('category', function ($query) use ($value) {
+                            $query->where('name', 'like', '%' . $value . '%');
+                        });
+                        break;
+                    case 'Formatted_created_at':
+                        $sale = $query->where('created_at', 'like', '%' . $value . '%');
+                        break;
+                    break;
                         $product = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
                 }
             }
         }
 
-        $order = $ascending === "1" ? 'DESC' : 'ASC';
+        $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
-                break;
+            case "supplier_name":
+                $query->whereHas('supplier', function ($query) use ($order) {
+                    $query->orderBy('company_name', $order);
+                });
+            break;
+            case "category_name":
+                $query->whereHas('category', function ($query) use ($order) {
+                    $query->orderBy('name' , $order);
+                });
+            break;
+            case 'Formatted_created_at':
+                $query->orderBy('created_at', $order);
+            break;
             default:
                 $query->orderBy($orderBy, $order);
-                break;
+            break;
         }
 
         $data = $query->get();
@@ -193,5 +207,10 @@ class ProductController extends Controller
         });
 
         return compact("data", "count");
+    }
+    
+    public function export()
+    {
+        return Excel::download(new ProductExport, 'Productos.xlsx');
     }
 }

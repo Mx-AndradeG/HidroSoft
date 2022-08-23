@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             UserTypeSeeder::class,
             InventoryMovementTypeSeeder::class,
-            PaymentMethodSeeder::class
+            PaymentMethodSeeder::class,
+            SalesTypeSeeder::class,
         ]);
     }
 }

@@ -1,44 +1,87 @@
 <template>
+  <div>
     <div>
-        <div>
-            <div class="row mb-3 ">
-                <div class="col-6">
-                        <input v-model="valueFilter" type="text" class="form-control" id="floatingInput" placeholder="Escriba algo para buscar...">
-                </div>
-                <div class="col-6 d-flex justify-content-end">
-                     <button type="button" class="btn btn-outline-primary" style="margin-right: 1rem;">Exportar</button>
-                     <button  @click="$vfm.show('user_modal')" type="button" class="btn btn-primary">Agregar</button>
-                </div>
-            </div>
+      <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            style="margin-right: 1rem"
+            @click="exportToExcel"
+          >
+            Exportar
+          </button>
+          <button
+            @click="$vfm.show('user_modal')"
+            type="button"
+            class="btn btn-primary"
+          >
+            Agregar
+          </button>
         </div>
-        <TableLite :is-loading="tableOptions.isLoading" :columns="tableOptions.columns"
-                    :rows="tableOptions.rows"
-                    :sortable="tableOptions.sortable"
-                    :total="tableOptions.total"
-                    :messages="tableOptions.messages"
-                    :is-slot-mode="true"
-                    @do-search="getData">
-
-                    <template v-slot:price="data">
-                        $ {{data.value.price}}
-                    </template>
-
-                    <template v-slot:actions="data">
-                        <div class="row">
-                            <div class="col-4"><a type="click" @click="$vfm.show('user_modal', {id:data.value.id, show:true})">
-                                <i data-toggle="tooltip" data-placement="bottom" title="Ver registro" class="ri-eye-fill fs-3"  style="color: forestgreen; cursor:pointer;"></i>
-                            </a></div>
-                            <div class="col-4"><a type="click" @click="$vfm.show('user_modal', {id:data.value.id})">
-                                <i data-toggle="tooltip" data-placement="bottom" title="Editar registro" class="ri-edit-box-fill fs-3" style="color: #0748db; cursor:pointer;"></i>
-                            </a></div>
-                            <div class="col-4"><a @click="deleteItem(data.value.id)">
-                                <i data-toggle="tooltip" data-placement="bottom" title="Eliminar registro" class="ri-chat-delete-fill fs-3" style="color: crimson; cursor:pointer;"></i>
-                            </a></div>
-                        </div>
-                    </template>
-        </TableLite>
-        <user-modal @done="fin"></user-modal>
+      </div>
     </div>
+    <TableLite
+      :is-loading="tableOptions.isLoading"
+      :columns="tableOptions.columns"
+      :rows="tableOptions.rows"
+      :sortable="tableOptions.sortable"
+      :total="tableOptions.total"
+      :messages="tableOptions.messages"
+      :is-slot-mode="true"
+      @do-search="getData"
+      @VnodeMounted="initTable"
+    >
+      <template v-slot:price="data"> $ {{ data.value.price }} </template>
+
+      <template v-slot:actions="data">
+        <div class="row">
+          <div class="col-4">
+            <a
+              type="click"
+              @click="
+                $vfm.show('user_modal', { id: data.value.id, show: true })
+              "
+            >
+              <i
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Ver registro"
+                class="ri-eye-fill fs-3"
+                style="color: forestgreen; cursor: pointer"
+              ></i>
+            </a>
+          </div>
+          <div class="col-4">
+            <a
+              type="click"
+              @click="$vfm.show('user_modal', { id: data.value.id })"
+            >
+              <i
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Editar registro"
+                class="ri-edit-box-fill fs-3"
+                style="color: #0748db; cursor: pointer"
+              ></i>
+            </a>
+          </div>
+          <div class="col-4">
+            <a @click="deleteItem(data.value.id)">
+              <i
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Eliminar registro"
+                class="ri-chat-delete-fill fs-3"
+                style="color: crimson; cursor: pointer"
+              ></i>
+            </a>
+          </div>
+        </div>
+      </template>
+    </TableLite>
+    <user-modal @done="fin"></user-modal>
+  </div>
 </template>
 
 
@@ -46,12 +89,18 @@
 
 <script setup>
 import UserTableColumns from "./UserTableColumns";
-import UserModal  from "./UserModal"
+import UserModal from "./UserModal";
 
-
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, createApp, defineComponent, h, watch } from "vue";
 import Swal from "sweetalert2";
 import { useToast } from "vue-toastification";
+
+const filters = reactive({
+  user_name: null,
+  email: null,
+  user_type: null,
+  Formatted_created_at: null,
+});
 
 const toast = useToast();
 
@@ -67,6 +116,10 @@ const tableOptions = reactive({
   },
   rows: [],
   total: 0,
+});
+
+watch(filters, (newValue, oldValue) => {
+  getData(0, 10, "id", "desc");
 });
 
 const fin = () => {
@@ -86,6 +139,97 @@ const fin = () => {
   });
 };
 
+const initTable = ({ el: tableComponent }) => {
+  let headerTr = tableComponent.getElementsByClassName("vtl-thead-tr");
+  if (!headerTr[0]) {
+    return;
+  }
+  let cloneTr = headerTr[0].cloneNode(true); // Clone first <tr>
+  let childTh = cloneTr.getElementsByClassName("vtl-thead-th");
+  for (let i = 0; i < childTh.length; i++) {
+    // Clear <th>'s HTML
+    childTh[i].innerHTML = "";
+  }
+  // Create a input element and append to first <th>
+  createApp(
+    defineComponent({
+      setup() {
+        return () =>
+          h("input", {
+            class: "form-control form-control-sm",
+            value: filters.user_name,
+            onInput: (e) => {
+              filters.user_name = e.target.value;
+            },
+          });
+      },
+    })
+  ).mount(childTh[0]);
+
+  createApp(
+    defineComponent({
+      setup() {
+        return () =>
+          h("input", {
+            class: "form-control form-control-sm",
+            value: filters.email,
+            onInput: (e) => {
+              filters.email = e.target.value;
+            },
+          });
+      },
+    })
+  ).mount(childTh[1]);
+
+  createApp(
+    defineComponent({
+      setup() {
+        return () =>
+          h("input", {
+            class: "form-control form-control-sm",
+            value: filters.user_type,
+            onInput: (e) => {
+              filters.user_type = e.target.value;
+            },
+          });
+      },
+    })
+  ).mount(childTh[2]);
+
+  createApp(
+    defineComponent({
+      setup() {
+        return () =>
+          h("input", {
+            class: "form-control form-control-sm",
+            value: filters.Formatted_created_at,
+            onInput: (e) => {
+              filters.Formatted_created_at = e.target.value;
+            },
+          });
+      },
+    })
+  ).mount(childTh[3]);
+  // append cloned element to the header after first <tr>
+  headerTr[0].after(cloneTr);
+};
+
+// Export Excel
+const exportToExcel = () => {
+  axios({
+    url: route("user.export"),
+    method: "GET",
+    responseType: "blob",
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Usuarios.xlsx");
+    document.body.appendChild(link);
+    link.click();
+  });
+};
+
 const getData = (_offset, _limit, _orderBy, _ascending) => {
   tableOptions.isLoading = true;
   _ascending = _ascending === "desc" ? "1" : "2";
@@ -100,6 +244,7 @@ const getData = (_offset, _limit, _orderBy, _ascending) => {
           "user_type_name",
           "Formatted_created_at",
         ]),
+        filters: JSON.stringify(filters),
         limit: _limit,
         page: _offset + 1,
         orderBy: _orderBy,

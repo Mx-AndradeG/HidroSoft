@@ -46,7 +46,7 @@ export default {
             label: "Fecha de registro",
             field: "Formatted_created_at",
             width: "8%",
-            sortable: false,
+            sortable: true,
           },
           {
             label: "Acciones",

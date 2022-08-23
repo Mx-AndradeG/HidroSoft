@@ -1,7 +1,7 @@
 <template>
   <div>
         <vue-final-modal v-model="modal_button.show"  @beforeOpen="beforeOpen" name="user_modal" lock-scroll="false" content-style="border-radius:25px"
-                         classes="modal-container w-50 modal-dialog modal-xl" :body-scroll-lock="scroll"  content-class="modal-content ">
+                         classes="w-100 modal-dialog modal-xl" :body-scroll-lock="scroll"  content-class="modal-content ">
       <button
         style="border-top-right-radius: 20px"
         class="modal__close btn btn-light"

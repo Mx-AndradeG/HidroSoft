@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Stock;
 
+use App\Exports\StockExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\StoreProductRequest;
 use App\Models\Branch\Branch;
 use App\Models\Products\Product;
 use App\Models\Stock\Stock;
 use App\Models\Storage\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StocksController extends Controller
 {
@@ -38,35 +40,46 @@ class StocksController extends Controller
         foreach ($filters as $filter => $value) {
             if ($value != "" && $filter != "reload") {
                 switch ($filter) {
-                    case 'formatted_created_at':
-                    case 'formatted_updated_at':
-                        $filter = $filter == 'formatted_created_at' ? 'created_at' : 'updated_at';
-                        $dates = explode(" a ", $value);
-                        if (count($dates) > 1) {
-                            $product = $query->whereBetween($filter, [$dates[0], $dates[1]]);
-                        } else {
-                            $product = $query->whereDate($filter, $dates[0]);
-                        }
+                    case 'product_name':
+                        $sale = $query->whereHas('product', function ($query) use ($value){
+                            return $query->where('name', 'LIKE', '%' . $value . '%');
+                        });
+                        break;
+                    case 'storage_name':
+                        $sale = $query->whereHas('storage', function ($query) use ($value){
+                            return $query->where('name', 'LIKE', '%' . $value . '%');
+                        });
+                        break;
+                    case 'quantity':
+                        $sale = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
                     case 'pos_product_name':
-                        $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
-                        $storages_id = Storage::whereIn('branch_id', $branches_id)->pluck('id')->toArray();
-                        $query = Stock::query()->where('quantity', '>', 0)->whereIn('storage_id', $storages_id)->leftjoin('products', 'products.id', '=', 'stocks.product_id');
-                        $product = $query->where('products.name', 'LIKE', '%' . $value . '%')->orWhere('products.code', 'LIKE', '%' . $value . '%');
+                            $branches_id = Branch::where('company_id', auth()->user()->company_id)->pluck('id')->toArray();
+                            $storages_id = Storage::whereIn('branch_id', $branches_id)->pluck('id')->toArray();
+                            $query = Stock::query()->where('quantity', '>', 0)->whereIn('storage_id', $storages_id)->leftjoin('products', 'products.id', '=', 'stocks.product_id');
+                            $product = $query->where('products.name', 'LIKE', '%' . $value . '%')->orWhere('products.code', 'LIKE', '%' . $value . '%');
                         break;
                     default:
-                        $product = $query->where($filter, 'LIKE', '%' . $value . '%');
+                            $product = $query->where($filter, 'LIKE', '%' . $value . '%');
                         break;
                 }
             }
         }
 
-        $order = $ascending === "1" ? 'DESC' : 'ASC';
+        $order = $ascending == "1" ? 'DESC' : 'ASC';
         switch ($orderBy) {
-            case 'formatted_created_at':
-            case 'formatted_updated_at':
-                $orderBy = $orderBy === 'formatted_created_at' ? 'created_at' : 'updated_at';
-                $query->orderBy($orderBy, $order);
+            case 'product_name':
+                $sale = $query->whereHas('product', function ($query) use ($order){
+                    return $query->orderBy('name', $order);
+                });
+                break;
+            case 'storage_name':
+                $sale = $query->whereHas('storage', function ($query) use ($order){
+                    return $query->orderBy('name', $order);
+                });
+                break;
+            case 'quantity':
+                $sale = $query->orderBy($orderBy, $order);
                 break;
             default:
                 $query->orderBy($orderBy, $order);
@@ -86,5 +99,9 @@ class StocksController extends Controller
         });
 
         return compact("data", "count");
+    }
+    public function export() 
+    {
+        return Excel::download(new StockExport, 'Inventario.xlsx');
     }
 }
