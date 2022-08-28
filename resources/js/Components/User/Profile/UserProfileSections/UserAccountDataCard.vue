@@ -12,7 +12,7 @@
                 <div class="col-6">
                     <label class="form-label">Sucursal</label>
                     <v-select :options="branches" v-model="account_data.branch_id" :reduce="e => e.id" label="name"
-                              required />
+                              required/>
                 </div>
                 <div class="col-6">
                     <label for="formatted_created_at" class="form-label">Fecha de registro</label>
@@ -110,10 +110,9 @@ export default {
             })
         },
         updateAccountData() {
-            axios.put(this.route('user.account', this.auth.id), {
+            axios.post(this.route('user.account'), {
                 account_data: this.account_data
             }).then(response => {
-                location.reload();
                 toast.success("Datos de la cuenta actualizados", {
                     position: "top-center",
                     closeOnClick: true,
@@ -127,6 +126,9 @@ export default {
                     icon: true,
                     rtl: false,
                 });
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }).catch((error) => {
                     let message = typeof error.response.data.errors !== 'undefined'
                         ? Object.values(error.response.data.errors)[0][0]

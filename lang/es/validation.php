@@ -189,6 +189,7 @@ return [
         'payment_method_id' => 'Metodo de pago',
         'reference_code' => 'Codigo de referencia',
         'received_amount' => 'Dinero recibido',
+        'current_password' => 'contraseña actual'
     ],
 
 ];

@@ -13,7 +13,7 @@
                 <span v-if="auth.user_company_name" class="badge rounded-pill m-1" style="background-color: #75a2ca;">
                     <i class="bi bi-building me-1"></i>{{ auth.user_company_name }}
                 </span>
-                <span v-if="auth.user_branch_name" class="badge rounded-pill m-1" style="background-color: #75a2ca;" >
+                <span v-if="auth.user_branch_name" class="badge rounded-pill m-1" style="background-color: #75a2ca;">
                     <i class="bi bi-diagram-2-fill me-1"></i>{{ auth.user_branch_name }}
                 </span>
                 <div class="d-flex flex-row align-items-center justify-content-center w-75 mt-3 mb-2">
