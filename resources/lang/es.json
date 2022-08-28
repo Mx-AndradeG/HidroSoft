@@ -1,0 +1,6 @@
+{
+    "The :attribute must contain at least one letter.": "El campo :attribute debe contener al menos una letra.",
+    "The :attribute must contain at least one number.": "El campo :attribute debe contener al menos un número.",
+    "The :attribute must contain at least one symbol.": "El campo :attribute debe contener al menos un símbolo.",
+    "The :attribute must contain at least one uppercase and one lowercase letter.": "El campo :attribute debe contener al menos una letra mayúscula y minúscula."
+}

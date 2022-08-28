@@ -21,4 +21,14 @@ trait UserAccessors
     {
         return $this->user_type ? ($this->user_type_id == UserType::ADMIN ? 'Administrador' : 'Empleado') : 'No tiene';
     }
+
+    public function getUserBranchNameAttribute()
+    {
+        return $this->branch ? $this->branch->name : null ;
+    }
+
+    public function getUserCompanyNameAttribute()
+    {
+        return $this->company ? $this->company->name : null ;
+    }
 }

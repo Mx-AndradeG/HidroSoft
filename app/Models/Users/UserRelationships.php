@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Models\Branch\Branch;
+use App\Models\Company\Company;
 use App\Models\UserTypes\UserType;
 
 trait UserRelationships
@@ -13,6 +14,10 @@ trait UserRelationships
 
     public function branch(){
         return $this->belongsTo(Branch::class);
+    }
+
+    public function company(){
+        return $this->belongsTo(Company::class);
     }
 
 }

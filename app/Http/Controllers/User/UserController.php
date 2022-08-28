@@ -18,6 +18,8 @@ use GuzzleHttp\Psr7\Request;
 
 class UserController extends Controller
 {
+    use HasAccountMetods;
+
     public function __construct()
     {
     }
@@ -109,7 +111,7 @@ class UserController extends Controller
         $user->save();
         Auth::logout();
         Auth::loginUsingId($request->user_id);
-        return  redirect('/login');
+        return redirect('/login');
     }
 
     /**
@@ -200,7 +202,8 @@ class UserController extends Controller
         return Excel::download(new UserExport, 'Usuarios.xlsx');
     }
 
-    public function logout() {
+    public function logout()
+    {
         auth()->guard('web')->logout();
         return redirect('/login');
     }
