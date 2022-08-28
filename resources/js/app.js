@@ -46,8 +46,15 @@ createInertiaApp({
                 libraries: "places"
             },
         }).mount('#inertiaApp')
+        inertiaApp.mixin({
+            data() {
+                return {
+                    auth: window.Auth,
+                }
+            }
+        })
         inertiaApp.mixin({methods: {route, $asset: (path) => (process.env.MIX_APP_URL + '/' + path),}});
-        inertiaApp.mixin({ methods: {printJS } });
+        inertiaApp.mixin({methods: {printJS}});
         return inertiaApp.mount(el);
     },
 });
