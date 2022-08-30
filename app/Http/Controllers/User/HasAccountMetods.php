@@ -5,9 +5,16 @@ namespace App\Http\Controllers\User;
 use App\Http\Requests\User\UpdateAccountDataRequest;
 use App\Http\Requests\User\UpdateAccountPasswordRequest;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
+use function Termwind\render;
 
 trait HasAccountMetods
 {
+    public function getProfileIndexPage()
+    {
+        return Inertia::render('User/UserProfile/UserProfileIndex', ['auth' => auth()->user()]);
+    }
+
     public function updateAccountData(UpdateAccountDataRequest $request)
     {
         auth()->user()->fill($request->validated()['account_data']);

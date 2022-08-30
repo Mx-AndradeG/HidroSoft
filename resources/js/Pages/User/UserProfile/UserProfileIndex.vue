@@ -2,7 +2,7 @@
   <div>
     <admin-layout>
       <section class="section">
-        <user-profile></user-profile>
+        <user-profile :auth="auth"></user-profile>
       </section>
     </admin-layout>
   </div>
@@ -15,6 +15,7 @@ import UserProfile from "../../../Components/User/Profile/UserProfile";
 
 export default defineComponent({
   name: "App",
+    props: ['auth'],
   components: {UserProfile, AdminLayout },
 });
 </script>

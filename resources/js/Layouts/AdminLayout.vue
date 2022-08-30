@@ -3,7 +3,7 @@
     <navbar></navbar>
     <slide-bar></slide-bar>
     <main id="main" class="main">
-      <slot></slot>
+        <slot></slot>
     </main><!-- End #main -->
     </body>
 </template>
@@ -19,7 +19,8 @@ export default ({
     components: {
         SlideBar,
         Navbar,
-    }
+    },
 })
+
 
 </script>
