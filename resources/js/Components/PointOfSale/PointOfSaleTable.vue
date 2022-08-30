@@ -27,9 +27,6 @@
                                             >
                                         </template>
                                     </v-select>
-                                    <button class="input-group-text btn-primary" id="basic-addon3" @click="showModal"
-                                        >Ver existencias
-                                    </button>
                                 </div>
                             </div>
                         </div>
