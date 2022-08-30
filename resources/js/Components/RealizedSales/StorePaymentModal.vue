@@ -83,8 +83,9 @@
                   :disabled="disable"
                   v-model="payment.received_amount"
                   name="received_amount"
-                  type="text"
                   class="form-control"
+                  type="number"
+                  step="0.01"
                   id="received_amount"
                 />
               </div>

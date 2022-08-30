@@ -170,6 +170,23 @@ const fin = () => {
             return () =>
               h("input", {
                 class: "form-control form-control-sm",
+                value: filters.id,
+                onInput: (e) => {
+                  filters.id = e.target.value;
+                },
+              });
+          },
+        })
+      ).mount(childTh[0]);
+
+
+
+      createApp(
+        defineComponent({
+          setup() {
+            return () =>
+              h("input", {
+                class: "form-control form-control-sm",
                 value: filters.user_name,
                 onInput: (e) => {
                   filters.user_name = e.target.value;
@@ -177,7 +194,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[0]);
+      ).mount(childTh[1]);
       
       createApp(
         defineComponent({
@@ -192,7 +209,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[1]);
+      ).mount(childTh[2]);
 
       createApp(
         defineComponent({
@@ -207,7 +224,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[2]);
+      ).mount(childTh[3]);
 
       
       createApp(
@@ -223,7 +240,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[3]);
+      ).mount(childTh[4]);
 
       createApp(
         defineComponent({
@@ -238,7 +255,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[4]);
+      ).mount(childTh[5]);
 
       createApp(
         defineComponent({
@@ -253,7 +270,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[5]);
+      ).mount(childTh[6]);
 
       createApp(
         defineComponent({
@@ -268,7 +285,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[6]);
+      ).mount(childTh[7]);
 
       createApp(
         defineComponent({
@@ -283,7 +300,7 @@ const fin = () => {
               });
           },
         })
-      ).mount(childTh[7]);
+      ).mount(childTh[8]);
       // append cloned element to the header after first <tr>
       headerTr[0].after(cloneTr)
     };

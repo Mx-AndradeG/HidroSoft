@@ -1,7 +1,13 @@
 export default {
      columns: [
           {
-            label: "Vendio",
+            label: "Codigo venta",
+            field: "id",
+            width: "10%",
+            sortable: true,
+          },
+          {
+            label: "Vendedor",
             field: "user_name",
             width: "15%",
             sortable: true,
