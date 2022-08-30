@@ -152,7 +152,6 @@
                                  class="rounded-circle img-fluid d-inline align-self-center" alt="...">
                         </a><!-- End Profile Iamge Icon -->
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
-                            <li><h6 class="dropdown-header font-weight-bold">{{auth.name}}</h6></li>
                             <li><a class="dropdown-item" :href="route('UserProfile')">Ir a Perfil</a></li>
                             <li><a class="dropdown-item" @click="$inertia.post(route('user.logout'))">Cerrar sesión</a></li>
                         </ul>
