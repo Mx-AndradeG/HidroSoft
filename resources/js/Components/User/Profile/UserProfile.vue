@@ -3,9 +3,9 @@
         <section class="col-3 card rounded-3">
             <article class="d-flex flex-column justify-content-center align-items-center mb-3">
                 <div style="width: 180px; height: 180px" class="mt-3 mb-3">
-                    <img style="object-fit: contain; width: inherit;" :src="$asset('images/profile-default-image.png')">
+                    <img style="object-fit: contain; width: inherit;" :src="'/images/profile-default-image.png'">
                 </div>
-                <h3 class="text-center">{{ auth.name.substring(0, 25) }}</h3>
+                <h3 class="text-center">{{ auth.name }}</h3>
                 <h6 class="text-muted ">{{ auth.user_type_name }}</h6>
                 <span class="badge rounded-pill m-1" style="background-color: #75a2ca;">
                     <i class="bi bi-envelope me-1"></i>{{ auth.email }}
@@ -60,10 +60,14 @@ import UserAccountSecurityCard from "./UserProfileSections/UserAccountSecurityCa
 
 export default {
     name: "UserProfile",
+    props: ['auth'],
     data() {
         return {
             active_tab: 'data_tab'
         }
+    },
+    beforeCreate() {
+
     },
     components: {UserAccountSecurityCard, UserActivityCard, UserAccountDataCard}
 }

@@ -148,7 +148,7 @@
                            style="width: 50px; height: 50px;"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img style="object-fit: contain; width: inherit;"
-                                 :src="$asset('images/profile-default-image.png')"
+                                 :src="'/images/profile-default-image.png'"
                                  class="rounded-circle img-fluid d-inline align-self-center" alt="...">
                         </a><!-- End Profile Iamge Icon -->
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
@@ -164,6 +164,7 @@
 </template>
 
 <script setup>
+
 const select = (el, all = false) => {
     el = el.trim()
     if (all) {

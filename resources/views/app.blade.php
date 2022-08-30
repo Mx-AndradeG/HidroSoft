@@ -44,7 +44,7 @@
 <script src="{{asset('NiceAdmin/vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
 <script>
     @auth
-        window.Auth = {!! json_encode(Auth::user(), true) !!};
+        window.Auth = {!! auth()->user() !!};
     @else
         window.Auth = null;
     @endauth

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\User\UserController;
 
-Route::inertia('/user/user-profile', 'User/UserProfile/UserProfileIndex')->name('UserProfile');
+Route::get('user/user-profile', [UserController::class, 'getProfileIndexPage'])->name('UserProfile');
 
