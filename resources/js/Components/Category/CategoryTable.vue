@@ -167,7 +167,7 @@ const initTable = ({ el: tableComponent }) => {
 
 const exportToExcel = () => {
   axios({
-    url: route("stock.export"),
+    url: route("categories.export"),
     method: "GET",
     responseType: "blob",
   }).then((response) => {
