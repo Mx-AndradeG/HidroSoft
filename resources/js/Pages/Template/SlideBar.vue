@@ -32,6 +32,14 @@
         </a>
       </li>
       <!-- End Categories Nav -->
+      <!-- Start Categories Nav -->
+      <li class="nav-item">
+        <a :class="currentURL == '/resume_day' ? 'nav-link' : 'nav-link collapsed'" :href="route('resumeDay')">
+          <i class="bi bi-currency-dollar"></i>
+          <span>Resumen del dia</span>
+        </a>
+      </li>
+      <!-- End Categories Nav -->
 
       <!-- End Dashboard Nav -->
       <li class="nav-heading">Sucursales</li>
