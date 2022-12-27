@@ -140,7 +140,7 @@ class UserController extends Controller
     {
         $appends = json_decode(request()->get("appends", "[]"), true);
         $columns = json_decode(request()->get("columns", "[]"), true);
-        array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at');
+        array_push($columns, 'id', 'formatted_created_at', 'formatted_updated_at', 'user_type_id');
         array_push($appends, 'formatted_created_at', 'formatted_updated_at');
         return $user->append($appends)->only($columns);
     }
