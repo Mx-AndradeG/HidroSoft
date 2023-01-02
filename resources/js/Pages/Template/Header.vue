@@ -14,72 +14,35 @@
 
                         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                             <i class="bi bi-bell"></i>
-                            <span class="badge bg-primary badge-number">4</span>
+                            <span class="badge bg-primary badge-number">{{total == 0 ? '': total}}</span>
                         </a><!-- End Notification Icon -->
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                             <li class="dropdown-header">
-                                You have 4 new notifications
-                                <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                              Tienes {{ total }} notificacion(es) nuevas
+                                <!-- <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> -->
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="notification-item">
-                                <i class="bi bi-exclamation-circle text-warning"></i>
+                            <template v-for="(notification, index) in notifications">
                                 <div>
-                                    <h4>Lorem Ipsum</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>30 min. ago</p>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+
+                                    <li class="notification-item">
+                                        <div>
+                                            <p>{{ notification.menssage }}</p>
+                                        </div>
+                                        <i class="bi bi-check-circle text-success " 
+                                            data-toggle="tooltip" 
+                                            data-placement="top" 
+                                            title="Marcar como visto" 
+                                            @click="markNotificationAsView(notification.id)"
+                                            style="cursor: pointer;">
+                                        </i>
+                                    </li>
                                 </div>
-                            </li>
+                            </template>
 
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="notification-item">
-                                <i class="bi bi-x-circle text-danger"></i>
-                                <div>
-                                    <h4>Atque rerum nesciunt</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>1 hr. ago</p>
-                                </div>
-                            </li>
-
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="notification-item">
-                                <i class="bi bi-check-circle text-success"></i>
-                                <div>
-                                    <h4>Sit rerum fuga</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>2 hrs. ago</p>
-                                </div>
-                            </li>
-
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="notification-item">
-                                <i class="bi bi-info-circle text-primary"></i>
-                                <div>
-                                    <h4>Dicta reprehenderit</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>4 hrs. ago</p>
-                                </div>
-                            </li>
-
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li class="dropdown-footer">
-                                <a href="#">Show all notifications</a>
-                            </li>
 
                         </ul><!-- End Notification Dropdown Items -->
 
@@ -163,6 +126,7 @@
 </template>
 
 <script setup>
+import { ref, onMounted, reactive } from 'vue'
 
 const select = (el, all = false) => {
     el = el.trim()
@@ -174,6 +138,41 @@ const select = (el, all = false) => {
 }
 const burger = () => {
     select('body').classList.toggle('toggle-sidebar')
+}
+
+const notifications = ref([]);
+const total = ref(0);
+
+onMounted(() => {
+    getCurrentNotification();
+})
+
+const getCurrentNotification = () => {
+    axios
+    .get(
+      route("notification.index", {
+        columns: JSON.stringify([
+          "id",
+          "menssage",
+          "viewed",
+          "Formatted_created_at",
+        ]),
+      })
+    )
+    .then((response) => {
+      notifications.value = response.data.data;
+      total.value = response.data.count;
+    });
+}
+
+const markNotificationAsView = (id) => {
+    axios
+    .get(
+      route("sale.notification.viwed",id)
+    )
+    .then(() => {
+        getCurrentNotification();
+    });
 }
 
 </script>

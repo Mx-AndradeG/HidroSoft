@@ -6,11 +6,13 @@ use App\Models\Categories\Category;
 use App\Models\Customer\Customer;
 use App\Models\Payments\Payments\Payment;
 use App\Models\Products\Product;
+use App\Models\Sale\Sale;
 use App\Models\Supplier\Supplier;
 use App\Observers\CategoryObserver;
 use App\Observers\CustomerObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\ProductObserver;
+use App\Observers\SaleObserver;
 use App\Observers\SupplierObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -42,6 +44,7 @@ class EventServiceProvider extends ServiceProvider
         Supplier::observe(SupplierObserver::class);
         Product::observe(ProductObserver::class);
         Payment::observe(PaymentObserver::class);
+        Sale::observe(SaleObserver::class);
     }
 
     /**

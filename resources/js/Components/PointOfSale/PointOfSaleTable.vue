@@ -523,7 +523,7 @@ export default ({
                         });
                         this.sale ={
                             current_produts: [],
-                            client_id: '',
+                            client_id: 0,
                             total_sale: 0,
                             sale_type_id: 1,
                             payment_method_id: '',
