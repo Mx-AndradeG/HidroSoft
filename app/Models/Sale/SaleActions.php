@@ -2,10 +2,15 @@
 
 namespace App\Models\Sale;
 
+use App\Models\Branch\Branch;
+use App\Models\Notifications\Notification;
 use App\Models\Payments\PaymentDates\PaymentDate;
 use App\Models\Products\Product;
 use App\Models\SaleDetails\SaleDetail;
 use App\Models\Stock\Stock;
+use App\Models\Storage\Storage;
+use App\Models\User;
+use App\Models\UserTypes\UserType;
 use Carbon\Carbon;
 
 trait SaleActions
@@ -29,6 +34,9 @@ trait SaleActions
       $storage_id = $this->branch->storage->id;
       $stock = Stock::where('product_id', $product_id)->where('storage_id', $storage_id)->first();
       $stock->quantity -= $quantity;
+      if($stock->quantity == '5' || $stock->quantity == '10' || $stock->quantity == '0'){
+        $this->storeNotificationCase($stock);
+      }
       $stock->save();
   }
 
@@ -103,5 +111,24 @@ trait SaleActions
     }
 
     return $payments;
+  }
+
+  public function storeNotificationCase($stock){
+    $admins = User::where('branch_id', auth()->user()->branch_id)->get();
+    foreach($admins as $user){
+        if($user->user_type_id == 1){
+            $notification = new Notification();
+            $notification->user_id = $user->id;
+            $notification->product_id = $stock->product_id;
+            $notification->storage_id = $stock->storage_id;
+            $product = Product::findOrFail($stock->product_id);
+            $storage = Storage::findOrFail($stock->storage_id);
+            $notification->menssage = "El producto " . $product->name . " solo quedan: " . 
+                          $stock->quantity . ' unidades' . ' en el almacen: ' . $storage->name .  ' contacta con tu proveedor: ' . $product->supplier_name .
+                          " a su numero de contacto: " . $product->supplier->phone;
+            $notification->save();
+        }
+    }
+
   }
 }
